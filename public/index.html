@@ -2502,5 +2502,379 @@ Nov 2025        Dec 2025        Jan 2026        Feb 2026        Mar 2026
             <strong style="color: #667eea; font-size: 1.2rem;">🎉 Selamat Mengerjakan Proyek Hendra Prop! 🎉</strong>
         </p>
     </div>
+
+    <!-- NEW: Property Moderation System -->
+    <div class="content-section page-break">
+        <h1>🔒 Property Moderation & Approval System</h1>
+        
+        <div class="alert alert-info">
+            <h3>FR-PROP-007: Property Moderation/Approval System</h3>
+            <p><strong>Priority:</strong> P0 - CRITICAL</p>
+            <p><strong>Actor:</strong> Admin Kantor, Agen</p>
+        </div>
+        
+        <h2>Approval Status Flow</h2>
+        <pre><code>
+DRAFT ──(submit)──> PENDING ──(approve)──> PUBLISHED
+                       │
+                       ├──(decline)──> DECLINED
+                       │
+                       └──(request revision)──> NEED_REVISION
+                                                       │
+                                                       └──(resubmit)──> PENDING
+        </code></pre>
+        
+        <h2>Business Rules</h2>
+        <ul>
+            <li>Agen create property → default status = <strong>DRAFT</strong></li>
+            <li>Agen submit untuk review → status jadi <strong>PENDING</strong></li>
+            <li>Admin Kantor review submission:
+                <ul>
+                    <li><strong>Approve</strong> → status jadi PUBLISHED (bisa tampil di public)</li>
+                    <li><strong>Decline</strong> → status jadi DECLINED (rejected permanently)</li>
+                    <li><strong>Request Revision</strong> → status jadi NEED_REVISION</li>
+                </ul>
+            </li>
+            <li>Jika NEED_REVISION → Admin Kantor input <strong>revision notes</strong></li>
+            <li>Agen perbaiki property → resubmit → kembali ke PENDING</li>
+            <li>Hanya property dengan status <strong>PUBLISHED</strong> yang tampil di public marketplace</li>
+        </ul>
+        
+        <h2>Database Fields (New)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>approval_status</code></td>
+                    <td>ENUM</td>
+                    <td>draft, pending, published, declined, need_revision</td>
+                </tr>
+                <tr>
+                    <td><code>submitted_at</code></td>
+                    <td>DATETIME</td>
+                    <td>Kapan agent submit untuk review</td>
+                </tr>
+                <tr>
+                    <td><code>reviewed_by</code></td>
+                    <td>BIGINT (FK)</td>
+                    <td>Admin Kantor yang melakukan review</td>
+                </tr>
+                <tr>
+                    <td><code>reviewed_at</code></td>
+                    <td>DATETIME</td>
+                    <td>Kapan property di-review</td>
+                </tr>
+                <tr>
+                    <td><code>revision_notes</code></td>
+                    <td>TEXT</td>
+                    <td>Catatan dari admin untuk revision</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Acceptance Criteria</h2>
+        <ul>
+            <li>✅ Agen create property → default status = DRAFT</li>
+            <li>✅ Button "Submit for Approval" (hanya muncul jika status DRAFT or NEED_REVISION)</li>
+            <li>✅ Admin Kantor lihat list properties dengan status PENDING</li>
+            <li>✅ Admin Kantor bisa Approve/Decline/Request Revision</li>
+            <li>✅ Jika Request Revision → Admin wajib isi revision notes</li>
+            <li>✅ Agen dapat notifikasi (email + dashboard) saat status berubah</li>
+            <li>✅ Agen bisa lihat revision notes dari Admin</li>
+            <li>✅ Property dengan status PUBLISHED baru bisa di-publish ke marketplace</li>
+            <li>✅ Log semua approval actions ke activity_log</li>
+        </ul>
+        
+        <h2>Use Case: UC-13A - Review Property Submission</h2>
+        <p><strong>Actor:</strong> Admin Kantor</p>
+        <p><strong>Flow:</strong></p>
+        <ol>
+            <li>Admin Kantor akses menu "Property Approvals"</li>
+            <li>System menampilkan list properties dengan status PENDING</li>
+            <li>Admin select property untuk review</li>
+            <li>System menampilkan property detail lengkap</li>
+            <li>Admin review: photos, title, price, description</li>
+            <li>Admin decide: Approve / Decline / Request Revision</li>
+        </ol>
+        
+        <p><strong>If Approve:</strong></p>
+        <ul>
+            <li>Status → PUBLISHED</li>
+            <li>Set reviewed_by, reviewed_at, published_at</li>
+            <li>Send email: "Property approved!"</li>
+            <li>Property tampil di public marketplace</li>
+        </ul>
+        
+        <p><strong>If Decline:</strong></p>
+        <ul>
+            <li>Status → DECLINED</li>
+            <li>Set reviewed_by, reviewed_at</li>
+            <li>Send email: "Property declined"</li>
+            <li>Cannot resubmit (permanent)</li>
+        </ul>
+        
+        <p><strong>If Request Revision:</strong></p>
+        <ul>
+            <li>Status → NEED_REVISION</li>
+            <li>Admin input revision notes (required)</li>
+            <li>Set reviewed_by, reviewed_at</li>
+            <li>Send email with revision notes</li>
+            <li>Agent can edit & resubmit</li>
+        </ul>
+    </div>
+    
+    <!-- NEW: Visitor Form / Lead Capture -->
+    <div class="content-section page-break">
+        <h1>📝 Visitor Form (Lead Capture System)</h1>
+        
+        <div class="alert alert-info">
+            <h3>FR-PROP-008: Visitor Form (Lead Capture)</h3>
+            <p><strong>Priority:</strong> P1 - HIGH</p>
+            <p><strong>Actor:</strong> Public Visitor (via private link)</p>
+        </div>
+        
+        <h2>Requirement</h2>
+        <p>Visitor yang akses <strong>private link</strong> harus isi form dulu sebelum bisa lihat property (lead capture).</p>
+        
+        <h2>Form Fields</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Nama Lengkap</td>
+                    <td>Text</td>
+                    <td>✅ Yes</td>
+                    <td>Visitor full name</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>Email</td>
+                    <td>✅ Yes</td>
+                    <td>Validated email format</td>
+                </tr>
+                <tr>
+                    <td>Nomor Telepon</td>
+                    <td>Text</td>
+                    <td>❌ Optional</td>
+                    <td>Phone number</td>
+                </tr>
+                <tr>
+                    <td>WhatsApp</td>
+                    <td>Text</td>
+                    <td>❌ Optional</td>
+                    <td>WhatsApp number</td>
+                </tr>
+                <tr>
+                    <td>Interest Level</td>
+                    <td>Dropdown</td>
+                    <td>✅ Yes</td>
+                    <td>Low / Medium / High / Very High</td>
+                </tr>
+                <tr>
+                    <td>Message/Notes</td>
+                    <td>Textarea</td>
+                    <td>❌ Optional</td>
+                    <td>Visitor's message</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Database Table: property_visitors</h2>
+        <pre><code>
+CREATE TABLE property_visitors (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  property_link_id BIGINT,  -- FK to property_links
+  property_id BIGINT,       -- FK to properties (denormalized)
+  visitor_name VARCHAR(255) NOT NULL,
+  visitor_email VARCHAR(255) NOT NULL,
+  visitor_phone VARCHAR(20),
+  visitor_whatsapp VARCHAR(20),
+  interest_level ENUM('low', 'medium', 'high', 'very_high') DEFAULT 'medium',
+  message TEXT,
+  visited_at DATETIME DEFAULT NOW,
+  ip_address VARCHAR(45),
+  user_agent TEXT,
+  created_at TIMESTAMP DEFAULT NOW,
+  
+  INDEX idx_property_link (property_link_id),
+  INDEX idx_property (property_id),
+  INDEX idx_interest_level (interest_level),
+  
+  FOREIGN KEY (property_link_id) REFERENCES property_links(id) ON DELETE CASCADE,
+  FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE
+);
+        </code></pre>
+        
+        <h2>Business Logic</h2>
+        <ul>
+            <li><strong>Flow:</strong> Visitor klik private link → Fill form → Submit → View property</li>
+            <li><strong>Duplicate Prevention:</strong> 1 email per property per 24 jam</li>
+            <li><strong>Smart Notifications:</strong> Agent notified untuk HIGH/VERY_HIGH interest</li>
+            <li><strong>Tracking:</strong> IP address, user agent, visited_at untuk analytics</li>
+            <li><strong>Lead Management:</strong> Agent bisa view all visitors per property</li>
+        </ul>
+        
+        <h2>Interest Levels</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Level</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge badge-medium">LOW</span></td>
+                    <td>Hanya lihat-lihat</td>
+                    <td>No notification</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-medium">MEDIUM</span></td>
+                    <td>Cukup tertarik</td>
+                    <td>No notification</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-high">HIGH</span></td>
+                    <td>Sangat tertarik</td>
+                    <td>✉️ Email + Dashboard notification ke Agent</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-critical">VERY HIGH</span></td>
+                    <td>Siap beli/nego</td>
+                    <td>✉️✉️ Priority notification ke Agent</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Use Case: UC-30 - Fill Visitor Form</h2>
+        <p><strong>Preconditions:</strong> Visitor mendapat private link dari Agent, link valid</p>
+        <p><strong>Main Flow:</strong></p>
+        <ol>
+            <li>Visitor klik private link: <code>/property/{slug}?token={token}</code></li>
+            <li>System validates token (exists, not expired, not used)</li>
+            <li>System redirect ke Visitor Form page</li>
+            <li>Visitor fill form (nama, email, phone, interest level, message)</li>
+            <li>Visitor submit form</li>
+            <li>System validates: nama & email required, email format</li>
+            <li>System check duplicate (same email+property dalam 24 jam)</li>
+            <li>System save ke <code>property_visitors</code> table</li>
+            <li>System increment <code>access_count</code> di property_links</li>
+            <li>If interest HIGH/VERY_HIGH → Send notification ke Agent</li>
+            <li>System redirect ke Property Detail page</li>
+            <li>Visitor dapat lihat property lengkap</li>
+        </ol>
+        
+        <div class="alert alert-success">
+            <h3>✅ Benefits</h3>
+            <ul>
+                <li><strong>Lead Capture:</strong> Collect visitor data before showing property</li>
+                <li><strong>Qualified Leads:</strong> Interest level helps prioritize follow-up</li>
+                <li><strong>Agent Intelligence:</strong> Know who viewed, when, and their interest</li>
+                <li><strong>Follow-up Ready:</strong> Export visitor data for marketing</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- NEW: Updated Database Schema -->
+    <div class="content-section page-break">
+        <h1>🗄️ Database Schema Updates</h1>
+        
+        <h2>Table: properties (Updated)</h2>
+        <p><strong>New Fields Added:</strong></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>approval_status</code></td>
+                    <td>ENUM</td>
+                    <td>'draft'</td>
+                    <td>draft, pending, published, declined, need_revision</td>
+                </tr>
+                <tr>
+                    <td><code>submitted_at</code></td>
+                    <td>DATETIME</td>
+                    <td>NULL</td>
+                    <td>When agent submitted for review</td>
+                </tr>
+                <tr>
+                    <td><code>reviewed_by</code></td>
+                    <td>BIGINT FK</td>
+                    <td>NULL</td>
+                    <td>Admin Kantor who reviewed (FK to users)</td>
+                </tr>
+                <tr>
+                    <td><code>reviewed_at</code></td>
+                    <td>DATETIME</td>
+                    <td>NULL</td>
+                    <td>When property was reviewed</td>
+                </tr>
+                <tr>
+                    <td><code>revision_notes</code></td>
+                    <td>TEXT</td>
+                    <td>NULL</td>
+                    <td>Notes from admin for revision</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Table: property_visitors (New)</h2>
+        <p><strong>Purpose:</strong> Store visitor information from private link access (lead capture)</p>
+        <pre><code>
+CREATE TABLE property_visitors (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  property_link_id BIGINT UNSIGNED NOT NULL,
+  property_id BIGINT UNSIGNED NOT NULL,
+  visitor_name VARCHAR(255) NOT NULL,
+  visitor_email VARCHAR(255) NOT NULL,
+  visitor_phone VARCHAR(20),
+  visitor_whatsapp VARCHAR(20),
+  interest_level ENUM('low', 'medium', 'high', 'very_high') DEFAULT 'medium',
+  message TEXT,
+  visited_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  ip_address VARCHAR(45),
+  user_agent TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  
+  INDEX idx_property_link (property_link_id),
+  INDEX idx_property (property_id),
+  INDEX idx_visitor_email (visitor_email),
+  INDEX idx_visited_at (visited_at),
+  INDEX idx_interest_level (interest_level),
+  
+  FOREIGN KEY (property_link_id) REFERENCES property_links(id) ON DELETE CASCADE,
+  FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE
+);
+        </code></pre>
+        
+        <div class="alert alert-warning">
+            <h3>Migration Order</h3>
+            <p>Jalankan migration dalam urutan ini:</p>
+            <ol>
+                <li><code>2024_11_01_000001_add_approval_fields_to_properties_table.php</code></li>
+                <li><code>2024_11_01_000002_create_property_visitors_table.php</code></li>
+            </ol>
+        </div>
+    </div>
 </body>
 </html>
