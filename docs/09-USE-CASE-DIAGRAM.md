@@ -201,9 +201,16 @@ Use Case Diagram menunjukkan interaksi antara actor (pengguna) dengan sistem. Di
          │           ├── Create Property
          │           ├── Edit Property
          │           ├── Delete Property
-         │           ├── Approve Property
          │           ├── Publish to Marketplace
          │           └── Generate Private Link
+         │
+         ├────────○ UC-13A: Review Property Submissions
+         │           ├── View Pending Submissions
+         │           ├── Approve Property → PUBLISHED
+         │           ├── Decline Property → DECLINED
+         │           ├── Request Revision → NEED_REVISION
+         │           ├── Add Revision Notes
+         │           └── ««include»» Send Notification to Agent
          │
          ├────────○ UC-14: Manage Transactions
          │           ├── Input Transaction (office properties)
@@ -247,10 +254,13 @@ Use Case Diagram menunjukkan interaksi antara actor (pengguna) dengan sistem. Di
          │           └── Update Contact Info
          │
          ├────────○ UC-21: Manage Own Properties
-         │           ├── Create Property
+         │           ├── Create Property (Draft)
          │           │    ├── ««include»» Upload Photos
          │           │    └── ««include»» Generate Slug
+         │           ├── Submit Property for Approval
          │           ├── Edit Property
+         │           ├── Resubmit After Revision
+         │           ├── View Revision Notes
          │           ├── Delete Property
          │           ├── Set Property Status
          │           └── ««extend»» Generate Private Link
@@ -259,7 +269,13 @@ Use Case Diagram menunjukkan interaksi antara actor (pengguna) dengan sistem. Di
          │           ├── View Own Properties
          │           └── Filter by Status
          │
-         ├────────○ UC-23: View Commissions
+         ├────────○ UC-23: View Property Visitors (Leads)
+         │           ├── View Visitor List per Property
+         │           ├── Filter by Interest Level
+         │           ├── Export Visitor Data to Excel
+         │           └── View Visitor Contact Info
+         │
+         ├────────○ UC-24: View Commissions
          │           ├── View Pending Commissions
          │           ├── View Paid Commissions
          │           └── View Commission History
@@ -308,7 +324,18 @@ Use Case Diagram menunjukkan interaksi antara actor (pengguna) dengan sistem. Di
          │           ├── View Location Map
          │           └── View Agent Info
          │
-         ├────────○ UC-30: Contact Agent
+         ├────────○ UC-30: Access Private Link
+         │           ├── Click Private Link (from WhatsApp/Email)
+         │           ├── ««include»» Fill Visitor Form
+         │           │    ├── Enter Name (required)
+         │           │    ├── Enter Email (required)
+         │           │    ├── Enter Phone (optional)
+         │           │    ├── Enter WhatsApp (optional)
+         │           │    ├── Select Interest Level
+         │           │    └── Add Message/Notes
+         │           └── View Property Detail (after form submission)
+         │
+         ├────────○ UC-31: Contact Agent
          │           ├── Call via Phone
          │           └── Chat via WhatsApp
          │
@@ -382,15 +409,23 @@ Use Case Diagram menunjukkan interaksi antara actor (pengguna) dengan sistem. Di
 4. Agen mengupload foto (max 10)
    - ««include»» UC-21a: Upload & Optimize Photos
 5. Agen memilih publish option (Public/Private)
-6. Agen submit form
+6. Agen klik "Save as Draft"
 7. System validates input
    - ««include»» UC-21b: Validate Property Data
 8. System generates slug dari judul
-9. System saves property to database
+9. System saves property to database dengan `approval_status = DRAFT`
 10. System logs activity
-11. System sends notification ke Admin Kantor
-12. System menampilkan success message
-13. Property tersimpan dengan status "available"
+11. System menampilkan success message
+12. Property tersimpan dengan status "DRAFT" (belum di-publish)
+
+**Alternative Flow - Submit for Approval:**
+6a. Agen klik "Submit for Approval" (instead of Save as Draft)
+7a. System validates property (must complete: title, photos, price)
+8a. System updates `approval_status = PENDING`
+9a. System records `submitted_at = now()`
+10a. System sends notification ke Admin Kantor
+11a. System shows "Property submitted for review"
+12a. Property menunggu approval dari Admin Kantor
 
 **Alternative Flows:**
 - **7a. Validation Error:**
@@ -520,6 +555,184 @@ Use Case Diagram menunjukkan interaksi antara actor (pengguna) dengan sistem. Di
 - Search is case-insensitive
 - Results sorted by: published_at DESC (newest first)
 - Debounce search input (300ms)
+
+---
+
+### 5.4 UC-13A: Review Property Submission (Admin Kantor)
+
+**Use Case ID:** UC-13A  
+**Use Case Name:** Review Property Submission  
+**Actor:** Admin Kantor  
+**Priority:** Critical  
+**Preconditions:**
+- Admin Kantor sudah login
+- Ada property dengan status `approval_status = PENDING`
+
+**Main Flow:**
+1. Admin Kantor akses menu "Property Approvals"
+2. System menampilkan list properties dengan status PENDING
+3. Admin Kantor select property untuk di-review
+4. System menampilkan property detail lengkap
+5. Admin Kantor review property:
+   - Check title, description, photos, price
+   - Validate data quality
+6. Admin Kantor memutuskan action:
+   - **Option A: Approve** → Go to step 7
+   - **Option B: Decline** → Go to step 10
+   - **Option C: Request Revision** → Go to step 13
+
+**Flow A - Approve:**
+7. Admin Kantor klik "Approve"
+8. System updates `approval_status = PUBLISHED`
+9. System records:
+   - `reviewed_by = current_admin_id`
+   - `reviewed_at = now()`
+   - `published_at = now()`
+10. System logs approval action
+11. System sends email notification ke Agent:
+    - "Your property [title] has been approved!"
+12. Property sekarang bisa tampil di public marketplace
+13. End
+
+**Flow B - Decline:**
+10. Admin Kantor klik "Decline"
+11. System shows confirm dialog
+12. Admin Kantor confirm
+13. System updates `approval_status = DECLINED`
+14. System records `reviewed_by` & `reviewed_at`
+15. System logs decline action
+16. System sends email notification ke Agent:
+    - "Your property [title] has been declined"
+17. Property tidak bisa di-resubmit (permanently declined)
+18. End
+
+**Flow C - Request Revision:**
+13. Admin Kantor klik "Request Revision"
+14. System menampilkan textarea untuk revision notes
+15. Admin Kantor input revision notes (required):
+    - Apa yang perlu diperbaiki
+    - Detail yang salah/kurang
+16. Admin Kantor submit
+17. System validates notes tidak kosong
+18. System updates `approval_status = NEED_REVISION`
+19. System saves revision notes ke `revision_notes` field
+20. System records `reviewed_by` & `reviewed_at`
+21. System logs revision request
+22. System sends email notification ke Agent:
+    - "Your property [title] needs revision"
+    - Include revision notes
+23. Agent bisa edit property & resubmit
+24. End
+
+**Alternative Flows:**
+- **17a. Revision Notes Kosong:**
+  - System shows error "Please provide revision notes"
+  - Return to step 15
+
+**Postconditions:**
+- Property approval status updated
+- Agent notified via email
+- Activity logged
+- Dashboard metrics updated
+
+**Business Rules:**
+- Admin Kantor hanya bisa approve property di kantornya
+- Admin Master bisa approve property di semua kantor
+- Approval action cannot be undone
+- Declined property perlu create new (tidak bisa resubmit)
+- NEED_REVISION property bisa unlimited resubmit
+
+---
+
+### 5.5 UC-30: Fill Visitor Form (Buyer via Private Link)
+
+**Use Case ID:** UC-30  
+**Use Case Name:** Fill Visitor Form (Lead Capture)  
+**Actor:** Buyer (Public Visitor)  
+**Priority:** High  
+**Preconditions:**
+- Visitor mendapat private link dari Agent (via WhatsApp/Email)
+- Link masih valid (belum expired)
+
+**Main Flow:**
+1. Visitor klik private link: `/property/{slug}?token={token}`
+2. System validates token:
+   - Check token exists
+   - Check token not expired
+   - Check token not used (if single-use)
+3. System redirect ke Visitor Form page
+4. System menampilkan form dengan fields:
+   - Nama lengkap (required)
+   - Email (required)
+   - Nomor telepon (optional)
+   - WhatsApp number (optional)
+   - Interest level (dropdown, required):
+     - Low - Hanya lihat-lihat
+     - Medium - Cukup tertarik
+     - High - Sangat tertarik
+     - Very High - Siap beli/nego
+   - Message/notes (textarea, optional)
+5. Visitor mengisi form
+6. Visitor submit form
+7. System validates form:
+   - Nama & email required
+   - Email format valid
+   - Check duplicate: same email+property dalam 24 jam
+8. System saves data ke `property_visitors` table:
+   - property_link_id
+   - property_id
+   - visitor_name, email, phone, whatsapp
+   - interest_level, message
+   - visited_at = now()
+   - ip_address, user_agent
+9. System increments `access_count` di `property_links`
+10. System checks interest level:
+    - If HIGH or VERY_HIGH → Send real-time notification ke Agent
+11. System logs visitor access
+12. System redirect ke Property Detail page
+13. Visitor bisa lihat property lengkap (photos, description, location)
+14. End
+
+**Alternative Flows:**
+- **2a. Token Invalid/Expired:**
+  - System shows "Link expired or invalid"
+  - Provide contact agent button
+  - End
+
+- **2b. Token Already Used (single-use):**
+  - System shows "Link already used"
+  - End
+
+- **7a. Validation Error:**
+  - System shows error messages
+  - Return to step 5
+
+- **7b. Duplicate Submission:**
+  - System shows "You already submitted this form today"
+  - Auto-redirect ke Property Detail
+  - Skip steps 8-11
+
+**Postconditions:**
+- Visitor data tersimpan (lead captured)
+- Agent notified (if HIGH/VERY_HIGH interest)
+- Property access tracked
+- Visitor can view property detail
+
+**Business Rules:**
+- Form wajib diisi untuk akses private link
+- Duplicate prevention: 1 email per property per 24 jam
+- HIGH/VERY_HIGH interest trigger agent notification
+- Visitor data used for follow-up & marketing
+- IP & user agent tracked for security
+
+**Notification Logic:**
+```php
+if (interest_level === 'high' || interest_level === 'very_high') {
+    notify_agent_email();
+    notify_agent_dashboard();
+    priority_lead = true;
+}
+```
 
 ---
 
