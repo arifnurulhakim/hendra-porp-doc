@@ -1,0 +1,19 @@
+{
+  "name": "hendra-prop-docs",
+  "version": "1.0.0",
+  "description": "Dokumentasi lengkap Hendra Prop - Sistem Manajemen Properti Multi-Kantor",
+  "main": "public/index.html",
+  "scripts": {
+    "deploy": "netlify deploy --prod",
+    "deploy:draft": "netlify deploy"
+  },
+  "keywords": [
+    "documentation",
+    "property-management",
+    "hendra-prop"
+  ],
+  "author": "Hendra Prop Team",
+  "license": "UNLICENSED",
+  "private": true
+}
+

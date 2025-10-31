@@ -1,0 +1,2506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hendra Prop - Complete Documentation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #f7fafc;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                font-size: 10pt;
+                max-width: 100%;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            h1 {
+                font-size: 18pt;
+                page-break-after: avoid;
+            }
+            
+            h2 {
+                font-size: 14pt;
+                page-break-after: avoid;
+            }
+            
+            h3 {
+                font-size: 12pt;
+                page-break-after: avoid;
+            }
+            
+            pre, blockquote, table {
+                page-break-inside: avoid;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            table {
+                font-size: 9pt;
+            }
+            
+            .cover {
+                page-break-after: always;
+            }
+        }
+        
+        /* Cover Page */
+        .cover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6rem 3rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+        
+        .cover h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .cover .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .cover .meta {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        /* Table of Contents */
+        .toc {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .toc ul {
+            list-style: none;
+        }
+        
+        .toc li {
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+        }
+        
+        .toc a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .toc a:hover {
+            color: #667eea;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: white;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        
+        h2 {
+            color: #5a67d8;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+        }
+        
+        h3 {
+            color: #4c51bf;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        h4 {
+            color: #434190;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: #4a5568;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+            color: #4a5568;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:hover {
+            background: #f7fafc;
+        }
+        
+        /* Code Blocks */
+        pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        code {
+            background: #edf2f7;
+            color: #d53f8c;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        
+        .badge-critical {
+            background: #fc8181;
+            color: #742a2a;
+        }
+        
+        .badge-high {
+            background: #f6ad55;
+            color: #7c2d12;
+        }
+        
+        .badge-medium {
+            background: #68d391;
+            color: #22543d;
+        }
+        
+        .badge-low {
+            background: #90cdf4;
+            color: #2c5282;
+        }
+        
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert-info {
+            background: #ebf8ff;
+            border-color: #3182ce;
+            color: #2c5282;
+        }
+        
+        .alert-warning {
+            background: #fffaf0;
+            border-color: #dd6b20;
+            color: #7c2d12;
+        }
+        
+        .alert-success {
+            background: #f0fff4;
+            border-color: #38a169;
+            color: #22543d;
+        }
+        
+        /* Blockquote */
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: #718096;
+            font-style: italic;
+        }
+        
+        /* Print Button */
+        .print-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* Diagram/ASCII Art */
+        .diagram {
+            background: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Status Indicators */
+        .status-mvp {
+            color: #38a169;
+            font-weight: 600;
+        }
+        
+        .status-phase2 {
+            color: #dd6b20;
+            font-weight: 600;
+        }
+        
+        /* Checkmarks */
+        .check {
+            color: #38a169;
+        }
+        
+        .cross {
+            color: #f56565;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #e2e8f0;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Button -->
+    <button class="print-button no-print" onclick="window.print()">
+        🖨️ Print to PDF
+    </button>
+
+    <!-- Cover Page -->
+    <div class="cover">
+        <h1>📋 HENDRA PROP</h1>
+        <div class="subtitle">Dokumentasi Analisis & Desain Sistem</div>
+        <div class="subtitle">Sistem Manajemen Properti Multi-Kantor</div>
+        <div class="subtitle" style="font-size: 1.2rem; margin-top: 1rem;">
+            ✨ Enhanced with Process Diagrams (DFD, Use Case, Activity)
+        </div>
+        <div class="meta">
+            <p>Versi 1.1.0 | 31 Oktober 2025</p>
+            <p>Target Launch: Maret 2026</p>
+            <p style="margin-top: 1rem;">Prepared by: AI Project Analysis System</p>
+        </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+        <h2>📚 Daftar Isi</h2>
+        <ul>
+            <li><a href="#section-analisis">1. Analisis Sistem</a></li>
+            <li><a href="#section-requirements">2. Business Requirements (Enhanced)</a></li>
+            <li><a href="#section-technical">3. Technical Specifications (Enhanced)</a></li>
+            <li><a href="#section-database">4. Database Design (Enhanced)</a></li>
+            <li><a href="#section-dfd">5. Data Flow Diagram (NEW)</a></li>
+            <li><a href="#section-usecase">6. Use Case Diagram (NEW)</a></li>
+            <li><a href="#section-activity">7. Activity Diagrams (NEW)</a></li>
+            <li><a href="#section-userstories">8. User Stories</a></li>
+            <li><a href="#section-sprint">9. Sprint Planning</a></li>
+            <li><a href="#section-api">10. API Specifications</a></li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: ANALISIS SISTEM                   -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-analisis">
+        <h1>1. 📊 Analisis Sistem - Hendra Prop</h1>
+        
+        <h2>1.1 Executive Summary</h2>
+        
+        <h3>Gambaran Umum</h3>
+        <p>Hendra Prop adalah sistem manajemen properti berbasis web yang dirancang untuk mengelola multiple kantor cabang dengan agen-agen properti yang terstruktur. Sistem ini memfasilitasi manajemen listing properti, tracking performa agen, serta kalkulasi komisi otomatis.</p>
+        
+        <h3>Tujuan Utama</h3>
+        <ul>
+            <li>Centralized management untuk multi-kantor properti</li>
+            <li>Tracking performa dan komisi agen secara transparan</li>
+            <li>Digitalisasi proses listing dan transaksi properti</li>
+            <li>Memudahkan buyer dalam mencari dan menghubungi agen</li>
+        </ul>
+        
+        <h3>Target Pengguna</h3>
+        <ol>
+            <li><strong>Admin Master</strong> - Super administrator dengan akses penuh</li>
+            <li><strong>Admin Kantor</strong> - Manager cabang yang mengelola agen di kantornya</li>
+            <li><strong>Agen Properti</strong> - Sales yang mengelola listing dan transaksi</li>
+            <li><strong>Buyer/Customer</strong> - Pencari properti (publik)</li>
+        </ol>
+        
+        <h3>Timeline</h3>
+        <ul>
+            <li><strong>Deadline:</strong> Maret 2026</li>
+            <li><strong>Development Period:</strong> 3-4 bulan (Desember 2025 - Maret 2026)</li>
+            <li><strong>Target:</strong> MVP (Minimum Viable Product)</li>
+        </ul>
+        
+        <h2>1.2 Latar Belakang & Masalah</h2>
+        
+        <h3>Kondisi Saat Ini</h3>
+        <ul>
+            <li>Manajemen properti masih manual atau menggunakan spreadsheet</li>
+            <li>Sulit tracking performa agen di multiple kantor</li>
+            <li>Perhitungan komisi tidak transparan</li>
+            <li>Buyer sulit mendapat informasi terpusat</li>
+        </ul>
+        
+        <h3>Masalah yang Harus Diselesaikan</h3>
+        <ol>
+            <li><strong>Fragmentasi Data</strong> - Data tersebar di berbagai kantor</li>
+            <li><strong>Tracking Performance</strong> - Sulit mengukur produktivitas agen</li>
+            <li><strong>Komisi Manual</strong> - Rawan error dan tidak transparan</li>
+            <li><strong>Akses Informasi</strong> - Buyer kesulitan cari properti yang sesuai</li>
+        </ol>
+        
+        <h3>Solusi yang Diusulkan</h3>
+        <p>Sistem terintegrasi berbasis web dengan fitur:</p>
+        <ul>
+            <li>User management multi-level (Master, Kantor, Agen)</li>
+            <li>Database terpusat untuk listing properti</li>
+            <li>Dashboard performance real-time</li>
+            <li>Kalkulasi komisi otomatis</li>
+            <li>Public listing page untuk buyer</li>
+        </ul>
+        
+        <h2>1.3 Struktur Organisasi</h2>
+        
+        <div class="diagram">
+<pre>
+Hendra Prop (Pusat)
+├── HP 1 (Kantor Cabang 1)
+│   ├── Agent 1
+│   ├── Agent 2
+│   └── Agent 3
+├── HP 2 (Kantor Cabang 2)
+│   ├── Agent Z1
+│   ├── Agent Z2
+│   └── Agent Z3
+└── HP 3 (Kantor Cabang 3)
+    └── [Multiple Agents]
+</pre>
+        </div>
+        
+        <h3>Business Rules</h3>
+        
+        <h4>Rule 1: Relasi Kantor - Agen</h4>
+        <ul>
+            <li><span class="check">✅</span> Satu kantor bisa memiliki banyak agen (1:N)</li>
+            <li><span class="check">✅</span> Satu agen hanya dedicated ke 1 kantor (N:1)</li>
+            <li><span class="cross">❌</span> Agen tidak bisa pindah kantor (atau butuh proses approval)</li>
+        </ul>
+        
+        <h4>Rule 2: Relasi Properti - Agen</h4>
+        <ul>
+            <li><span class="check">✅</span> Satu properti owned oleh 1 agen (pemilik listing)</li>
+            <li><span class="check">✅</span> Maksimal ada 1 agen pembawa buyer untuk properti tersebut</li>
+            <li><span class="check">✅</span> Total maksimal: 1 Agen Owner + 1 Agen Buyer per transaksi</li>
+            <li>⚠️ Agen buyer harus koordinasi dengan agen owner</li>
+        </ul>
+        
+        <h4>Rule 3: Komisi</h4>
+        <ul>
+            <li>📌 <strong>Default Split:</strong> 70% untuk Agen, 30% untuk Kantor</li>
+            <li>📌 Khusus untuk transaksi <strong>sewa</strong></li>
+            <li>📌 Komisi untuk jual-beli bisa berbeda (customizable)</li>
+            <li>📌 Diatur manual oleh Admin Master/Kantor per transaksi</li>
+        </ul>
+        
+        <h2>1.4 MVP Scope Definition</h2>
+        
+        <div class="alert alert-success">
+            <p><strong>Prinsip MVP: "Minimum Viable Scope Only"</strong></p>
+            <p>Hanya fitur yang <strong>BENAR-BENAR ESENSIAL</strong> untuk operasional dasar bisnis yang masuk MVP.</p>
+        </div>
+        
+        <h3>Fitur yang MASUK MVP</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Kode</th>
+                    <th>Fungsi</th>
+                    <th>Prioritas</th>
+                    <th>Status MVP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>A1</td>
+                    <td>Input & Edit Kantor</td>
+                    <td><span class="badge badge-critical">P0 - CRITICAL</span></td>
+                    <td class="status-mvp">✅ MVP</td>
+                </tr>
+                <tr>
+                    <td>A2</td>
+                    <td>Input & Edit Agen</td>
+                    <td><span class="badge badge-critical">P0 - CRITICAL</span></td>
+                    <td class="status-mvp">✅ MVP</td>
+                </tr>
+                <tr>
+                    <td>B1</td>
+                    <td>Input & Edit Properti</td>
+                    <td><span class="badge badge-critical">P0 - CRITICAL</span></td>
+                    <td class="status-mvp">✅ MVP</td>
+                </tr>
+                <tr>
+                    <td>B3</td>
+                    <td>Atur Performance Agen & Komisi</td>
+                    <td><span class="badge badge-critical">P0 - CRITICAL</span></td>
+                    <td class="status-mvp">✅ MVP</td>
+                </tr>
+                <tr>
+                    <td>B5</td>
+                    <td>Cek Performance & Komisi</td>
+                    <td><span class="badge badge-critical">P0 - CRITICAL</span></td>
+                    <td class="status-mvp">✅ MVP</td>
+                </tr>
+                <tr>
+                    <td>C1</td>
+                    <td>Cek Properti & Kontak Agen</td>
+                    <td><span class="badge badge-critical">P0 - CRITICAL</span></td>
+                    <td class="status-mvp">✅ MVP</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Fitur yang TIDAK MASUK MVP</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Fitur</th>
+                    <th>Status</th>
+                    <th>Alasan Penolakan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>B2. Moderasi Properti</td>
+                    <td class="status-phase2">⚠️ FASE 2</td>
+                    <td>Untuk MVP, asumsi agen dipercaya. Moderasi bisa manual via edit langsung oleh Admin</td>
+                </tr>
+                <tr>
+                    <td>B4. Buat & Copy Link Terbatas</td>
+                    <td class="status-phase2">⚠️ FASE 2</td>
+                    <td>Fitur "share terbatas" adalah enhancement. MVP cukup share link normal</td>
+                </tr>
+                <tr>
+                    <td>Reward System (15 pt = 150 pt)</td>
+                    <td class="status-phase2">❌ TIDAK PRIORITAS</td>
+                    <td>Gamification bukan kebutuhan inti</td>
+                </tr>
+                <tr>
+                    <td>Tag Properti Serupa</td>
+                    <td class="status-phase2">⚠️ FASE 2</td>
+                    <td>Recommendation engine. MVP fokus listing manual dulu</td>
+                </tr>
+                <tr>
+                    <td>Performance Board Master</td>
+                    <td class="status-phase2">⚠️ FASE 2</td>
+                    <td>Dashboard agregat bisa ditambahkan setelah reporting basic jalan</td>
+                </tr>
+                <tr>
+                    <td>Add-on HPDM / Premiere Listing</td>
+                    <td class="status-phase2">❌ TIDAK PRIORITAS</td>
+                    <td>Premium features untuk monetisasi tambahan, bukan MVP</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>1.5 Pertanyaan Klarifikasi & Asumsi</h2>
+        
+        <h3>Pertanyaan yang Sudah Terjawab ✅</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Pertanyaan</th>
+                    <th>Jawaban</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>What is HPDM?</td>
+                    <td>Hanya nama, skip (no functional impact)</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Relasi Agen-Kantor?</td>
+                    <td>1 Kantor : N Agen, 1 Agen : 1 Kantor</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Relasi Properti-Agen?</td>
+                    <td>1 Properti : 1 Owner + 1 Buyer (max)</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Komisi flat atau dynamic?</td>
+                    <td>Dynamic, diisi admin</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Pertanyaan yang Masih Perlu Dijawab ⚠️</h3>
+        
+        <div class="alert alert-warning">
+            <h4>CRITICAL - Harus Dijawab Sebelum Development</h4>
+            
+            <p><strong>Q1: Flow Transaksi & Status Properti</strong></p>
+            <ul>
+                <li>Apakah ada status properti: Available → Pending → Sold/Rented?</li>
+                <li>Ketika agen input transaksi, apakah status properti otomatis berubah?</li>
+            </ul>
+            
+            <p><strong>Asumsi Sementara:</strong> Ada 4 status: Available, Pending, Sold, Rented. Saat transaksi di-input, status otomatis jadi Sold/Rented.</p>
+            
+            <p><strong>Q2: Komisi Detail</strong></p>
+            <ul>
+                <li>Komisi 70/30 untuk sewa. Bagaimana untuk jual-beli?</li>
+                <li>Jika ada 2 agen, bagaimana split-nya? (70% dibagi 2 atau masing-masing tetap 70%?)</li>
+            </ul>
+            
+            <p><strong>Asumsi Sementara:</strong> Jika ada 2 agen: 70% dibagi 2 (35% each), 30% tetap ke kantor</p>
+        </div>
+        
+        <h2>1.6 Success Criteria</h2>
+        
+        <h3>MVP Launch Criteria (Maret 2026)</h3>
+        
+        <h4>Must Have (Go/No-Go)</h4>
+        <ul>
+            <li>✅ 3 kantor cabang sudah ter-input dengan minimal 5 agen</li>
+            <li>✅ Minimal 50 listing properti available</li>
+            <li>✅ Transaksi & komisi bisa dicatat dengan benar</li>
+            <li>✅ Public listing accessible & mobile responsive</li>
+            <li>✅ No critical bug pada core features</li>
+        </ul>
+        
+        <h4>Key Performance Indicators (KPI)</h4>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Metric</th>
+                    <th>Target</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Technical</td>
+                    <td>System uptime</td>
+                    <td>&gt; 99%</td>
+                </tr>
+                <tr>
+                    <td>Technical</td>
+                    <td>Page load time</td>
+                    <td>&lt; 2 detik</td>
+                </tr>
+                <tr>
+                    <td>Business</td>
+                    <td>User adoption</td>
+                    <td>&gt; 80% agen aktif</td>
+                </tr>
+                <tr>
+                    <td>Business</td>
+                    <td>Listing growth</td>
+                    <td>+20 listing/bulan</td>
+                </tr>
+                <tr>
+                    <td>Business</td>
+                    <td>Commission accuracy</td>
+                    <td>100% (no dispute)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: BUSINESS REQUIREMENTS             -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-requirements">
+        <h1>2. 📋 Business Requirements</h1>
+        
+        <h2>2.1 Functional Requirements</h2>
+        
+        <h3>FR-AUTH: Authentication & Authorization</h3>
+        
+        <h4>FR-AUTH-001: Multi-Role Login</h4>
+        <p><strong>Priority:</strong> <span class="badge badge-critical">P0 - CRITICAL</span></p>
+        <p><strong>User Story:</strong> Sebagai user, saya ingin login dengan role yang berbeda agar bisa akses fitur sesuai permission</p>
+        
+        <p><strong>Requirements:</strong></p>
+        <ul>
+            <li>System harus support 4 role: Admin Master, Admin Kantor, Agen, Buyer</li>
+            <li>Login menggunakan email & password</li>
+            <li>Session management dengan timeout 24 jam</li>
+            <li>Remember me option (7 hari)</li>
+        </ul>
+        
+        <p><strong>Acceptance Criteria:</strong></p>
+        <ul>
+            <li>✅ User bisa login dengan email & password</li>
+            <li>✅ System mengarahkan ke dashboard sesuai role</li>
+            <li>✅ Invalid credentials menampilkan error message</li>
+            <li>✅ User bisa logout dan session ter-invalidate</li>
+        </ul>
+        
+        <h4>FR-AUTH-002: Role-Based Access Control (RBAC)</h4>
+        <p><strong>Permission Matrix:</strong></p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Admin Master</th>
+                    <th>Admin Kantor</th>
+                    <th>Agen</th>
+                    <th>Buyer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Manage Kantor</td>
+                    <td>✅ Full</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td>Manage Agen</td>
+                    <td>✅ All</td>
+                    <td>✅ Own Office</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td>Manage Property</td>
+                    <td>✅ All</td>
+                    <td>✅ Own Office</td>
+                    <td>✅ Own Only</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td>Input Transaction</td>
+                    <td>✅ All</td>
+                    <td>✅ Own Office</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td>Set Commission</td>
+                    <td>✅ All</td>
+                    <td>✅ Own Office</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td>View Performance</td>
+                    <td>✅ All</td>
+                    <td>✅ Own Office</td>
+                    <td>✅ Own Only</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td>View Public Listing</td>
+                    <td>✅</td>
+                    <td>✅</td>
+                    <td>✅</td>
+                    <td>✅</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>FR-PROP: Property Management</h3>
+        
+        <h4>FR-PROP-001: Create Property</h4>
+        <p><strong>Priority:</strong> <span class="badge badge-critical">P0 - CRITICAL</span></p>
+        
+        <p><strong>Requirements - Input properti dengan field:</strong></p>
+        <ul>
+            <li>Judul listing</li>
+            <li>Deskripsi (rich text)</li>
+            <li>Tipe (Rumah, Apartemen, Tanah, Komersial)</li>
+            <li>Status listing (Jual/Sewa/Keduanya)</li>
+            <li>Harga (IDR)</li>
+            <li>Harga per m² (auto-calculate)</li>
+            <li>Luas tanah & bangunan (m²)</li>
+            <li>Alamat lengkap</li>
+            <li>Jumlah kamar tidur & kamar mandi</li>
+            <li>Foto (max 10 foto)</li>
+            <li>Sertifikat (SHM, HGB, dll)</li>
+        </ul>
+        
+        <p><strong>Acceptance Criteria:</strong></p>
+        <ul>
+            <li>✅ Form input properti dengan validation</li>
+            <li>✅ Upload multiple foto (max 10, max 5MB per foto)</li>
+            <li>✅ Auto-calculate harga/m² dari harga / luas tanah</li>
+            <li>✅ Properti otomatis assigned ke agen yang create</li>
+            <li>✅ Admin bisa assign properti ke agen lain</li>
+        </ul>
+        
+        <h3>FR-PUBLIC: Public Listing</h3>
+        
+        <h4>FR-PUBLIC-002: Search & Filter</h4>
+        <p><strong>Priority:</strong> <span class="badge badge-critical">P0 - CRITICAL</span></p>
+        
+        <p><strong>Requirements:</strong></p>
+        <ul>
+            <li>Search by keyword (judul, lokasi, deskripsi)</li>
+            <li>Filter: Tipe properti, Status (Jual/Sewa), Harga range, Lokasi, Luas range</li>
+        </ul>
+        
+        <p><strong>Acceptance Criteria:</strong></p>
+        <ul>
+            <li>✅ Search real-time (debounce 300ms)</li>
+            <li>✅ Multiple filter bisa digabung</li>
+            <li>✅ Filter tersimpan di URL (shareable link)</li>
+            <li>✅ Show jumlah hasil: "Ditemukan 45 properti"</li>
+        </ul>
+        
+        <h3>FR-COMM: Commission Management</h3>
+        
+        <h4>FR-COMM-001: Set Commission</h4>
+        <p><strong>Priority:</strong> <span class="badge badge-critical">P0 - CRITICAL</span></p>
+        
+        <p><strong>Default Setting:</strong></p>
+        <ul>
+            <li>Default: 70% agen, 30% kantor (untuk sewa)</li>
+            <li>Customizable per transaksi</li>
+            <li>Jika 2 agen: split antar agen</li>
+        </ul>
+        
+        <div class="alert alert-info">
+            <h4>Contoh Perhitungan Komisi:</h4>
+            <pre><code>Harga final: Rp 1.000.000.000
+Default komisi: 2% = Rp 20.000.000
+
+Scenario 1: Hanya agen owner
+- Agen owner: 70% × Rp 20jt = Rp 14jt
+- Kantor: 30% × Rp 20jt = Rp 6jt
+
+Scenario 2: Agen owner + agen buyer
+- Agen owner: 35% × Rp 20jt = Rp 7jt
+- Agen buyer: 35% × Rp 20jt = Rp 7jt
+- Kantor: 30% × Rp 20jt = Rp 6jt</code></pre>
+        </div>
+        
+        <h2>2.2 Non-Functional Requirements</h2>
+        
+        <h3>NFR-PERF: Performance</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Requirement</th>
+                    <th>Target</th>
+                    <th>Measurement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Page Load Time</td>
+                    <td>&lt; 2 detik (avg)</td>
+                    <td>Google PageSpeed Insights &gt; 80</td>
+                </tr>
+                <tr>
+                    <td>Concurrent Users</td>
+                    <td>100 users</td>
+                    <td>Load testing dengan JMeter/K6</td>
+                </tr>
+                <tr>
+                    <td>Database Queries</td>
+                    <td>Optimized</td>
+                    <td>No N+1 queries, proper indexing</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>NFR-SEC: Security</h3>
+        
+        <ul>
+            <li><strong>Authentication:</strong> Password hashing dengan bcrypt</li>
+            <li><strong>Protection:</strong> CSRF, XSS, SQL injection protection</li>
+            <li><strong>Session:</strong> Timeout 24 jam, encrypted cookies</li>
+            <li><strong>HTTPS:</strong> SSL certificate required</li>
+            <li><strong>Authorization:</strong> Laravel Gate & Policy</li>
+        </ul>
+        
+        <h3>NFR-USA: Usability</h3>
+        
+        <ul>
+            <li><strong>Responsive Design:</strong> 100% di mobile, tablet, desktop</li>
+            <li><strong>Breakpoints:</strong> Mobile (320-768px), Tablet (769-1024px), Desktop (&gt;1024px)</li>
+            <li><strong>Touch-friendly:</strong> Min button size 44x44px</li>
+            <li><strong>Font size:</strong> Min 16px untuk readability</li>
+        </ul>
+        
+        <h3>NFR-REL: Reliability</h3>
+        
+        <ul>
+            <li><strong>Uptime:</strong> 99% (max 7.2 jam downtime/bulan)</li>
+            <li><strong>Backup:</strong> Daily backup dengan retention 30 hari</li>
+            <li><strong>Monitoring:</strong> UptimeRobot, Sentry</li>
+            <li><strong>Recovery:</strong> Tested disaster recovery plan</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: TECHNICAL SPECIFICATIONS          -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-technical">
+        <h1>3. 🔧 Technical Specifications</h1>
+        
+        <h2>3.1 Technology Stack</h2>
+        
+        <h3>Backend</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Technology</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Framework</td>
+                    <td>Laravel</td>
+                    <td>11.x</td>
+                </tr>
+                <tr>
+                    <td>Language</td>
+                    <td>PHP</td>
+                    <td>8.2+</td>
+                </tr>
+                <tr>
+                    <td>Admin Panel</td>
+                    <td>Filament</td>
+                    <td>3.x</td>
+                </tr>
+                <tr>
+                    <td>Authentication</td>
+                    <td>Laravel Breeze/Fortify</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Authorization</td>
+                    <td>Laravel Gates & Policies</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Frontend</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Technology</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Admin Panel</td>
+                    <td>Filament 3 (Alpine.js + Livewire)</td>
+                </tr>
+                <tr>
+                    <td>Public Site</td>
+                    <td>Blade Templates + Alpine.js</td>
+                </tr>
+                <tr>
+                    <td>CSS Framework</td>
+                    <td>Tailwind CSS 3.x</td>
+                </tr>
+                <tr>
+                    <td>Icons</td>
+                    <td>Heroicons</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Database</h3>
+        <ul>
+            <li><strong>Primary:</strong> MySQL 8.0+ / PostgreSQL 15+</li>
+            <li><strong>ORM:</strong> Eloquent</li>
+            <li><strong>Migration:</strong> Laravel Migrations</li>
+        </ul>
+        
+        <h3>Server & Deployment</h3>
+        <ul>
+            <li><strong>Web Server:</strong> Caddy (auto-HTTPS)</li>
+            <li><strong>Server:</strong> VPS (Ubuntu 22.04 LTS)</li>
+            <li><strong>Process Manager:</strong> Supervisor (queue worker)</li>
+            <li><strong>Cache:</strong> Redis (production)</li>
+            <li><strong>Queue:</strong> Laravel Queue</li>
+        </ul>
+        
+        <h2>3.2 System Architecture</h2>
+        
+        <div class="diagram">
+<pre>
+┌─────────────────────────────────────────────────────────────┐
+│                        USERS                                 │
+│  Admin Master │ Admin Kantor │ Agen │ Buyer (Public)        │
+└──────────────┬──────────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   PRESENTATION LAYER                         │
+│  ┌──────────────────┐         ┌─────────────────────┐       │
+│  │  Admin Panel     │         │  Public Website     │       │
+│  │  (Filament 3)    │         │  (Blade + Alpine)   │       │
+│  └──────────────────┘         └─────────────────────┘       │
+└──────────────┬──────────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   APPLICATION LAYER                          │
+│  ┌────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ Auth       │  │ Property     │  │ Transaction  │        │
+│  │ Module     │  │ Module       │  │ Module       │        │
+│  └────────────┘  └──────────────┘  └──────────────┘        │
+│  ┌────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ User       │  │ Commission   │  │ Dashboard    │        │
+│  │ Module     │  │ Module       │  │ Module       │        │
+│  └────────────┘  └──────────────┘  └──────────────┘        │
+└──────────────┬──────────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     DATA LAYER                               │
+│  ┌──────────────────┐         ┌─────────────────────┐       │
+│  │  MySQL Database  │         │  File Storage       │       │
+│  │  (Relational)    │         │  (Local/S3)         │       │
+│  └──────────────────┘         └─────────────────────┘       │
+└─────────────────────────────────────────────────────────────┘
+</pre>
+        </div>
+        
+        <h2>3.3 Commission Calculation Logic</h2>
+        
+        <pre><code>class CommissionService
+{
+    public function calculate(Transaction $transaction): array
+    {
+        $totalCommission = $transaction->final_price 
+            * $transaction->commission_percentage / 100;
+        
+        $commissions = [];
+        
+        if ($transaction->agent_buyer_id) {
+            // Scenario: 2 agents (owner + buyer)
+            $commissions[] = [
+                'agent_id' => $transaction->agent_owner_id,
+                'amount' => $totalCommission * 0.35, // 35%
+                'type' => 'agent_owner'
+            ];
+            
+            $commissions[] = [
+                'agent_id' => $transaction->agent_buyer_id,
+                'amount' => $totalCommission * 0.35, // 35%
+                'type' => 'agent_buyer'
+            ];
+        } else {
+            // Scenario: 1 agent (owner only)
+            $commissions[] = [
+                'agent_id' => $transaction->agent_owner_id,
+                'amount' => $totalCommission * 0.70, // 70%
+                'type' => 'agent_owner'
+            ];
+        }
+        
+        // Office commission (always 30%)
+        $commissions[] = [
+            'office_id' => $transaction->property->agent->office_id,
+            'amount' => $totalCommission * 0.30,
+            'type' => 'office'
+        ];
+        
+        return $commissions;
+    }
+}</code></pre>
+        
+        <h2>3.4 Security Implementation</h2>
+        
+        <h3>Authentication Security</h3>
+        <ul>
+            <li>Password hashing: bcrypt (cost: 12)</li>
+            <li>Password policy: min 8 characters, 1 uppercase, 1 number</li>
+            <li>Rate limiting: 5 failed attempts → 15 min lockout</li>
+            <li>Session timeout: 24 hours</li>
+            <li>CSRF protection: enabled (Laravel default)</li>
+        </ul>
+        
+        <h3>Authorization Security</h3>
+        <ul>
+            <li>Policy-based authorization for all resources</li>
+            <li>Middleware protection pada setiap route</li>
+            <li>Row-level security (check ownership)</li>
+            <li>Audit trail untuk sensitive actions</li>
+        </ul>
+        
+        <h2>3.5 Performance Optimization</h2>
+        
+        <h3>Query Optimization</h3>
+        <pre><code>// Eager loading untuk N+1 problem
+$properties = Property::with(['agent.user', 'photos'])
+    ->paginate(20);
+
+// Cache listing untuk public page (TTL: 5 menit)
+$properties = Cache::remember('properties:public', 300, function() {
+    return Property::available()->with('photos')->get();
+});</code></pre>
+        
+        <h3>Image Optimization</h3>
+        <pre><code>// Resize & compress images
+use Intervention\Image\Facades\Image;
+
+Image::make($uploadedFile)
+    ->fit(1200, 800)
+    ->encode('jpg', 85)
+    ->save($path);</code></pre>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: DATABASE DESIGN                   -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-database">
+        <h1>4. 🗄️ Database Design</h1>
+        
+        <h2>4.1 Entity Relationship Diagram</h2>
+        
+        <div class="diagram">
+<pre>
+                    ┌─────────────────────┐
+                    │       USERS         │
+                    ├─────────────────────┤
+                    │ PK: id              │
+                    │     name            │
+                    │     email (UNIQUE)  │
+                    │     password        │
+                    │     role (ENUM)     │
+                    └──────┬──────────────┘
+                           │
+          ┌────────────────┼────────────────┐
+          │ 1:1            │                │ N:M
+          ▼                │                ▼
+┌──────────────────┐       │      ┌──────────────────┐
+│     AGENTS       │       │      │  OFFICE_ADMINS   │
+├──────────────────┤       │      ├──────────────────┤
+│ PK: id           │       │      │ FK: user_id      │
+│ FK: user_id      │       │      │ FK: office_id    │
+│ FK: office_id    │       │      └────────┬─────────┘
+└─────┬────────────┘       │               │
+      │ N:1                │ 1:N           │ N:1
+      ▼                    ▼               ▼
+┌─────────────────────────────────────────────────┐
+│                   OFFICES                       │
+├─────────────────────────────────────────────────┤
+│ PK: id                                          │
+│     name, address, phone, email                 │
+└─────────────────────────────────────────────────┘
+
+      ┌──────────────────┐
+      │     AGENTS       │
+      └─────┬────────────┘
+            │ 1:N
+            ▼
+┌────────────────────────────────────┐
+│          PROPERTIES                │
+├────────────────────────────────────┤
+│ PK: id                             │
+│ FK: agent_id                       │
+│     slug, title, type, price       │
+│     land_area, building_area       │
+│     status, city, address          │
+└─────┬──────────────────────────────┘
+      │ 1:N
+      ▼
+┌────────────────────────────┐
+│    PROPERTY_PHOTOS         │
+├────────────────────────────┤
+│ FK: property_id            │
+│     photo_url, order       │
+└────────────────────────────┘
+
+      │ (from properties)
+      │ 1:N
+      ▼
+┌────────────────────────────┐
+│    PROPERTY_LINKS  🆕      │
+├────────────────────────────┤
+│ FK: property_id            │
+│ FK: created_by             │
+│     token (UNIQUE)         │
+│     expires_at             │
+│     is_used, access_count  │
+└────────────────────────────┘
+
+┌────────────────────────────────────┐
+│          PROPERTIES                │
+└─────┬──────────────────────────────┘
+      │ 1:1
+      ▼
+┌────────────────────────────────────────────┐
+│              TRANSACTIONS                  │
+├────────────────────────────────────────────┤
+│ PK: id                                     │
+│ FK: property_id                            │
+│ FK: agent_owner_id                         │
+│ FK: agent_buyer_id (nullable)              │
+│     buyer_name, final_price                │
+└─────┬──────────────────────────────────────┘
+      │ 1:N
+      ▼
+┌────────────────────────────────────────────┐
+│              COMMISSIONS                   │
+├────────────────────────────────────────────┤
+│ FK: transaction_id                         │
+│ FK: agent_id / office_id                   │
+│     amount, percentage, status             │
+└────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────┐
+│          ACTIVITY_LOG  🆕                  │
+├────────────────────────────────────────────┤
+│ FK: causer_id (user_id)                    │
+│     log_name, description                  │
+│     subject_type, subject_id               │
+│     properties (JSON), created_at          │
+└────────────────────────────────────────────┘
+</pre>
+        </div>
+        
+        <div class="alert alert-success">
+            <h3>🆕 Database Enhancements (v1.1.0):</h3>
+            <ul>
+                <li>✅ <strong>New Table: property_links</strong> - Private tokenized access dengan expiration</li>
+                <li>✅ <strong>New Table: activity_log</strong> - Audit trail tracking (spatie/activitylog)</li>
+                <li>✅ <strong>New Fields in properties:</strong> is_public, published_at, views_count, deleted_at</li>
+                <li>✅ <strong>Soft Delete</strong> support di semua critical tables</li>
+            </ul>
+        </div>
+        
+        <h2>4.2 Core Tables (Enhanced)</h2>
+        
+        <h3>Table: users</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Constraints</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>PK, AUTO_INCREMENT</td>
+                    <td>Primary key</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>VARCHAR(255)</td>
+                    <td>NOT NULL</td>
+                    <td>Full name</td>
+                </tr>
+                <tr>
+                    <td>email</td>
+                    <td>VARCHAR(255)</td>
+                    <td>UNIQUE, NOT NULL</td>
+                    <td>Login email</td>
+                </tr>
+                <tr>
+                    <td>password</td>
+                    <td>VARCHAR(255)</td>
+                    <td>NOT NULL</td>
+                    <td>Hashed password</td>
+                </tr>
+                <tr>
+                    <td>role</td>
+                    <td>ENUM</td>
+                    <td>NOT NULL</td>
+                    <td>admin_master, admin_kantor, agent, buyer</td>
+                </tr>
+                <tr>
+                    <td>is_active</td>
+                    <td>BOOLEAN</td>
+                    <td>DEFAULT TRUE</td>
+                    <td>Active status</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Table: properties</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Primary key</td>
+                </tr>
+                <tr>
+                    <td>agent_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Foreign key → agents.id</td>
+                </tr>
+                <tr>
+                    <td>slug</td>
+                    <td>VARCHAR(255)</td>
+                    <td>URL-friendly slug (UNIQUE)</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>VARCHAR(255)</td>
+                    <td>Property title</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>ENUM</td>
+                    <td>house, apartment, land, commercial</td>
+                </tr>
+                <tr>
+                    <td>price</td>
+                    <td>DECIMAL(15,2)</td>
+                    <td>Listing price (IDR)</td>
+                </tr>
+                <tr>
+                    <td>land_area</td>
+                    <td>DECIMAL(10,2)</td>
+                    <td>Land area (m²)</td>
+                </tr>
+                <tr>
+                    <td>building_area</td>
+                    <td>DECIMAL(10,2)</td>
+                    <td>Building area (m²)</td>
+                </tr>
+                <tr>
+                    <td>status</td>
+                    <td>ENUM</td>
+                    <td>available, pending, sold, rented</td>
+                </tr>
+                <tr style="background: #d4edda;">
+                    <td><strong>is_public 🆕</strong></td>
+                    <td>BOOLEAN</td>
+                    <td>Show in public marketplace (default: TRUE)</td>
+                </tr>
+                <tr style="background: #d4edda;">
+                    <td><strong>published_at 🆕</strong></td>
+                    <td>TIMESTAMP</td>
+                    <td>Publication timestamp</td>
+                </tr>
+                <tr style="background: #d4edda;">
+                    <td><strong>views_count 🆕</strong></td>
+                    <td>INT UNSIGNED</td>
+                    <td>View counter for analytics</td>
+                </tr>
+                <tr style="background: #d4edda;">
+                    <td><strong>deleted_at 🆕</strong></td>
+                    <td>TIMESTAMP</td>
+                    <td>Soft delete timestamp</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Table: property_links 🆕 (NEW)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Primary key</td>
+                </tr>
+                <tr>
+                    <td>property_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Foreign key → properties.id</td>
+                </tr>
+                <tr>
+                    <td>created_by</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>User who created link</td>
+                </tr>
+                <tr>
+                    <td>token</td>
+                    <td>VARCHAR(64)</td>
+                    <td>Random token (UNIQUE)</td>
+                </tr>
+                <tr>
+                    <td>expires_at</td>
+                    <td>TIMESTAMP</td>
+                    <td>Link expiration (default: 7 days)</td>
+                </tr>
+                <tr>
+                    <td>is_used</td>
+                    <td>BOOLEAN</td>
+                    <td>Single-use flag</td>
+                </tr>
+                <tr>
+                    <td>access_count</td>
+                    <td>INT UNSIGNED</td>
+                    <td>Number of accesses</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Table: transactions</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Primary key</td>
+                </tr>
+                <tr>
+                    <td>property_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Property sold/rented</td>
+                </tr>
+                <tr>
+                    <td>agent_owner_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Property owner agent</td>
+                </tr>
+                <tr>
+                    <td>agent_buyer_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Buyer's agent (optional)</td>
+                </tr>
+                <tr>
+                    <td>buyer_name</td>
+                    <td>VARCHAR(255)</td>
+                    <td>Buyer full name</td>
+                </tr>
+                <tr>
+                    <td>transaction_type</td>
+                    <td>ENUM</td>
+                    <td>sale, rent</td>
+                </tr>
+                <tr>
+                    <td>final_price</td>
+                    <td>DECIMAL(15,2)</td>
+                    <td>Closing price</td>
+                </tr>
+                <tr>
+                    <td>commission_percentage</td>
+                    <td>DECIMAL(5,2)</td>
+                    <td>Commission % (e.g., 2%)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Table: commissions</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Primary key</td>
+                </tr>
+                <tr>
+                    <td>transaction_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Related transaction</td>
+                </tr>
+                <tr>
+                    <td>agent_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Agent (if applicable)</td>
+                </tr>
+                <tr>
+                    <td>office_id</td>
+                    <td>BIGINT UNSIGNED</td>
+                    <td>Office (if applicable)</td>
+                </tr>
+                <tr>
+                    <td>amount</td>
+                    <td>DECIMAL(15,2)</td>
+                    <td>Commission amount</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>ENUM</td>
+                    <td>agent_owner, agent_buyer, office</td>
+                </tr>
+                <tr>
+                    <td>status</td>
+                    <td>ENUM</td>
+                    <td>pending, paid, cancelled</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>4.3 Database Indexes</h2>
+        
+        <h3>Critical Indexes</h3>
+        <ul>
+            <li><code>users.email</code> (UNIQUE)</li>
+            <li><code>properties.slug</code> (UNIQUE)</li>
+            <li><code>properties(agent_id, status)</code> (COMPOSITE)</li>
+            <li><code>transactions.transaction_date</code></li>
+            <li><code>commissions.status</code></li>
+            <li><code>properties(title, description, address)</code> (FULLTEXT)</li>
+        </ul>
+        
+        <h2>4.4 Sample Queries</h2>
+        
+        <h3>Get Agent Performance</h3>
+        <pre><code>SELECT 
+    a.id,
+    u.name as agent_name,
+    COUNT(DISTINCT p.id) as total_listings,
+    COUNT(DISTINCT t.id) as total_transactions,
+    SUM(t.final_price) as total_omzet,
+    SUM(c.amount) as total_commission
+FROM agents a
+JOIN users u ON a.user_id = u.id
+LEFT JOIN properties p ON p.agent_id = a.id
+LEFT JOIN transactions t ON t.agent_owner_id = a.id
+LEFT JOIN commissions c ON c.agent_id = a.id
+WHERE a.id = ?
+GROUP BY a.id, u.name;</code></pre>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: USER STORIES                      -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-userstories">
+        <h1>5. 📝 User Stories & Sprint Planning</h1>
+        
+        <h2>5.1 Epic Overview</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Epic</th>
+                    <th>Story Points</th>
+                    <th>Sprint</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Epic 1: Authentication & User Management</td>
+                    <td>17</td>
+                    <td>Sprint 1</td>
+                    <td>Week 2-3</td>
+                </tr>
+                <tr>
+                    <td>Epic 2: Property Management</td>
+                    <td>26</td>
+                    <td>Sprint 2</td>
+                    <td>Week 4-5</td>
+                </tr>
+                <tr>
+                    <td>Epic 3: Public Listing</td>
+                    <td>27</td>
+                    <td>Sprint 3</td>
+                    <td>Week 6-7</td>
+                </tr>
+                <tr>
+                    <td>Epic 4: Transaction & Commission</td>
+                    <td>24</td>
+                    <td>Sprint 4</td>
+                    <td>Week 8-9</td>
+                </tr>
+                <tr>
+                    <td>Epic 5: Commission Management</td>
+                    <td>18</td>
+                    <td>Sprint 5</td>
+                    <td>Week 10-11</td>
+                </tr>
+                <tr>
+                    <td>Epic 6: Dashboard & Polish</td>
+                    <td>26</td>
+                    <td>Sprint 6</td>
+                    <td>Week 12-13</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p><strong>Total:</strong> 138 Story Points | 6 Sprints (12 weeks)</p>
+        
+        <h2>5.2 Sample User Stories</h2>
+        
+        <h3>US-PROP-001: Create Listing Properti</h3>
+        
+        <p><strong>As a</strong> Agen<br>
+        <strong>I want to</strong> create listing properti baru dengan foto<br>
+        <strong>So that</strong> properti bisa dilihat buyer di public page</p>
+        
+        <p><strong>Acceptance Criteria:</strong></p>
+        <ul>
+            <li>✅ Form input: judul, deskripsi, tipe, harga, luas, alamat</li>
+            <li>✅ Upload max 10 foto (JPG/PNG, max 5MB each)</li>
+            <li>✅ Drag & drop foto untuk reorder</li>
+            <li>✅ Set cover image (foto pertama default)</li>
+            <li>✅ Auto-generate slug dari judul</li>
+            <li>✅ Auto-assign ke agen yang login</li>
+            <li>✅ Status default: available</li>
+            <li>✅ Preview before submit</li>
+        </ul>
+        
+        <p><strong>Priority:</strong> <span class="badge badge-critical">P0 - CRITICAL</span><br>
+        <strong>Story Points:</strong> 8<br>
+        <strong>Sprint:</strong> 2</p>
+        
+        <hr>
+        
+        <h3>US-TRANS-001: Input Transaksi Jual/Sewa</h3>
+        
+        <p><strong>As a</strong> Admin Master/Admin Kantor<br>
+        <strong>I want to</strong> input transaksi ketika deal<br>
+        <strong>So that</strong> komisi bisa dihitung otomatis</p>
+        
+        <p><strong>Acceptance Criteria:</strong></p>
+        <ul>
+            <li>✅ Form input: properti, agen owner (auto-fill), agen buyer (optional)</li>
+            <li>✅ Input: buyer name, phone, harga final, tanggal</li>
+            <li>✅ Tipe: jual atau sewa</li>
+            <li>✅ Komisi %: default 2%, bisa diubah</li>
+            <li>✅ Auto-calculate total komisi</li>
+            <li>✅ Preview komisi split sebelum submit</li>
+            <li>✅ Submit → auto-generate commissions</li>
+            <li>✅ Property status auto-change ke sold/rented</li>
+        </ul>
+        
+        <p><strong>Priority:</strong> <span class="badge badge-critical">P0 - CRITICAL</span><br>
+        <strong>Story Points:</strong> 8<br>
+        <strong>Sprint:</strong> 4</p>
+        
+        <hr>
+        
+        <h3>US-DASH-001: Dashboard Personal Agen</h3>
+        
+        <p><strong>As a</strong> Agen<br>
+        <strong>I want to</strong> lihat dashboard performa saya<br>
+        <strong>So that</strong> saya tahu produktivitas saya</p>
+        
+        <p><strong>Acceptance Criteria:</strong></p>
+        <ul>
+            <li>✅ Widget: Total Listing Active, Total Omzet, Total Komisi, Komisi Pending, Komisi Paid</li>
+            <li>✅ Filter by date range (bulan ini, 3 bulan, 1 tahun, custom)</li>
+            <li>✅ Chart: Omzet per bulan (line chart)</li>
+            <li>✅ Chart: Listing by status (pie chart)</li>
+            <li>✅ Real-time data (no caching)</li>
+        </ul>
+        
+        <p><strong>Priority:</strong> <span class="badge badge-critical">P0 - CRITICAL</span><br>
+        <strong>Story Points:</strong> 8<br>
+        <strong>Sprint:</strong> 5</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: API SPECIFICATIONS                -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-api">
+        <h1>6. 🔌 API Specifications</h1>
+        
+        <h2>6.1 API Overview</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Base URL</td>
+                    <td><code>https://api.hendraprop.com/v1</code></td>
+                </tr>
+                <tr>
+                    <td>Protocol</td>
+                    <td>HTTPS only</td>
+                </tr>
+                <tr>
+                    <td>Format</td>
+                    <td>JSON</td>
+                </tr>
+                <tr>
+                    <td>Authentication</td>
+                    <td>Laravel Sanctum (Bearer Token)</td>
+                </tr>
+                <tr>
+                    <td>Rate Limiting</td>
+                    <td>60 requests/minute (authenticated: 120/min)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>6.2 Main Endpoints</h2>
+        
+        <h3>Authentication</h3>
+        <pre><code>POST   /auth/login
+POST   /auth/logout
+GET    /auth/me
+POST   /auth/forgot-password</code></pre>
+        
+        <h3>Properties</h3>
+        <pre><code>GET    /properties              # List with filters
+GET    /properties/{id}         # Detail
+POST   /properties              # Create
+PUT    /properties/{id}         # Update
+DELETE /properties/{id}         # Delete</code></pre>
+        
+        <h3>Transactions</h3>
+        <pre><code>GET    /transactions
+POST   /transactions
+GET    /transactions/{id}</code></pre>
+        
+        <h3>Commissions</h3>
+        <pre><code>GET    /commissions
+PUT    /commissions/{id}/pay</code></pre>
+        
+        <h3>Dashboard</h3>
+        <pre><code>GET    /dashboard/agent/{id}
+GET    /dashboard/office/{id}
+GET    /dashboard/master</code></pre>
+        
+        <h2>6.3 Response Format</h2>
+        
+        <h3>Success Response (200 OK)</h3>
+        <pre><code>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "title": "Rumah Mewah Jakarta Selatan",
+    "price": 5000000000
+  },
+  "meta": {
+    "current_page": 1,
+    "total": 45
+  },
+  "message": "Operation successful"
+}</code></pre>
+        
+        <h3>Error Response (4xx/5xx)</h3>
+        <pre><code>{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "The given data was invalid.",
+    "details": {
+      "title": ["The title field is required."]
+    }
+  }
+}</code></pre>
+        
+        <h2>6.4 Error Codes</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>HTTP Status</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>VALIDATION_ERROR</td>
+                    <td>422</td>
+                    <td>Input validation failed</td>
+                </tr>
+                <tr>
+                    <td>UNAUTHORIZED</td>
+                    <td>401</td>
+                    <td>Not authenticated</td>
+                </tr>
+                <tr>
+                    <td>FORBIDDEN</td>
+                    <td>403</td>
+                    <td>No permission</td>
+                </tr>
+                <tr>
+                    <td>NOT_FOUND</td>
+                    <td>404</td>
+                    <td>Resource not found</td>
+                </tr>
+                <tr>
+                    <td>SERVER_ERROR</td>
+                    <td>500</td>
+                    <td>Internal server error</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: DATA FLOW DIAGRAM (NEW)           -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-dfd">
+        <h1>5. 📊 Data Flow Diagram (DFD)</h1>
+        <p>Dokumen DFD lengkap tersedia di: <code>08-DATA-FLOW-DIAGRAM.md</code></p>
+        
+        <h2>5.1 DFD Level 0 (Context Diagram)</h2>
+        
+        <div class="diagram">
+<pre>
+┌──────────────────────────────────────────────────────────────┐
+│                    SISTEM HENDRA PROP                         │
+│              (Property Management System)                     │
+└──────────────────────────────────────────────────────────────┘
+         ▲              ▲              ▲              ▲
+         │              │              │              │
+    Admin Master   Admin Kantor     Agen          Buyer
+</pre>
+        </div>
+        
+        <h2>5.2 Main Processes (Level 1)</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Process</th>
+                    <th>Description</th>
+                    <th>Input</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.0 Authentication</td>
+                    <td>Login/Logout verification</td>
+                    <td>Credentials</td>
+                    <td>User Session</td>
+                </tr>
+                <tr>
+                    <td>2.0 User Management</td>
+                    <td>CRUD Kantor, Agen, Roles</td>
+                    <td>User data</td>
+                    <td>User records</td>
+                </tr>
+                <tr>
+                    <td>3.0 Property Management</td>
+                    <td>CRUD Properties, Upload Photos</td>
+                    <td>Property data, Photos</td>
+                    <td>Property listings</td>
+                </tr>
+                <tr>
+                    <td>4.0 Public Marketplace</td>
+                    <td>Browse, Search, Filter</td>
+                    <td>Search queries</td>
+                    <td>Property results</td>
+                </tr>
+                <tr>
+                    <td>5.0 Private Viewing</td>
+                    <td>Token-based access</td>
+                    <td>Token URL</td>
+                    <td>Property detail</td>
+                </tr>
+                <tr>
+                    <td>6.0 Transaction Management</td>
+                    <td>Record sales/rent</td>
+                    <td>Transaction data</td>
+                    <td>Transaction records</td>
+                </tr>
+                <tr>
+                    <td>7.0 Commission Calculation</td>
+                    <td>Auto-calculate 70/30 split</td>
+                    <td>Transaction data</td>
+                    <td>Commission records</td>
+                </tr>
+                <tr>
+                    <td>8.0 Performance Dashboard</td>
+                    <td>Aggregate metrics & charts</td>
+                    <td>Date range filter</td>
+                    <td>Dashboard data</td>
+                </tr>
+                <tr>
+                    <td>9.0 Activity Logging</td>
+                    <td>Audit trail tracking</td>
+                    <td>User actions</td>
+                    <td>Activity logs</td>
+                </tr>
+                <tr>
+                    <td>10.0 Notification System</td>
+                    <td>Email & database notif</td>
+                    <td>Triggers</td>
+                    <td>Notifications</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: USE CASE DIAGRAM (NEW)            -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-usecase">
+        <h1>6. 🎭 Use Case Diagram</h1>
+        <p>Dokumen Use Case lengkap tersedia di: <code>09-USE-CASE-DIAGRAM.md</code></p>
+        
+        <h2>6.1 Actors Overview</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Actor</th>
+                    <th>Role</th>
+                    <th>Total Use Cases</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🧑 Admin Master</td>
+                    <td>Super Administrator</td>
+                    <td>10 use cases</td>
+                </tr>
+                <tr>
+                    <td>🧑 Admin Kantor</td>
+                    <td>Office Manager</td>
+                    <td>8 use cases</td>
+                </tr>
+                <tr>
+                    <td>🧑 Agen Properti</td>
+                    <td>Sales Agent</td>
+                    <td>7 use cases</td>
+                </tr>
+                <tr>
+                    <td>🧑 Buyer (Public)</td>
+                    <td>Property Seeker</td>
+                    <td>7 use cases</td>
+                </tr>
+                <tr>
+                    <td>⚙️ System</td>
+                    <td>Automated Tasks</td>
+                    <td>7 use cases</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>6.2 Critical Use Cases</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Use Case</th>
+                    <th>Actor</th>
+                    <th>Priority</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>UC-01</td>
+                    <td>Login</td>
+                    <td>All Users</td>
+                    <td><span class="badge badge-critical">CRITICAL</span></td>
+                </tr>
+                <tr>
+                    <td>UC-21</td>
+                    <td>Create Property</td>
+                    <td>Agen</td>
+                    <td><span class="badge badge-critical">CRITICAL</span></td>
+                </tr>
+                <tr>
+                    <td>UC-27</td>
+                    <td>Search Properties</td>
+                    <td>Buyer</td>
+                    <td><span class="badge badge-critical">CRITICAL</span></td>
+                </tr>
+                <tr>
+                    <td>UC-29</td>
+                    <td>View Property Detail</td>
+                    <td>Buyer</td>
+                    <td><span class="badge badge-critical">CRITICAL</span></td>
+                </tr>
+                <tr>
+                    <td>UC-05</td>
+                    <td>Input Transaction</td>
+                    <td>Admin</td>
+                    <td><span class="badge badge-critical">CRITICAL</span></td>
+                </tr>
+                <tr>
+                    <td>UC-05a</td>
+                    <td>Calculate Commission</td>
+                    <td>System</td>
+                    <td><span class="badge badge-critical">CRITICAL</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: ACTIVITY DIAGRAMS (NEW)           -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-activity">
+        <h1>7. 🔄 Activity Diagrams & Business Process</h1>
+        <p>Dokumen Activity Diagrams lengkap tersedia di: <code>10-ACTIVITY-DIAGRAMS.md</code></p>
+        
+        <h2>7.1 End-to-End Property Listing to Sale</h2>
+        
+        <div class="alert alert-info">
+            <p><strong>Complete Flow:</strong></p>
+            <ol>
+                <li>Agen create property + upload photos</li>
+                <li>Admin Kantor approve → publish to marketplace</li>
+                <li>Buyer browse → search → view detail → contact agent (WA)</li>
+                <li>Admin input transaction → commission auto-generated</li>
+                <li>Admin mark commission paid → agen receive notification</li>
+            </ol>
+        </div>
+        
+        <h2>7.2 Commission Calculation Logic</h2>
+        
+        <div class="diagram">
+<pre>
+Input: Final Price × Commission %
+         │
+         ▼
+    {2 Agents?}
+      /      \
+   [YES]    [NO]
+    /          \
+   ▼            ▼
+35% + 35%     70%
+   │            │
+   └──────┬─────┘
+          │
+          ▼
+   Office: 30% (always)
+</pre>
+        </div>
+        
+        <h2>7.3 Property Visibility Rules</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>is_public</th>
+                    <th>status</th>
+                    <th>Marketplace</th>
+                    <th>Private Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>✅ TRUE</td>
+                    <td>available/pending</td>
+                    <td class="status-mvp">✅ Visible</td>
+                    <td class="status-mvp">✅ Accessible</td>
+                </tr>
+                <tr>
+                    <td>✅ TRUE</td>
+                    <td>sold/rented</td>
+                    <td class="status-phase2">❌ Hidden</td>
+                    <td class="status-mvp">✅ Accessible</td>
+                </tr>
+                <tr>
+                    <td>❌ FALSE</td>
+                    <td>any</td>
+                    <td class="status-phase2">❌ Hidden</td>
+                    <td class="status-mvp">✅ Token Required</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 8: USER STORIES                      -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-userstories">
+        <h1>8. 📝 User Stories</h1>
+        <p>Dokumen User Stories lengkap tersedia di: <code>05-USER-STORIES.md</code></p>
+        
+        <h2>8.1 Epic Overview</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Epic</th>
+                    <th>Story Points</th>
+                    <th>Sprint</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Epic 1: Authentication</td>
+                    <td>17</td>
+                    <td>Sprint 1</td>
+                </tr>
+                <tr>
+                    <td>Epic 2: Property Management</td>
+                    <td>26</td>
+                    <td>Sprint 2</td>
+                </tr>
+                <tr>
+                    <td>Epic 3: Public Listing</td>
+                    <td>27</td>
+                    <td>Sprint 3</td>
+                </tr>
+                <tr>
+                    <td>Epic 4: Transaction</td>
+                    <td>24</td>
+                    <td>Sprint 4</td>
+                </tr>
+                <tr>
+                    <td>Epic 5: Commission & Dashboard</td>
+                    <td>18</td>
+                    <td>Sprint 5</td>
+                </tr>
+                <tr>
+                    <td>Epic 6: Dashboard & Polish</td>
+                    <td>26</td>
+                    <td>Sprint 6</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Total:</strong> 138 Story Points | 6 Sprints</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 9: SPRINT PLANNING                   -->
+    <!-- ============================================ -->
+    
+    <div class="content-section page-break" id="section-sprint">
+        <h1>9. 🚀 Sprint Planning & Timeline</h1>
+        <p>Dokumen Sprint Planning lengkap tersedia di: <code>07-SPRINT-PLANNING.md</code></p>
+        
+        <h2>9.1 Project Timeline Overview</h2>
+        
+        <div class="diagram">
+<pre>
+Nov 2025        Dec 2025        Jan 2026        Feb 2026        Mar 2026
+┌────────────┬────────────┬────────────┬────────────┬────────────┐
+│ Setup      │ Sprint 1-2 │ Sprint 3-4 │ Sprint 5-6 │ Testing &  │
+│ & Planning │ Foundation │ Public Web │ Dashboard  │ Launch     │
+│ (1 week)   │ (4 weeks)  │ (4 weeks)  │ (4 weeks)  │ (3 weeks)  │
+└────────────┴────────────┴────────────┴────────────┴────────────┘
+</pre>
+        </div>
+        
+        <h2>9.2 Sprint Breakdown</h2>
+        
+        <h3>Sprint 1: Authentication & Organization (Week 2-3)</h3>
+        <p><strong>Duration:</strong> 11-24 November 2025<br>
+        <strong>Goal:</strong> Multi-role authentication & CRUD Kantor/Agen</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Story</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>US-AUTH-001</td>
+                    <td>Login Admin Master</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>US-AUTH-002</td>
+                    <td>Login Admin Kantor</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>US-AUTH-003</td>
+                    <td>Login Agen</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>US-OFFICE-001</td>
+                    <td>Create Kantor</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>US-OFFICE-002</td>
+                    <td>Edit & Delete Kantor</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>US-AGENT-001</td>
+                    <td>Create Agen</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p><strong>Total Points:</strong> 17</p>
+        
+        <h3>Sprint 2: Property Management (Week 4-5)</h3>
+        <p><strong>Duration:</strong> 25 Nov - 8 Desember 2025<br>
+        <strong>Goal:</strong> CRUD Properti dengan upload multiple foto</p>
+        
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>Create & Edit Listing</li>
+            <li>Upload 10 foto dengan drag & drop reorder</li>
+            <li>Image optimization (resize, compress)</li>
+            <li>Slug generation untuk SEO</li>
+        </ul>
+        
+        <p><strong>Total Points:</strong> 26</p>
+        
+        <h3>Sprint 3: Public Listing Website (Week 6-7)</h3>
+        <p><strong>Duration:</strong> 9-22 Desember 2025<br>
+        <strong>Goal:</strong> Public website untuk buyer browse & search properti</p>
+        
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>Browse listing dengan pagination</li>
+            <li>Search & filter (keyword, tipe, harga, lokasi)</li>
+            <li>Property detail dengan gallery</li>
+            <li>WhatsApp deep link integration</li>
+            <li>Mobile responsive design</li>
+        </ul>
+        
+        <p><strong>Total Points:</strong> 27</p>
+        
+        <h3>Sprint 4: Transaction & Commission (Week 8-9)</h3>
+        <p><strong>Duration:</strong> 23 Des - 5 Januari 2026<br>
+        <strong>Goal:</strong> Input transaksi & auto-calculate komisi</p>
+        
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>Input transaksi dengan link property-agent-buyer</li>
+            <li>Auto-calculate komisi (70/30 atau 35/35/30)</li>
+            <li>Property status auto-update</li>
+            <li>Transaction detail view</li>
+        </ul>
+        
+        <p><strong>Total Points:</strong> 24</p>
+        
+        <h3>Sprint 5: Commission Management (Week 10-11)</h3>
+        <p><strong>Duration:</strong> 6-19 Januari 2026<br>
+        <strong>Goal:</strong> Mark komisi paid & dashboard personal agen</p>
+        
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>Mark komisi as paid dengan tracking</li>
+            <li>Dashboard personal dengan widgets</li>
+            <li>Chart: Omzet per bulan</li>
+            <li>Export komisi ke Excel</li>
+        </ul>
+        
+        <p><strong>Total Points:</strong> 18</p>
+        
+        <h3>Sprint 6: Dashboard & Polish (Week 12-13)</h3>
+        <p><strong>Duration:</strong> 20 Jan - 2 Februari 2026<br>
+        <strong>Goal:</strong> Dashboard agregat & final polish</p>
+        
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>Dashboard Kantor (aggregate agen)</li>
+            <li>Dashboard Master (aggregate kantor)</li>
+            <li>Performance optimization</li>
+            <li>Bug fixing & polish</li>
+        </ul>
+        
+        <p><strong>Total Points:</strong> 26</p>
+        
+        <h2>9.3 Testing & QA Phase (Week 14-15)</h2>
+        <p><strong>Duration:</strong> 3-16 Februari 2026</p>
+        
+        <p><strong>Testing Activities:</strong></p>
+        <ul>
+            <li>Unit Testing: All critical functions</li>
+            <li>Feature Testing: End-to-end user flows</li>
+            <li>Browser Testing: Chrome, Firefox, Safari, Edge</li>
+            <li>Mobile Testing: iOS Safari, Android Chrome</li>
+            <li>Performance Testing: Load testing dengan K6</li>
+            <li>Security Testing: OWASP top 10</li>
+            <li>User Acceptance Testing (UAT)</li>
+        </ul>
+        
+        <h2>9.4 Launch Preparation (Week 16-17)</h2>
+        <p><strong>Duration:</strong> 17 Feb - 2 Maret 2026</p>
+        
+        <p><strong>Pre-Launch Checklist:</strong></p>
+        <ul>
+            <li>✅ Production environment tested</li>
+            <li>✅ Database seeded dengan sample data</li>
+            <li>✅ Admin accounts created</li>
+            <li>✅ User training completed</li>
+            <li>✅ SSL certificate installed</li>
+            <li>✅ Backup verified</li>
+            <li>✅ Monitoring setup</li>
+        </ul>
+        
+        <div class="alert alert-success">
+            <h3>🚀 Production Launch: 3 Maret 2026</h3>
+            <p><strong>Total Duration:</strong> 17 weeks (Nov 2025 - Mar 2026)</p>
+            <p><strong>Total Story Points:</strong> 138</p>
+            <p><strong>Average Velocity:</strong> 23 points/sprint</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="content-section page-break">
+        <h1>📞 Informasi Kontak & Next Steps</h1>
+        
+        <h2>Document Information</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>Proyek</strong></td>
+                    <td>Hendra Prop - Sistem Manajemen Properti</td>
+                </tr>
+                <tr>
+                    <td><strong>Dokumentasi dibuat</strong></td>
+                    <td>31 Oktober 2025</td>
+                </tr>
+                <tr>
+                    <td><strong>Versi</strong></td>
+                    <td>1.1.0 (Enhanced)</td>
+                </tr>
+                <tr>
+                    <td><strong>Status</strong></td>
+                    <td>Complete Documentation - Enhanced with Process Diagrams</td>
+                </tr>
+                <tr>
+                    <td><strong>Target Launch</strong></td>
+                    <td>3 Maret 2026</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Documents</strong></td>
+                    <td>10 Markdown Files (~120 pages)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>🆕 New Features Documented (v1.1.0)</h2>
+        <div class="alert alert-success">
+            <ul>
+                <li>✅ <strong>Public Marketplace</strong> - Publikasi properti ke marketplace publik dengan toggle</li>
+                <li>✅ <strong>Private Tokenized Links</strong> - Akses eksklusif properti via token URL (expires 7 hari)</li>
+                <li>✅ <strong>Activity Log & Audit Trail</strong> - Track semua perubahan (spatie/laravel-activitylog)</li>
+                <li>✅ <strong>Notification System</strong> - Email & database notifications untuk events</li>
+                <li>✅ <strong>Scheduled Tasks</strong> - Auto-expire links, clean data, generate reports</li>
+                <li>✅ <strong>Soft Delete</strong> - Protect critical data dari accidental deletion</li>
+                <li>✅ <strong>Closing Rate</strong> - Performance metric: (Terjual / Total) × 100%</li>
+                <li>✅ <strong>Export Reports</strong> - Excel/PDF export untuk performance dashboard</li>
+            </ul>
+        </div>
+        
+        <h2>📊 New Diagrams Added</h2>
+        <ul>
+            <li>📊 <strong>Data Flow Diagram (DFD)</strong> - Level 0, 1, 2 dengan 10 main processes</li>
+            <li>🎭 <strong>Use Case Diagram</strong> - 39 use cases untuk 4 actors + system</li>
+            <li>🔄 <strong>Activity Diagrams</strong> - Complete workflows, swimlanes, decision tables</li>
+        </ul>
+        
+        <h2>Next Steps</h2>
+        
+        <ol>
+            <li><strong>Review & Approval</strong> → Stakeholder review dokumentasi ini</li>
+            <li><strong>Jawab Pertanyaan Klarifikasi</strong> → 7 pertanyaan yang masih perlu dijawab</li>
+            <li><strong>Setup Repository</strong> → Git + Project board (Trello/Jira)</li>
+            <li><strong>Kickoff Meeting</strong> → Team onboarding & training</li>
+            <li><strong>Development Start</strong> → 11 November 2025 (Sprint 1)</li>
+        </ol>
+        
+        <h2>Dokumentasi Tersedia</h2>
+        
+        <div class="alert alert-info">
+            <p><strong>📚 Semua file markdown tersedia di folder:</strong></p>
+            <p><code>/hendra-prop/docs/</code></p>
+            
+            <ul>
+                <li>README.md - Index & navigasi</li>
+                <li>HENDRA_PROP_COMPLETE_DOCUMENTATION.md - All-in-one lengkap</li>
+                <li>01-ANALISIS-SISTEM.md</li>
+                <li>02-BUSINESS-REQUIREMENTS.md</li>
+                <li>03-TECHNICAL-SPECIFICATIONS.md</li>
+                <li>04-DATABASE-DESIGN.md</li>
+                <li>05-USER-STORIES.md</li>
+                <li>06-API-SPECIFICATIONS.md</li>
+                <li>07-SPRINT-PLANNING.md</li>
+            </ul>
+        </div>
+        
+        <h2>Success Metrics</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Target</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Launch Date</td>
+                    <td>3 Maret 2026</td>
+                </tr>
+                <tr>
+                    <td>User Adoption</td>
+                    <td>&gt; 80% agen aktif</td>
+                </tr>
+                <tr>
+                    <td>System Uptime</td>
+                    <td>&gt; 99%</td>
+                </tr>
+                <tr>
+                    <td>Page Load Time</td>
+                    <td>&lt; 2 detik</td>
+                </tr>
+                <tr>
+                    <td>Commission Accuracy</td>
+                    <td>100% (no dispute)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 3rem;">
+            <strong>© 2025 Hendra Prop. All rights reserved.</strong><br>
+            Generated by AI Project Analysis System<br>
+            Dokumentasi ini siap untuk development kickoff, stakeholder presentation, dan sprint execution.
+        </p>
+        
+        <p style="text-align: center; margin-top: 2rem;">
+            <strong style="color: #667eea; font-size: 1.2rem;">🎉 Selamat Mengerjakan Proyek Hendra Prop! 🎉</strong>
+        </p>
+    </div>
+</body>
+</html>
