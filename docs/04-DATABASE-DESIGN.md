@@ -107,11 +107,6 @@ Versi: 1.0.0
 │     longitude (DECIMAL)            │
 │     certificate_type               │
 │     status (ENUM)                  │
-│     approval_status (ENUM)         │
-│     submitted_at (DATETIME)        │
-│     reviewed_by (user_id)          │
-│     reviewed_at (DATETIME)         │
-│     revision_notes (TEXT)          │
 │     is_featured (BOOLEAN)          │
 │     is_public (BOOLEAN)            │
 │     published_at (DATETIME)        │
@@ -146,27 +141,6 @@ Versi: 1.0.0
 │     token (UNIQUE)         │
 │     expires_at (DATETIME)  │
 │     is_used (BOOLEAN)      │
-│     access_count (INT)     │
-│     created_at             │
-└────────────────────────────┘
-
-      │ (from property_links)
-      │ 1:N
-      ▼
-┌────────────────────────────┐
-│   PROPERTY_VISITORS        │
-├────────────────────────────┤
-│ PK: id                     │
-│ FK: property_link_id       │
-│ FK: property_id            │
-│     visitor_name           │
-│     visitor_email          │
-│     visitor_phone          │
-│     visitor_whatsapp       │
-│     interest_level (ENUM)  │
-│     message (TEXT)         │
-│     visited_at (DATETIME)  │
-│     ip_address             │
 │     created_at             │
 └────────────────────────────┘
 
@@ -401,11 +375,6 @@ Versi: 1.0.0
 | `longitude` | DECIMAL(11,8) | NULLABLE | GPS longitude |
 | `certificate_type` | VARCHAR(50) | NULLABLE | SHM, HGB, dll |
 | `status` | ENUM | DEFAULT 'available' | available, pending, sold, rented |
-| `approval_status` | ENUM | DEFAULT 'draft' | draft, pending, published, declined, need_revision |
-| `submitted_at` | TIMESTAMP | NULLABLE | When agent submitted for review |
-| `reviewed_by` | BIGINT UNSIGNED | NULLABLE | FK to users (Admin Kantor) |
-| `reviewed_at` | TIMESTAMP | NULLABLE | When admin reviewed |
-| `revision_notes` | TEXT | NULLABLE | Notes from admin for revision |
 | `is_featured` | BOOLEAN | DEFAULT FALSE | Featured listing |
 | `is_public` | BOOLEAN | DEFAULT TRUE | Show in public marketplace |
 | `published_at` | TIMESTAMP | NULLABLE | Publication timestamp |
@@ -421,8 +390,6 @@ Versi: 1.0.0
 - `INDEX idx_type (type)`
 - `INDEX idx_listing_type (listing_type)`
 - `INDEX idx_status (status)`
-- `INDEX idx_approval_status (approval_status)`
-- `INDEX idx_reviewed_by (reviewed_by)`
 - `INDEX idx_city (city)`
 - `INDEX idx_price (price)`
 - `INDEX idx_is_public (is_public)`
@@ -486,7 +453,6 @@ Versi: 1.0.0
 | `accessed_at` | TIMESTAMP | NULLABLE | First access timestamp |
 | `access_count` | INT UNSIGNED | DEFAULT 0 | Number of times accessed |
 | `created_at` | TIMESTAMP | DEFAULT NOW | Link creation time |
-| `updated_at` | TIMESTAMP | AUTO UPDATE | Last update |
 
 **Indexes:**
 - `PRIMARY KEY (id)`
@@ -502,7 +468,6 @@ Versi: 1.0.0
 **Relationships:**
 - `belongsTo(Property)` - link untuk property tertentu
 - `belongsTo(User as creator)` - user yang generate link
-- `hasMany(PropertyVisitor)` - link bisa punya banyak visitor
 
 **Business Logic:**
 ```php
@@ -516,55 +481,6 @@ public function isValid(): bool {
 public static function generateToken(): string {
     return Str::random(64);
 }
-```
-
----
-
-#### Table: `property_visitors`
-**Purpose:** Store visitor information from private link access (lead capture)
-
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Primary key |
-| `property_link_id` | BIGINT UNSIGNED | FK → property_links.id | Link yang diakses |
-| `property_id` | BIGINT UNSIGNED | FK → properties.id | Property reference (denormalized) |
-| `visitor_name` | VARCHAR(255) | NOT NULL | Visitor full name |
-| `visitor_email` | VARCHAR(255) | NOT NULL | Visitor email |
-| `visitor_phone` | VARCHAR(20) | NULLABLE | Visitor phone |
-| `visitor_whatsapp` | VARCHAR(20) | NULLABLE | WhatsApp number |
-| `interest_level` | ENUM | DEFAULT 'medium' | low, medium, high, very_high |
-| `message` | TEXT | NULLABLE | Visitor's message/notes |
-| `visited_at` | TIMESTAMP | DEFAULT NOW | When visitor accessed |
-| `ip_address` | VARCHAR(45) | NULLABLE | Visitor IP (IPv4/IPv6) |
-| `user_agent` | TEXT | NULLABLE | Browser user agent |
-| `created_at` | TIMESTAMP | DEFAULT NOW | Record creation |
-
-**Indexes:**
-- `PRIMARY KEY (id)`
-- `INDEX idx_property_link (property_link_id)`
-- `INDEX idx_property (property_id)`
-- `INDEX idx_visitor_email (visitor_email)`
-- `INDEX idx_visited_at (visited_at)`
-- `INDEX idx_interest_level (interest_level)`
-
-**Foreign Keys:**
-- `FOREIGN KEY (property_link_id) REFERENCES property_links(id) ON DELETE CASCADE`
-- `FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE`
-
-**Relationships:**
-- `belongsTo(PropertyLink)` - visitor dari link tertentu
-- `belongsTo(Property)` - visitor tertarik ke property tertentu
-
-**Business Logic:**
-```php
-// Auto-notify agent when high interest visitor
-PropertyVisitor::created(function ($visitor) {
-    if (in_array($visitor->interest_level, ['high', 'very_high'])) {
-        $visitor->property->agent->notify(
-            new HighInterestLeadNotification($visitor)
-        );
-    }
-});
 ```
 
 ---
@@ -730,41 +646,7 @@ enum PropertyStatus: string {
 }
 ```
 
-### 4.5 property.approval_status
-```php
-enum PropertyApprovalStatus: string {
-    case DRAFT = 'draft';                   // Belum disubmit, agent masih edit
-    case PENDING = 'pending';               // Sudah disubmit, menunggu review
-    case PUBLISHED = 'published';           // Approved, bisa dilihat publik
-    case DECLINED = 'declined';             // Rejected permanently
-    case NEED_REVISION = 'need_revision';   // Perlu diperbaiki agent
-}
-```
-
-**Business Rules:**
-- DRAFT → agent submit → PENDING
-- PENDING → admin approve → PUBLISHED
-- PENDING → admin decline → DECLINED  
-- PENDING → admin request revision → NEED_REVISION
-- NEED_REVISION → agent perbaiki & resubmit → PENDING
-- Only PUBLISHED properties dapat dilihat di public marketplace
-- Property dengan is_public=false tetap bisa generate private link
-
-### 4.6 property_visitor.interest_level
-```php
-enum VisitorInterestLevel: string {
-    case LOW = 'low';               // Hanya lihat-lihat
-    case MEDIUM = 'medium';         // Cukup tertarik
-    case HIGH = 'high';             // Sangat tertarik
-    case VERY_HIGH = 'very_high';   // Siap beli/nego
-}
-```
-
-**Business Logic:**
-- Agent akan dapat notifikasi untuk HIGH dan VERY_HIGH interest
-- Visitor dengan VERY_HIGH prioritas untuk di-follow up
-
-### 4.7 transaction.transaction_type
+### 4.5 transaction.transaction_type
 ```php
 enum TransactionType: string {
     case SALE = 'sale'; // Jual
@@ -772,7 +654,7 @@ enum TransactionType: string {
 }
 ```
 
-### 4.8 transaction.status
+### 4.6 transaction.status
 ```php
 enum TransactionStatus: string {
     case PENDING = 'pending';
@@ -781,7 +663,7 @@ enum TransactionStatus: string {
 }
 ```
 
-### 4.9 commission.type
+### 4.7 commission.type
 ```php
 enum CommissionType: string {
     case AGENT_OWNER = 'agent_owner';
@@ -790,7 +672,7 @@ enum CommissionType: string {
 }
 ```
 
-### 4.10 commission.status
+### 4.8 commission.status
 ```php
 enum CommissionStatus: string {
     case PENDING = 'pending';
@@ -801,7 +683,7 @@ enum CommissionStatus: string {
 
 ---
 
-## 4.11 Additional Tables
+## 4.9 Additional Tables
 
 ### Table: `activity_log`
 **Purpose:** Store audit trail for all important actions (using spatie/laravel-activitylog)
