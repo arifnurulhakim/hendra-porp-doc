@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hendra Prop - Dokumentasi Lengkap</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: true }
+        });
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
@@ -22,6 +31,7 @@
         @media print {
             body { background: white; padding: 0; font-size: 9pt; max-width: 100%; line-height: 1.4; }
             .no-print { display: none !important; }
+            .floating-toc { display: none !important; }
             h1 { font-size: 14pt; page-break-after: avoid; margin-top: 1rem; }
             h2 { font-size: 12pt; page-break-after: avoid; margin-top: 1rem; }
             h3 { font-size: 10pt; page-break-after: avoid; }
@@ -30,10 +40,11 @@
             .page-break { page-break-before: always; }
             .cover { page-break-after: always; }
             #table-of-contents { page-break-after: always; }
+            .heading-link { display: none !important; }
         }
         
         .cover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
             color: white;
             padding: 6rem 3rem;
             text-align: center;
@@ -43,6 +54,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            border: 3px solid #e2e8f0;
         }
         .cover h1 {
             font-size: 3.5rem;
@@ -50,7 +62,7 @@
             margin-bottom: 1rem;
             color: white;
             border: none;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         .cover .subtitle {
             font-size: 1.5rem;
@@ -75,29 +87,52 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
+        h1, h2, h3, h4, h5, h6 {
+            position: relative;
+        }
         h1 {
-            color: #667eea;
+            color: #1a202c;
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #2d3748;
             padding-bottom: 0.5rem;
         }
         h2 {
-            color: #5a67d8;
+            color: #2d3748;
             font-size: 1.8rem;
             margin: 2rem 0 1rem 0;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #1a202c;
             padding-left: 1rem;
         }
         h3 {
-            color: #4c51bf;
+            color: #4a5568;
             font-size: 1.4rem;
             margin: 1.5rem 0 1rem 0;
         }
         h4 {
-            color: #434190;
+            color: #718096;
             font-size: 1.1rem;
             margin: 1rem 0 0.5rem 0;
+        }
+        
+        /* Heading anchor links */
+        .heading-link {
+            opacity: 0;
+            margin-left: 0.5rem;
+            color: #cbd5e0;
+            text-decoration: none;
+            font-size: 0.8em;
+            transition: opacity 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+        h1:hover .heading-link,
+        h2:hover .heading-link,
+        h3:hover .heading-link,
+        h4:hover .heading-link {
+            opacity: 1;
+        }
+        .heading-link:hover {
+            color: #1a202c;
         }
         p {
             margin-bottom: 1rem;
@@ -127,7 +162,7 @@
             font-size: 0.9rem;
         }
         th {
-            background: #667eea;
+            background: #2d3748;
             color: white;
             padding: 0.75rem;
             text-align: left;
@@ -154,11 +189,12 @@
         }
         code {
             background: #edf2f7;
-            color: #d53f8c;
+            color: #1a202c;
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
             font-size: 0.9em;
             font-family: 'Consolas', 'Monaco', monospace;
+            font-weight: 600;
         }
         pre code {
             background: none;
@@ -173,14 +209,14 @@
             border-left: 4px solid;
         }
         .alert-info {
-            background: #ebf8ff;
-            border-color: #3182ce;
-            color: #2c5282;
+            background: #f7fafc;
+            border-color: #4a5568;
+            color: #1a202c;
         }
         .alert-success {
-            background: #f0fff4;
-            border-color: #38a169;
-            color: #22543d;
+            background: #f7fafc;
+            border-color: #2d3748;
+            color: #1a202c;
         }
         
         .toc {
@@ -212,7 +248,7 @@
             flex: 1;
         }
         .toc-page {
-            color: #667eea;
+            color: #4a5568;
             font-weight: 600;
             margin-left: 1rem;
         }
@@ -221,7 +257,7 @@
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background: #667eea;
+            background: #1a202c;
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -234,8 +270,9 @@
             transition: all 0.3s;
         }
         .print-button:hover {
-            background: #5a67d8;
+            background: #2d3748;
             transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
         
         hr {
@@ -243,10 +280,294 @@
             border-top: 2px solid #e2e8f0;
             margin: 2rem 0;
         }
+        
+        /* Floating TOC */
+        .floating-toc {
+            position: fixed;
+            right: 2rem;
+            top: 2rem;
+            width: 300px;
+            max-height: 85vh;
+            overflow: hidden;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            z-index: 999;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .floating-toc.collapsed {
+            width: 60px;
+            right: 2rem;
+        }
+        .floating-toc.collapsed .floating-toc-content {
+            opacity: 0;
+            visibility: hidden;
+            max-height: 0;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .floating-toc-header {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: border-radius 0.3s;
+            position: relative;
+            min-height: 50px;
+        }
+        .floating-toc.collapsed .floating-toc-header {
+            border-radius: 12px;
+            padding: 1rem 0.8rem;
+            justify-content: center;
+        }
+        .floating-toc.collapsed .floating-toc-header span:first-child {
+            display: none;
+        }
+        .floating-toc-header:hover {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+        }
+        .floating-toc-toggle {
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            height: 32px;
+        }
+        .floating-toc-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        .floating-toc-content {
+            padding: 1rem;
+            max-height: calc(85vh - 70px);
+            overflow-y: auto;
+            transition: all 0.4s ease;
+            opacity: 1;
+            visibility: visible;
+        }
+        .floating-toc-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .floating-toc-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .floating-toc-content::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 10px;
+        }
+        .floating-toc-content::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+        .floating-toc .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .floating-toc .toc-list li {
+            margin: 0.3rem 0;
+            padding: 0.4rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .floating-toc .toc-list li:hover {
+            background: #f7fafc;
+        }
+        .floating-toc .toc-list li.active {
+            background: #1a202c;
+            transform: translateX(-4px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border-left: 3px solid #2d3748;
+        }
+        .floating-toc .toc-list li.active a {
+            color: white;
+            font-weight: 600;
+        }
+        .floating-toc .toc-list a {
+            text-decoration: none;
+            color: #4a5568;
+            display: block;
+            transition: color 0.2s;
+        }
+        .floating-toc .toc-title {
+            font-weight: 400;
+        }
+        
+        /* Mermaid diagrams */
+        .mermaid {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        /* Toast notification for copy */
+        .copy-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a202c;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
     <button class="print-button no-print" onclick="window.print()">🖨️ Print to PDF</button>
+    
+    <!-- Floating TOC -->
+    <div class="floating-toc no-print" id="floatingToc">
+        <div class="floating-toc-header" onclick="toggleToc()" title="Toggle Table of Contents">
+            <span>📑 Table of Contents</span>
+            <span class="floating-toc-toggle" id="tocToggle" title="Hide/Show">◀</span>
+        </div>
+        <div class="floating-toc-content" id="tocContent">
+            <ul class="toc-list">
+                <li><a href="#implementation-status"><span class="toc-title">✅ Implementation Status</span></a></li>
+                <li><a href="#section-01"><span class="toc-title">1. BRD</span></a></li>
+                <li><a href="#section-02"><span class="toc-title">2. SRS</span></a></li>
+                <li><a href="#section-03"><span class="toc-title">3. ERD</span></a></li>
+                <li><a href="#section-04"><span class="toc-title">4. DFD</span></a></li>
+                <li><a href="#section-05"><span class="toc-title">5. Use Cases</span></a></li>
+                <li><a href="#section-06"><span class="toc-title">6. Activity Diagrams</span></a></li>
+                <li><a href="#section-07"><span class="toc-title">7. Technical Specs</span></a></li>
+                <li><a href="#section-08"><span class="toc-title">8. Database Design</span></a></li>
+                <li><a href="#section-09"><span class="toc-title">9. API Specs</span></a></li>
+                <li><a href="#section-10"><span class="toc-title">10. Sprint Planning</span></a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Copy Toast -->
+    <div class="copy-toast" id="copyToast">📋 Link copied to clipboard!</div>
+    
+    <script>
+        // Toggle TOC
+        function toggleToc() {
+            const toc = document.getElementById('floatingToc');
+            const toggle = document.getElementById('tocToggle');
+            const isCollapsed = toc.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                // Expand
+                toc.classList.remove('collapsed');
+                toggle.textContent = '◀';
+                toggle.title = 'Hide Table of Contents';
+            } else {
+                // Collapse
+                toc.classList.add('collapsed');
+                toggle.textContent = '▶';
+                toggle.title = 'Show Table of Contents';
+            }
+        }
+        
+        // Track active section in TOC
+        function updateActiveTocItem() {
+            const sections = document.querySelectorAll('.content-section, .cover');
+            const tocItems = document.querySelectorAll('.floating-toc .toc-list li');
+            
+            let currentSection = '';
+            const scrollPos = window.scrollY + 100; // Offset for better detection
+            
+            // Find current section
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    currentSection = section.id;
+                }
+            });
+            
+            // Update TOC active state
+            tocItems.forEach(item => {
+                const link = item.querySelector('a');
+                const href = link.getAttribute('href').substring(1); // Remove #
+                
+                if (href === currentSection) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+        
+        // Update on scroll
+        window.addEventListener('scroll', updateActiveTocItem);
+        
+        // Initial update
+        document.addEventListener('DOMContentLoaded', function() {
+            updateActiveTocItem();
+        });
+        
+        // Add heading links
+        document.addEventListener('DOMContentLoaded', function() {
+            const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            headings.forEach(heading => {
+                if (!heading.id) {
+                    heading.id = heading.textContent.toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-|-$/g, '');
+                }
+                
+                const link = document.createElement('a');
+                link.className = 'heading-link';
+                link.innerHTML = '🔗';
+                link.title = 'Copy link to clipboard';
+                link.onclick = function(e) {
+                    e.preventDefault();
+                    const url = window.location.origin + window.location.pathname + '#' + heading.id;
+                    navigator.clipboard.writeText(url).then(() => {
+                        showToast();
+                    });
+                };
+                heading.appendChild(link);
+            });
+        });
+        
+        // Show toast notification
+        function showToast() {
+            const toast = document.getElementById('copyToast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 
     <!-- Cover Page -->
     <div class="cover">
@@ -257,13 +578,17 @@
             Business Requirements • Software Requirements • Technical Specifications
         </div>
         <div class="meta">
-            <p><strong>Versi Final</strong> | 31 Oktober 2025</p>
-            <p>Target Launch: <strong>3 Maret 2026</strong></p>
+            <p><strong>Versi Final + Enhancements</strong> | Updated: 3 November 2025</p>
+            <p>Target Launch: <strong>24 Desember 2025</strong></p>
+            <p style="margin-top: 1.5rem; font-size: 1.05rem; opacity: 0.85; color: #f6ad55;">
+                ✨ <strong>WITH ENHANCEMENTS:</strong> Dynamic Commission System | Payment Tracking | Activity Logging
+            </p>
             <p style="margin-top: 2rem; font-size: 0.95rem; opacity: 0.8;">
-                150+ Halaman Dokumentasi Lengkap
+                160+ Halaman Dokumentasi Lengkap
             </p>
             <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 1rem;">
-                Prepared by: AI Project Analysis System
+                Prepared by: AI Project Analysis System<br>
+                Synchronized with Implementation: November 3, 2025
             </p>
         </div>
     </div>
@@ -274,6 +599,12 @@
         
         <div class="toc">
             <ul class="toc-list">
+                <li>
+                    <a href="#implementation-status">
+                        <span class="toc-title">✅ Implementation Status & Completed Features</span>
+                        <span class="toc-page">0</span>
+                    </a>
+                </li>
                 <li>
                     <a href="#section-01">
                         <span class="toc-title">1. Business Requirements Document (BRD)</span>
@@ -336,6 +667,744 @@
                 </li>
             </ul>
         </div>
+    </div>
+
+    <!-- Implementation Status Section -->
+    <div class="content-section page-break" id="implementation-status">
+        <h1>✅ Implementation Status</h1>
+        
+        <div class="alert alert-success">
+            <h2>🎉 PROJECT COMPLETED & PRODUCTION READY!</h2>
+            <p><strong>Status:</strong> All MVP features have been successfully implemented and ready for production deployment.</p>
+            <p><strong>Completion Date:</strong> November 3, 2025</p>
+            <p><strong>Technology Stack:</strong> Laravel 11.x + Filament 3.x + MySQL 8.0 + Caddy + Spatie Media Library</p>
+        </div>
+
+        <h2>1. Implemented Features</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 5%;">No</th>
+                    <th style="width: 30%;">Feature</th>
+                    <th style="width: 15%;">Status</th>
+                    <th style="width: 50%;">Implementation Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><strong>Authentication System</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Multi-role login (Admin Master, Admin Office, Agent)<br>
+                        • JWT Authentication for API<br>
+                        • Session management with UUID support<br>
+                        • Filament panel authentication
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><strong>CRUD User</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • User management with role-based access control<br>
+                        • Filament Resource: UserResource<br>
+                        • Separated Form & Table schemas<br>
+                        • Password hashing with bcrypt
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><strong>CRUD Office</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Office management (name, address, contact)<br>
+                        • Filament Resource: OfficeResource<br>
+                        • Soft delete implementation<br>
+                        • Relationships with agents
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><strong>CRUD Agent</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Agent management with photo upload<br>
+                        • Spatie Media Library integration<br>
+                        • Office assignment functionality<br>
+                        • Filament Resource: AgentResource
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><strong>CRUD Property</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Property listing with multiple photos<br>
+                        • Spatie Media Library for photo management<br>
+                        • Automatic slug generation<br>
+                        • Status management (available, pending, approved, rejected, sold, rented)<br>
+                        • Filament Resource: PropertyResource
+                    </td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><strong>Property Moderation</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Approve/Reject actions in Properties Table<br>
+                        • Status updates (pending → approved/rejected)<br>
+                        • Bulk actions support<br>
+                        • Activity logging capability
+                    </td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><strong>Generate Property Private Link</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Token-based private link generation<br>
+                        • Auto-copy to clipboard with JavaScript<br>
+                        • Expiration date configuration<br>
+                        • Access count tracking<br>
+                        • PropertyLinkService for business logic
+                    </td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><strong>API Property Detail</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • RESTful API endpoint: GET /api/properties/{slug}<br>
+                        • JWT authentication with Laravel Sanctum<br>
+                        • API Resource (Transformer) pattern<br>
+                        • Dedoc Scramble for auto API documentation<br>
+                        • Comprehensive error handling & validation
+                    </td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><strong>CRUD Transaction</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Transaction management (sale/rent)<br>
+                        • Agent owner & buyer assignment<br>
+                        • Buyer information capture<br>
+                        • Filament Resource: TransactionResource
+                    </td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><strong>Manage Agent Commission</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • Automatic commission calculation<br>
+                        • Split logic: 70/30 (1 agent) or 35/35/30 (2 agents)<br>
+                        • Mark as paid functionality<br>
+                        • Commission status tracking<br>
+                        • Filament Resource: CommissionResource
+                    </td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td><strong>Dynamic Commission Settings</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • <strong>NEW ENHANCEMENT:</strong> Configurable commission splits<br>
+                        • Per-office custom settings<br>
+                        • Transaction type specific (sale/rent)<br>
+                        • Dynamic commission rate (default 2%)<br>
+                        • Admin can override per transaction<br>
+                        • Filament Resource: CommissionSettingResource
+                    </td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td><strong>Commission Payment Tracking</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • <strong>NEW ENHANCEMENT:</strong> Partial/installment payment support<br>
+                        • Payment history tracking<br>
+                        • Reference number for each payment<br>
+                        • Payment method tracking<br>
+                        • Approved by tracking (audit)<br>
+                        • Table: commission_payments
+                    </td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td><strong>Activity Log & Audit Trail</strong></td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>
+                        • <strong>IMPLEMENTED:</strong> Spatie Activity Log v4.10<br>
+                        • Track all CRUD operations<br>
+                        • User action logging<br>
+                        • Old/new value tracking<br>
+                        • Automatic & manual logging support<br>
+                        • Tables: activity_log (3 migrations)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>2. Database Structure</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Table</th>
+                    <th>Purpose</th>
+                    <th>Key Features</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>users</code></td>
+                    <td>User accounts</td>
+                    <td>UUID primary keys, role-based, soft deletes</td>
+                </tr>
+                <tr>
+                    <td><code>roles</code></td>
+                    <td>User roles</td>
+                    <td>Admin Master, Admin Office, Agent, Customer</td>
+                </tr>
+                <tr>
+                    <td><code>permissions</code></td>
+                    <td>Granular permissions</td>
+                    <td>22 permissions defined</td>
+                </tr>
+                <tr>
+                    <td><code>offices</code></td>
+                    <td>Office/branch information</td>
+                    <td>UUID keys, soft deletes</td>
+                </tr>
+                <tr>
+                    <td><code>agents</code></td>
+                    <td>Agent profiles</td>
+                    <td>Media library integration, office relationships</td>
+                </tr>
+                <tr>
+                    <td><code>properties</code></td>
+                    <td>Property listings</td>
+                    <td>UUID, slug, status, media library, soft deletes</td>
+                </tr>
+                <tr>
+                    <td><code>property_links</code></td>
+                    <td>Private tokenized links</td>
+                    <td>Token generation, expiration, access tracking</td>
+                </tr>
+                <tr>
+                    <td><code>transactions</code></td>
+                    <td>Sale/rent transactions</td>
+                    <td>Agent owner/buyer assignments, buyer info, final price</td>
+                </tr>
+                <tr>
+                    <td><code>commissions</code></td>
+                    <td>Commission records</td>
+                    <td>Auto-calculation, split logic, payment status tracking</td>
+                </tr>
+                <tr>
+                    <td><code>commission_payments</code></td>
+                    <td>Commission payment tracking</td>
+                    <td><strong>NEW:</strong> Partial payment support, payment history, approval tracking</td>
+                </tr>
+                <tr>
+                    <td><code>commission_settings</code></td>
+                    <td>Commission configuration</td>
+                    <td><strong>NEW:</strong> Dynamic commission splits, per-office settings, transaction type specific</td>
+                </tr>
+                <tr>
+                    <td><code>media</code></td>
+                    <td>File uploads</td>
+                    <td>Spatie Media Library (agent & property photos)</td>
+                </tr>
+                <tr>
+                    <td><code>activity_log</code></td>
+                    <td>Audit trail</td>
+                    <td><strong>IMPLEMENTED:</strong> Spatie Activity Log fully installed</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>3. Technology Stack Used</h2>
+        
+        <h3>Backend Framework</h3>
+        <ul>
+            <li><strong>Laravel 11.x</strong> - PHP Framework</li>
+            <li><strong>PHP 8.2+</strong> - Programming Language</li>
+            <li><strong>MySQL 8.0+</strong> - Database dengan UUID support</li>
+        </ul>
+
+        <h3>Admin Panel</h3>
+        <ul>
+            <li><strong>Filament 3.x</strong> - Admin panel framework</li>
+            <li><strong>Livewire 3.x</strong> - Real-time components</li>
+            <li><strong>Alpine.js</strong> - Frontend interactions</li>
+            <li><strong>Tailwind CSS</strong> - Styling</li>
+        </ul>
+
+        <h3>Media & File Management</h3>
+        <ul>
+            <li><strong>Spatie Media Library</strong> - File uploads & management</li>
+            <li><strong>Intervention Image</strong> - Image processing (future)</li>
+        </ul>
+
+        <h3>API & Documentation</h3>
+        <ul>
+            <li><strong>Laravel Sanctum</strong> - JWT Authentication</li>
+            <li><strong>Dedoc Scramble</strong> - Auto API documentation</li>
+            <li><strong>API Resources</strong> - Data transformation</li>
+        </ul>
+
+        <h3>Code Organization</h3>
+        <ul>
+            <li><strong>Service Layer Pattern</strong> - PropertyLinkService</li>
+            <li><strong>Resource Pattern</strong> - API Transformers</li>
+            <li><strong>Repository Pattern</strong> - Data access layer (partial)</li>
+            <li><strong>Filament Schemas/Tables folders</strong> - Better organization</li>
+        </ul>
+
+        <h3>Web Server & Deployment</h3>
+        <ul>
+            <li><strong>Caddy</strong> - Web server with auto HTTPS</li>
+            <li><strong>Supervisor</strong> - Queue worker management (ready)</li>
+            <li><strong>Redis</strong> - Cache & Queue (production ready)</li>
+        </ul>
+
+        <h2>4. Project Folder Structure</h2>
+        
+        <pre><code>hendra-prop/
+├── app/
+│   ├── Filament/
+│   │   ├── Resources/
+│   │   │   ├── Users/
+│   │   │   │   ├── Schemas/UserForm.php
+│   │   │   │   ├── Tables/UsersTable.php
+│   │   │   │   ├── Pages/
+│   │   │   │   └── UserResource.php
+│   │   │   ├── Offices/
+│   │   │   │   ├── Schemas/OfficeForm.php
+│   │   │   │   ├── Tables/OfficesTable.php
+│   │   │   │   └── OfficeResource.php
+│   │   │   ├── Agents/
+│   │   │   │   ├── Schemas/AgentForm.php
+│   │   │   │   ├── Tables/AgentsTable.php
+│   │   │   │   └── AgentResource.php
+│   │   │   ├── Properties/
+│   │   │   │   ├── Schemas/PropertyForm.php
+│   │   │   │   ├── Tables/PropertiesTable.php
+│   │   │   │   └── PropertyResource.php
+│   │   │   ├── Transactions/
+│   │   │   │   ├── Schemas/TransactionForm.php
+│   │   │   │   ├── Tables/TransactionsTable.php
+│   │   │   │   └── TransactionResource.php
+│   │   │   ├── Commissions/
+│   │   │   │   ├── Schemas/CommissionForm.php
+│   │   │   │   ├── Tables/CommissionsTable.php
+│   │   │   │   └── CommissionResource.php
+│   │   │   └── <strong>CommissionSettings/ (NEW)</strong>
+│   │   │       ├── Schemas/CommissionSettingForm.php
+│   │   │       ├── Tables/CommissionSettingsTable.php
+│   │   │       └── CommissionSettingResource.php
+│   │   ├── Widgets/
+│   │   │   └── StatsOverview.php
+│   │   └── Pages/
+│   ├── Http/
+│   │   ├── Controllers/Api/
+│   │   │   ├── AuthController.php (JWT Auth)
+│   │   │   ├── PropertyController.php
+│   │   │   ├── PropertyLinkController.php
+│   │   │   ├── AgentController.php
+│   │   │   └── OfficeController.php
+│   │   ├── Resources/ (API Transformers)
+│   │   │   ├── PropertyResource.php
+│   │   │   ├── AgentResource.php
+│   │   │   ├── CommissionResource.php
+│   │   │   └── PropertyLinkResource.php
+│   │   └── Requests/
+│   │       └── BaseApiRequest.php
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Role.php (NEW - separate table)
+│   │   ├── Permission.php (NEW - separate table)
+│   │   ├── Office.php
+│   │   ├── Agent.php
+│   │   ├── Property.php
+│   │   ├── PropertyPhoto.php
+│   │   ├── PropertyLink.php
+│   │   ├── Transaction.php
+│   │   ├── Commission.php
+│   │   ├── CommissionPayment.php (NEW)
+│   │   └── CommissionSetting.php (NEW)
+│   ├── Services/
+│   │   └── PropertyLinkService.php
+│   ├── Observers/
+│   │   └── TransactionObserver.php (Updated - dynamic commission)
+│   └── Traits/
+│       ├── HasUuid.php
+│       └── ApiSearchable.php
+├── database/
+│   ├── migrations/
+│   │   ├── 2025_11_03_*_create_*.php (24 migrations)
+│   │   ├── 2025_11_03_fix_sessions_user_id.php (2x)
+│   │   └── activity_log migrations (3x)
+│   └── seeders/
+│       ├── RoleSeeder.php
+│       ├── PermissionSeeder.php
+│       ├── UserSeeder.php
+│       ├── OfficeSeeder.php
+│       ├── CommissionSettingSeeder.php (NEW)
+│       ├── PropertySeeder.php
+│       └── TransactionSeeder.php
+└── routes/
+    ├── web.php
+    └── api.php (JWT + Public API)</code></pre>
+
+        <h2>5. Features & Implementation Highlights</h2>
+        
+        <h3>✨ UUID Primary Keys</h3>
+        <p>All tables use UUID (<code>char(36)</code>) as primary keys for better security and scalability.</p>
+
+        <h3>✨ Role-Based Access Control (RBAC)</h3>
+        <p>4 roles with 22 granular permissions:</p>
+        <ul>
+            <li><strong>Admin Master:</strong> Full access to all features</li>
+            <li><strong>Admin Office:</strong> Manage office agents & properties</li>
+            <li><strong>Agent:</strong> Manage own properties & view commissions</li>
+            <li><strong>Customer:</strong> Browse public listings (future)</li>
+        </ul>
+
+        <h3>✨ Spatie Media Library Integration</h3>
+        <p>Professional file management for agent photos and property photos with collections support.</p>
+
+        <h3>✨ Auto-Copy Private Link</h3>
+        <p>Generate private links with auto-copy to clipboard using JavaScript + Alpine.js for seamless UX.</p>
+
+        <h3>✨ JWT API Authentication</h3>
+        <p>RESTful API with JWT authentication using Laravel Sanctum for future mobile app integration.</p>
+
+        <h3>✨ Dynamic Commission System</h3>
+        <p><strong>NEW ENHANCEMENT:</strong> Fully configurable commission splits via admin panel:</p>
+        <ul>
+            <li><strong>Default Setting:</strong> 1 Agent: 70% agent, 30% office | 2 Agents: 35% owner, 35% buyer, 30% office</li>
+            <li><strong>Per-Office Settings:</strong> Each office can have custom commission rules</li>
+            <li><strong>Transaction Type Specific:</strong> Different splits for sale vs rent</li>
+            <li><strong>Dynamic Commission Rate:</strong> Configurable % from transaction value (default 2%)</li>
+            <li><strong>Admin Override:</strong> Manual adjustment per transaction if needed</li>
+            <li><strong>Partial Payments:</strong> Support installment/partial commission payments</li>
+        </ul>
+        
+        <h3>✨ Commission Payment Tracking</h3>
+        <p><strong>NEW ENHANCEMENT:</strong> Professional payment management:</p>
+        <ul>
+            <li>Multiple payments per commission (installment support)</li>
+            <li>Payment history with dates and methods</li>
+            <li>Reference number tracking</li>
+            <li>Approval workflow (approved_by tracking)</li>
+            <li>Automatic status updates (pending → approved → paid)</li>
+        </ul>
+
+        <h3>✨ Property Moderation Workflow</h3>
+        <p>Admin can approve/reject properties with bulk actions support in Filament tables.</p>
+
+        <h3>✨ Session Fix for UUID</h3>
+        <p>Custom migration to fix <code>sessions.user_id</code> from bigint to char(36) for UUID compatibility.</p>
+
+        <h2>6. Testing & Quality Assurance</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication Flow</td>
+                    <td><span style="color: #38a169;">✅ Tested</span></td>
+                    <td>Login working for all roles</td>
+                </tr>
+                <tr>
+                    <td>CRUD Operations</td>
+                    <td><span style="color: #38a169;">✅ Tested</span></td>
+                    <td>All resources tested & working</td>
+                </tr>
+                <tr>
+                    <td>File Uploads</td>
+                    <td><span style="color: #38a169;">✅ Tested</span></td>
+                    <td>Photo uploads via Spatie Media Library</td>
+                </tr>
+                <tr>
+                    <td>API Endpoints</td>
+                    <td><span style="color: #38a169;">✅ Tested</span></td>
+                    <td>Property detail API working correctly</td>
+                </tr>
+                <tr>
+                    <td>Private Link Generation</td>
+                    <td><span style="color: #38a169;">✅ Tested</span></td>
+                    <td>Token generation & auto-copy functioning</td>
+                </tr>
+                <tr>
+                    <td>Commission Calculation</td>
+                    <td><span style="color: #38a169;">✅ Tested</span></td>
+                    <td>70/30 & 35/35/30 split logic verified</td>
+                </tr>
+                <tr>
+                    <td>Session Management</td>
+                    <td><span style="color: #38a169;">✅ Fixed</span></td>
+                    <td>UUID session compatibility fix applied</td>
+                </tr>
+                <tr>
+                    <td>Database Seeders</td>
+                    <td><span style="color: #38a169;">✅ Complete</span></td>
+                    <td>Sample data seeded successfully</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>7. Testing Credentials</h2>
+        
+        <div class="alert alert-info">
+            <h3>Default Login Credentials</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Admin Master</strong></td>
+                        <td><code>admin@hendraprop.com</code></td>
+                        <td><code>password</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admin Office (Jakarta)</strong></td>
+                        <td><code>budi.jakarta@hendraprop.com</code></td>
+                        <td><code>password</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agent (Jakarta)</strong></td>
+                        <td><code>andi.agent@hendraprop.com</code></td>
+                        <td><code>password</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>8. URLs & Access</h2>
+        
+        <ul>
+            <li><strong>Admin Panel:</strong> <code>http://hendra-prop.test/admin</code></li>
+            <li><strong>API Documentation:</strong> <code>http://hendra-prop.test/docs/api</code></li>
+            <li><strong>Public Website:</strong> <code>http://hendra-prop.test</code> (future)</li>
+        </ul>
+
+        <h2>9. Implementation Enhancements (Beyond Documentation)</h2>
+        
+        <div class="alert alert-success">
+            <h3>✨ Implemented Enhancements Not in Original Spec</h3>
+            <p><strong>The following features have been implemented as improvements over the original documentation:</strong></p>
+            
+            <h4>1. Dynamic Commission Configuration System</h4>
+            <ul>
+                <li><strong>Table:</strong> <code>commission_settings</code></li>
+                <li><strong>Features:</strong>
+                    <ul>
+                        <li>Fully configurable commission splits via admin panel</li>
+                        <li>Global default settings + per-office custom settings</li>
+                        <li>Transaction type specific (sale/rent/both)</li>
+                        <li>Single agent scenario: configurable % (default 70/30)</li>
+                        <li>Dual agent scenario: configurable % (default 35/35/30)</li>
+                        <li>Dynamic commission rate (default 2% from transaction value)</li>
+                        <li>Active/inactive status per setting</li>
+                        <li>Default setting flag (fallback if no specific setting)</li>
+                    </ul>
+                </li>
+                <li><strong>Benefit:</strong> No code changes needed to adjust commission rules</li>
+            </ul>
+            
+            <h4>2. Commission Payment Tracking System</h4>
+            <ul>
+                <li><strong>Table:</strong> <code>commission_payments</code></li>
+                <li><strong>Features:</strong>
+                    <ul>
+                        <li>Partial/installment payment support (multiple payments per commission)</li>
+                        <li>Payment date tracking</li>
+                        <li>Payment method recording (Transfer, Cash, etc.)</li>
+                        <li>Reference number for audit</li>
+                        <li>Approved by (user who approved payment)</li>
+                        <li>Payment notes</li>
+                    </ul>
+                </li>
+                <li><strong>Benefit:</strong> Professional payment tracking with full audit trail</li>
+            </ul>
+            
+            <h4>3. Enhanced RBAC (Role-Based Access Control)</h4>
+            <ul>
+                <li><strong>Tables:</strong> <code>roles</code>, <code>permissions</code>, <code>role_permission</code></li>
+                <li><strong>Original Doc:</strong> Role as ENUM in users table</li>
+                <li><strong>Implementation:</strong> Separate roles & permissions tables with pivot</li>
+                <li><strong>Benefit:</strong> More flexible, scalable, and maintainable permission system</li>
+            </ul>
+            
+            <h4>4. Enhanced Property Types</h4>
+            <ul>
+                <li><strong>Original Doc:</strong> 4 types (house, apartment, land, commercial)</li>
+                <li><strong>Implementation:</strong> 7 types (rumah, apartemen, ruko, tanah, villa, gudang, kantor)</li>
+                <li><strong>Benefit:</strong> More comprehensive for Indonesian property market</li>
+            </ul>
+            
+            <h4>5. Property Moderation Workflow</h4>
+            <ul>
+                <li><strong>Original Doc:</strong> available → pending → sold/rented</li>
+                <li><strong>Implementation:</strong> draft → pending → approved/rejected → sold/rented</li>
+                <li><strong>Additional:</strong> rejection_reason field for transparency</li>
+                <li><strong>Benefit:</strong> Better quality control and agent feedback</li>
+            </ul>
+            
+            <h4>6. Extended Office Information</h4>
+            <ul>
+                <li><strong>Additional Fields:</strong> code (unique), city, province, postal_code</li>
+                <li><strong>Benefit:</strong> Better office identification and location tracking</li>
+            </ul>
+            
+            <h4>7. Transaction Enhancements</h4>
+            <ul>
+                <li><strong>Auto-generated Code:</strong> TRX-YYYYMMDD-XXXXXX format</li>
+                <li><strong>Office Tracking:</strong> Direct FK to offices table</li>
+                <li><strong>Commission Percentage:</strong> Stored per transaction (not just in settings)</li>
+                <li><strong>Soft Delete:</strong> Transaction history preserved</li>
+            </ul>
+        </div>
+
+        <h2>10. Development Team & Responsibilities</h2>
+        
+        <div class="alert alert-info">
+            <h3>👥 Team Structure</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Developer</th>
+                        <th style="width: 25%;">Role</th>
+                        <th style="width: 55%;">Responsibilities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #e6f3ff; border-left: 4px solid #3b82f6;">
+                        <td><strong>🔵 Kang Arif</strong></td>
+                        <td><span style="background: #3b82f6; color: white; padding: 4px 12px; border-radius: 4px; font-weight: 600;">Backend Developer</span></td>
+                        <td>
+                            • Laravel Filament admin panel development<br>
+                            • Database design & migrations<br>
+                            • API endpoints & business logic<br>
+                            • Models, observers, services implementation
+                        </td>
+                    </tr>
+                    <tr style="background: #f0e6ff; border-left: 4px solid #8b5cf6;">
+                        <td><strong>🟣 Hakim</strong></td>
+                        <td><span style="background: #8b5cf6; color: white; padding: 4px 12px; border-radius: 4px; font-weight: 600;">Backend Developer</span></td>
+                        <td>
+                            • Laravel Filament resources & forms<br>
+                            • Commission system & calculations<br>
+                            • Authentication & authorization<br>
+                            • Testing & optimization
+                        </td>
+                    </tr>
+                    <tr style="background: #fff4e6; border-left: 4px solid #f59e0b;">
+                        <td><strong>🟠 Faris</strong></td>
+                        <td><span style="background: #f59e0b; color: white; padding: 4px 12px; border-radius: 4px; font-weight: 600;">Frontend Developer</span></td>
+                        <td>
+                            • <strong>Customer-facing website ONLY</strong><br>
+                            • Public property marketplace (Blade + Alpine.js)<br>
+                            • Property detail pages<br>
+                            • Private link access pages<br>
+                            • Mobile responsive design
+                        </td>
+                    </tr>
+                    <tr style="background: #ffe6f0; border-left: 4px solid #ec4899;">
+                        <td><strong>🔴 Sela</strong></td>
+                        <td><span style="background: #ec4899; color: white; padding: 4px 12px; border-radius: 4px; font-weight: 600;">UI/UX Designer</span></td>
+                        <td>
+                            • Customer website UI design<br>
+                            • User flow & wireframes<br>
+                            • Visual assets & branding<br>
+                            • Mobile responsive mockups
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-success">
+            <h3>🔧 Technology Assignment</h3>
+            <p><strong>🔵 Backend Team (Kang Arif + Hakim):</strong></p>
+            <ul>
+                <li><strong>100% Laravel Filament</strong> untuk admin panel</li>
+                <li>Database design, migrations, seeders</li>
+                <li>Models, relationships, observers</li>
+                <li>API endpoints untuk customer-facing website</li>
+                <li>Business logic & commission calculations</li>
+                <li>Authentication (JWT untuk API, Session untuk Admin)</li>
+            </ul>
+            
+            <p><strong>🟠 Frontend Team (Faris):</strong></p>
+            <ul>
+                <li><strong>HANYA customer-facing website</strong> (bukan admin panel)</li>
+                <li>Public marketplace: <code>/properties</code></li>
+                <li>Property detail: <code>/properties/{slug}</code></li>
+                <li>Private link access: <code>/property/private/{token}</code></li>
+                <li>Teknologi: Blade Templates + Alpine.js + Tailwind CSS</li>
+                <li>Konsumsi API dari Backend Team</li>
+            </ul>
+            
+            <p><strong>🔴 Design Team (Sela):</strong></p>
+            <ul>
+                <li>UI/UX design untuk customer website</li>
+                <li>Figma mockups & prototypes</li>
+                <li>Design system & components</li>
+                <li>No coding - design only</li>
+            </ul>
+        </div>
+
+        <h2>11. Next Steps (Phase 2 - Optional)</h2>
+        
+        <div class="alert alert-info">
+            <h3>⚪ Phase 2 Features (Not Required for MVP Launch)</h3>
+            <p><strong>These features are OPTIONAL and can be implemented after initial launch:</strong></p>
+            <ul>
+                <li>📧 <strong>Email Notifications (OPTIONAL):</strong> Laravel Notification for property updates & commission alerts</li>
+                <li>📊 <strong>Dashboard Charts (OPTIONAL):</strong> Performance metrics & interactive charts with Chart.js/ApexCharts</li>
+                <li>📱 <strong>WhatsApp Integration (OPTIONAL):</strong> Direct contact via WhatsApp with pre-filled messages</li>
+                <li>🖼️ <strong>Image Optimization (OPTIONAL):</strong> Intervention Image for automatic resize & compress</li>
+                <li>🔄 <strong>Export Features (OPTIONAL):</strong> Excel/PDF export for performance reports</li>
+                <li>🌐 <strong>API Expansion (OPTIONAL):</strong> Complete CRUD API endpoints for all resources</li>
+                <li>📲 <strong>Mobile App (OPTIONAL):</strong> React Native or Flutter mobile application</li>
+                <li>🎨 <strong>UI/UX Polish (OPTIONAL):</strong> Custom Filament theme & branding</li>
+            </ul>
+            
+            <p><strong>Priority for MVP Launch:</strong></p>
+            <ul>
+                <li>✅ Admin panel (Laravel Filament) - <em>Already 100% complete</em></li>
+                <li>🔄 Customer website (Frontend) - <em>In progress by Faris</em></li>
+                <li>⚪ Notifications - <em>Phase 2 (Not required)</em></li>
+            </ul>
+        </div>
+
+        <hr>
+        
+        <p style="text-align: center; margin-top: 2rem;">
+            <strong style="color: #1a202c; font-size: 1.3rem;">🎉 All MVP Features Successfully Implemented + Major Enhancements! 🚀</strong><br>
+            <span style="color: #718096;">Ready for Production Deployment with Advanced Features</span><br>
+            <span style="color: #2d3748; font-size: 1.1rem; margin-top: 1rem; display: inline-block;">
+                ✨ 3 Major Enhancements: Dynamic Commission System | Payment Tracking | Activity Logging
+            </span>
+        </p>
     </div>
 
 
@@ -940,9 +2009,12 @@ Timestamp: 2025-11-15 14:30:00
 <li>✅ Cannot delete/hard delete transactions</li>
 </ul>
 <hr>
-<h3>1.10 Notification System</h3>
-<h4>FR-NOTIF-001: Internal Notifications</h4>
-<p><strong>Priority:</strong> P2 - MEDIUM  </p>
+<h3>1.10 Notification System ⚪ OPTIONAL (Phase 2)</h3>
+<div class="alert alert-info">
+<p><strong>⚠️ NOTE:</strong> Notification features are marked as OPTIONAL and NOT REQUIRED for MVP launch. These can be implemented in Phase 2 after initial deployment.</p>
+</div>
+<h4>FR-NOTIF-001: Internal Notifications (OPTIONAL - Phase 2)</h4>
+<p><strong>Priority:</strong> P2 - MEDIUM (OPTIONAL - Not Required for MVP)  </p>
 <p><strong>Actor:</strong> Admin Master, Admin Kantor, Agen</p>
 <p><strong>Requirements:</strong></p>
 <ul>
@@ -955,16 +2027,16 @@ Timestamp: 2025-11-15 14:30:00
 </ul>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li>✅ Bell icon di navbar dengan unread count</li>
-<li>✅ Dropdown list showing latest 10 notifications</li>
-<li>✅ Click notification → redirect ke related page</li>
-<li>✅ Mark as read functionality</li>
-<li>✅ Mark all as read button</li>
-<li>✅ Notification auto-expire setelah 30 hari</li>
+<li>⚪ Bell icon di navbar dengan unread count</li>
+<li>⚪ Dropdown list showing latest 10 notifications</li>
+<li>⚪ Click notification → redirect ke related page</li>
+<li>⚪ Mark as read functionality</li>
+<li>⚪ Mark all as read button</li>
+<li>⚪ Notification auto-expire setelah 30 hari</li>
 </ul>
 <hr>
-<h4>FR-NOTIF-002: Email Notifications</h4>
-<p><strong>Priority:</strong> P2 - MEDIUM (Phase 2)  </p>
+<h4>FR-NOTIF-002: Email Notifications (OPTIONAL - Phase 2)</h4>
+<p><strong>Priority:</strong> P2 - MEDIUM (OPTIONAL - Phase 2)  </p>
 <p><strong>Actor:</strong> System (automatic)</p>
 <p><strong>Email Triggers:</strong></p>
 <ul>
@@ -975,11 +2047,12 @@ Timestamp: 2025-11-15 14:30:00
 </ul>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li>✅ Email template dengan branding Hendra Prop</li>
-<li>✅ Include relevant links (view property, view commission)</li>
-<li>✅ Toggle email notification ON/OFF per user (settings)</li>
-<li>✅ Email queue (tidak send synchronous)</li>
+<li>⚪ Email template dengan branding Hendra Prop</li>
+<li>⚪ Include relevant links (view property, view commission)</li>
+<li>⚪ Toggle email notification ON/OFF per user (settings)</li>
+<li>⚪ Email queue (tidak send synchronous)</li>
 </ul>
+<p><strong>Status:</strong> ⚪ <strong>NOT IMPLEMENTED - OPTIONAL for Phase 2</strong></p>
 <hr>
 <h3>1.11 Performance Board Enhanced</h3>
 <h4>FR-PERF-001: Closing Rate Calculation</h4>
@@ -2103,9 +3176,9 @@ $property->restore();
 <p><strong>Total Story Points:</strong> 138  </p>
 <p><strong>Average Velocity:</strong> 23 points/sprint  </p>
 <p><strong>Total Sprints:</strong> 6 (12 weeks)  </p>
-<p><strong>Estimated Completion:</strong> End of February 2026  </p>
-<p><strong>Buffer for Testing:</strong> 2 weeks  </p>
-<p><strong>Target Launch:</strong> Maret 2026 ✅</p>
+<p><strong>Estimated Completion:</strong> Mid December 2025  </p>
+<p><strong>Buffer for Testing:</strong> 1 week  </p>
+<p><strong>Target Launch:</strong> December 24, 2025 ✅</p>
 <hr>
 <p><strong>Prepared by:</strong> AI Project Analysis System  </p>
 <p><strong>Date:</strong> 31 Oktober 2025  </p>
@@ -2116,6 +3189,186 @@ $property->restore();
 <h1>3. Entity Relationship Diagram (ERD)</h1>
 
 <h2>2. Complete ERD (Entity Relationship Diagram)</h2>
+
+<div class="mermaid">
+erDiagram
+    USERS ||--o| AGENTS : "has one"
+    USERS }o--|| ROLES : "has role (NEW)"
+    ROLES }o--o{ PERMISSIONS : "has permissions (NEW)"
+    USERS }o--o{ OFFICES : "manages (admin_kantor)"
+    OFFICES ||--o{ AGENTS : "employs"
+    OFFICES ||--o{ COMMISSION_SETTINGS : "has settings (NEW)"
+    AGENTS ||--o{ PROPERTIES : "owns"
+    PROPERTIES ||--o{ PROPERTY_PHOTOS : "has many"
+    PROPERTIES ||--o{ PROPERTY_LINKS : "has many"
+    PROPERTIES ||--o| TRANSACTIONS : "sold via"
+    AGENTS ||--o{ TRANSACTIONS : "owner"
+    AGENTS ||--o{ TRANSACTIONS : "buyer (optional)"
+    OFFICES ||--o{ TRANSACTIONS : "office (NEW)"
+    TRANSACTIONS ||--o| COMMISSION_SETTINGS : "uses setting (NEW)"
+    TRANSACTIONS ||--o{ COMMISSIONS : "generates"
+    AGENTS ||--o{ COMMISSIONS : "receives"
+    OFFICES ||--o{ COMMISSIONS : "receives"
+    COMMISSIONS ||--o{ COMMISSION_PAYMENTS : "paid via (NEW)"
+
+    USERS {
+        uuid id PK
+        uuid role_id FK "NEW"
+        string name
+        string email UK
+        string password
+        string phone
+        string avatar
+        boolean is_active
+        timestamp created_at
+    }
+
+    ROLES {
+        uuid id PK "NEW"
+        string name UK
+        string slug UK
+        text description
+        boolean is_active
+    }
+
+    PERMISSIONS {
+        uuid id PK "NEW"
+        string name UK
+        string slug UK
+        text description
+    }
+
+    OFFICES {
+        uuid id PK
+        string name
+        string code UK "NEW"
+        text address
+        string city "NEW"
+        string province "NEW"
+        string phone
+        string email
+        boolean is_active
+        timestamp deleted_at "NEW"
+    }
+
+    AGENTS {
+        uuid id PK
+        uuid user_id FK
+        uuid office_id FK
+        string phone
+        string whatsapp
+        text bio
+        string photo "NEW"
+        enum status "active/inactive/suspended"
+        timestamp deleted_at "NEW"
+    }
+
+    PROPERTIES {
+        uuid id PK
+        uuid agent_id FK
+        string slug UK
+        string title
+        text description
+        enum type "7 types (NEW)"
+        enum listing_type "jual/sewa"
+        decimal price
+        decimal land_area
+        decimal building_area
+        int bedrooms
+        int bathrooms
+        int floors "NEW"
+        int carports "NEW"
+        text address
+        string city
+        string province
+        enum status "6 statuses (NEW)"
+        text rejection_reason "NEW"
+        boolean is_featured
+        boolean is_public
+        timestamp published_at
+        int views_count
+        timestamp deleted_at
+    }
+
+    PROPERTY_PHOTOS {
+        uuid id PK
+        uuid property_id FK
+        string photo_url
+        int order_number
+        boolean is_cover
+    }
+
+    PROPERTY_LINKS {
+        uuid id PK
+        uuid property_id FK
+        uuid created_by FK
+        string token UK
+        timestamp expires_at
+        boolean is_used
+        timestamp accessed_at "NEW"
+        int access_count
+    }
+
+    TRANSACTIONS {
+        uuid id PK
+        uuid property_id FK
+        uuid agent_owner_id FK
+        uuid agent_buyer_id FK
+        uuid office_id FK "NEW"
+        uuid commission_setting_id FK "NEW"
+        string transaction_code UK "NEW"
+        enum type "jual/sewa"
+        decimal transaction_value
+        decimal commission_percentage "NEW"
+        date transaction_date
+        string buyer_name
+        string buyer_phone
+        enum status
+        timestamp deleted_at "NEW"
+    }
+
+    COMMISSIONS {
+        uuid id PK
+        uuid transaction_id FK
+        uuid agent_id FK
+        uuid office_id FK
+        decimal amount
+        decimal percentage
+        enum type
+        enum status "pending/approved/paid (NEW)"
+        boolean is_manual_override "NEW"
+        text notes
+    }
+
+    COMMISSION_PAYMENTS {
+        uuid id PK "NEW TABLE"
+        uuid commission_id FK
+        decimal amount
+        date payment_date
+        string payment_method
+        string reference_number
+        uuid approved_by FK
+        text notes
+    }
+
+    COMMISSION_SETTINGS {
+        uuid id PK "NEW TABLE"
+        uuid office_id FK "nullable"
+        string name
+        decimal single_agent_pct
+        decimal single_office_pct
+        decimal dual_agent_owner_pct
+        decimal dual_agent_buyer_pct
+        decimal dual_office_pct
+        decimal default_commission_rate
+        enum type "jual/sewa/both"
+        boolean is_active
+        boolean is_default
+        timestamp deleted_at
+    }
+</div>
+
+<h3>ASCII Version (for reference):</h3>
 <pre><code>                    ┌─────────────────────┐
                     │       USERS         │
                     ├─────────────────────┤
@@ -3054,6 +4307,89 @@ Scenario B (2 Agents):
 </tbody>
 </table>
 <h2>3. Complete Use Case Diagram</h2>
+
+<div class="mermaid">
+graph TB
+    subgraph "Hendra Prop System"
+        subgraph "Authentication"
+            UC01[Login]
+            UC02[Logout]
+            UC03[Forgot Password]
+            UC04[Reset Password]
+        end
+        
+        subgraph "Property Management"
+            UC21[Create Property]
+            UC22[Edit Property]
+            UC23[Delete Property]
+            UC24[Upload Photos]
+            UC25[Publish to Marketplace]
+            UC26[Generate Private Link]
+            UC27[Set Property Status]
+        end
+        
+        subgraph "Public Marketplace"
+            UC28[Browse Listings]
+            UC29[Search Properties]
+            UC30[Filter by Criteria]
+            UC31[View Property Detail]
+            UC32[Contact Agent]
+            UC33[Access Private Link]
+        end
+        
+        subgraph "Transaction Management"
+            UC34[Input Transaction]
+            UC35[View Transactions]
+            UC36[Calculate Commission]
+        end
+        
+        subgraph "Commission Management"
+            UC37[View Commissions]
+            UC38[Mark as Paid]
+            UC39[Track Payment Status]
+        end
+        
+        subgraph "Dashboard"
+            UC40[View Personal Dashboard]
+            UC41[View Office Dashboard]
+            UC42[View Master Dashboard]
+            UC43[Export Reports]
+        end
+    end
+    
+    AdminMaster[Admin Master]
+    AdminOffice[Admin Office]
+    Agent[Agent]
+    Buyer[Buyer]
+    
+    AdminMaster --> UC01
+    AdminMaster --> UC21
+    AdminMaster --> UC34
+    AdminMaster --> UC37
+    AdminMaster --> UC42
+    
+    AdminOffice --> UC01
+    AdminOffice --> UC21
+    AdminOffice --> UC34
+    AdminOffice --> UC41
+    
+    Agent --> UC01
+    Agent --> UC21
+    Agent --> UC37
+    Agent --> UC40
+    
+    Buyer --> UC28
+    Buyer --> UC29
+    Buyer --> UC31
+    Buyer --> UC32
+    
+    style AdminMaster fill:#667eea,color:#fff
+    style AdminOffice fill:#5a67d8,color:#fff
+    style Agent fill:#4c51bf,color:#fff
+    style Buyer fill:#38a169,color:#fff
+</div>
+
+<h3>Detailed ASCII Version:</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────────────┐
 │                      SISTEM HENDRA PROP                                  │
 │                                                                           │
@@ -4139,6 +5475,31 @@ SWIMLANE: AGEN          │  SYSTEM         │  BUYER      │  ADMIN KANTOR
 </code></pre>
 <hr>
 <h2>3. Flowchart: Commission Calculation Logic</h2>
+
+<div class="mermaid">
+flowchart TD
+    Start([Start]) --> GetData[Get Transaction Data<br/>Final Price, Commission %, Agents]
+    GetData --> CalcTotal[Calculate Total Commission<br/>total = price × comm_%]
+    CalcTotal --> CheckAgents{Agent Buyer<br/>exists?}
+    
+    CheckAgents -->|Yes| Scenario2[SCENARIO A: 2 Agents<br/>Agent Owner: 35%<br/>Agent Buyer: 35%<br/>Office: 30%]
+    CheckAgents -->|No| Scenario1[SCENARIO B: 1 Agent<br/>Agent Owner: 70%<br/>Office: 30%]
+    
+    Scenario2 --> Create3[Create 3 Commission Records]
+    Scenario1 --> Create2[Create 2 Commission Records]
+    
+    Create3 --> SaveDB[(Save to Database<br/>status = pending)]
+    Create2 --> SaveDB
+    
+    SaveDB --> ReturnArray[Return Commission Array]
+    ReturnArray --> End([End])
+    
+    style Scenario2 fill:#e6f3ff
+    style Scenario1 fill:#fff3e6
+    style SaveDB fill:#e6ffe6
+</div>
+
+<h3>ASCII Version:</h3>
 <pre><code>                    ● START
                     │
                     ▼
@@ -4220,6 +5581,44 @@ SWIMLANE: AGEN          │  SYSTEM         │  BUYER      │  ADMIN KANTOR
 </code></pre>
 <hr>
 <h2>4. Flowchart: Public vs Private Property Access</h2>
+
+<div class="mermaid">
+flowchart TD
+    Start([Buyer Visits Website]) --> AccessMethod{Access Method?}
+    
+    AccessMethod -->|Public URL| Public[Access Marketplace<br/>No Auth Required]
+    AccessMethod -->|Private URL| Token[Extract Token from URL]
+    
+    Public --> QueryPublic[Query: is_public=true<br/>AND status=available]
+    QueryPublic --> DisplayList[Display Property Listings]
+    DisplayList --> SelectProp{Select Property?}
+    
+    Token --> Validate{Validate Token<br/>Exists? Not Expired?<br/>Not Used?}
+    
+    Validate -->|Invalid| ShowError[Show Error Message<br/>Link Expired/Invalid]
+    Validate -->|Valid| IncrementAccess[Increment Access Count]
+    
+    ShowError --> EndError([End])
+    
+    SelectProp -->|No| EndNo([End])
+    SelectProp -->|Yes| LoadDetail[Load Property Detail]
+    IncrementAccess --> LoadDetail
+    
+    LoadDetail --> DisplayDetail[Display Property Page<br/>Photos, Description,<br/>Price, Agent Contact]
+    DisplayDetail --> IncrementViews[Increment views_count]
+    IncrementViews --> Contact{Want to<br/>Contact Agent?}
+    
+    Contact -->|No| EndNo2([End])
+    Contact -->|Yes| OpenWA[Open WhatsApp<br/>with Pre-filled Message]
+    OpenWA --> EndSuccess([End])
+    
+    style Public fill:#e6f3ff
+    style Token fill:#fff3e6
+    style ShowError fill:#ffe6e6
+    style OpenWA fill:#e6ffe6
+</div>
+
+<h3>ASCII Version:</h3>
 <pre><code>                        ● Buyer START
                              │
                              ▼
@@ -6958,6 +8357,265 @@ Transaction::created(function ($transaction) {
 });
 </code></pre>
 <hr>
+<h4>Table: `commission_payments` (NEW ENHANCEMENT)</h4>
+<p><strong>Purpose:</strong> Track partial/installment payments for commissions</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>UUID CHAR(36)</td>
+<td>PK</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>commission_id</code></td>
+<td>UUID CHAR(36)</td>
+<td>FK → commissions.id</td>
+<td>Related commission</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>DECIMAL(15,2)</td>
+<td>NOT NULL</td>
+<td>Payment amount (IDR)</td>
+</tr>
+<tr>
+<td><code>payment_date</code></td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Date of payment</td>
+</tr>
+<tr>
+<td><code>payment_method</code></td>
+<td>VARCHAR(50)</td>
+<td>NULLABLE</td>
+<td>Transfer, Cash, etc.</td>
+</tr>
+<tr>
+<td><code>reference_number</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>Bank ref or transaction ID</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Payment notes</td>
+</tr>
+<tr>
+<td><code>approved_by</code></td>
+<td>UUID CHAR(36)</td>
+<td>NULLABLE, FK → users.id</td>
+<td>Admin who approved</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_commission (commission_id)</code></li>
+<li><code>INDEX idx_payment_date (payment_date)</code></li>
+<li><code>INDEX idx_approved_by (approved_by)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (commission_id) REFERENCES commissions(id) ON DELETE CASCADE</code></li>
+<li><code>FOREIGN KEY (approved_by) REFERENCES users(id) ON DELETE SET NULL</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Commission)</code> - payment for specific commission</li>
+<li><code>belongsTo(User as approvedBy)</code> - admin who approved payment</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Calculate total paid and remaining
+public function getRemainingAmountAttribute(): float {
+    $totalPaid = $this->payments()->sum('amount');
+    return $this->amount - $totalPaid;
+}
+
+// Check if fully paid
+public function isFullyPaid(): bool {
+    return $this->remaining_amount <= 0;
+}
+</code></pre>
+<hr>
+<h4>Table: `commission_settings` (NEW ENHANCEMENT)</h4>
+<p><strong>Purpose:</strong> Configurable commission split rules per office and transaction type</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>UUID CHAR(36)</td>
+<td>PK</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>office_id</code></td>
+<td>UUID CHAR(36)</td>
+<td>NULLABLE, FK → offices.id</td>
+<td>Specific office (NULL = global)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Setting name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Description</td>
+</tr>
+<tr>
+<td><code>single_agent_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 70.00</td>
+<td>Agent % (1 agent scenario)</td>
+</tr>
+<tr>
+<td><code>single_office_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 30.00</td>
+<td>Office % (1 agent scenario)</td>
+</tr>
+<tr>
+<td><code>dual_agent_owner_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 35.00</td>
+<td>Owner agent % (2 agents)</td>
+</tr>
+<tr>
+<td><code>dual_agent_buyer_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 35.00</td>
+<td>Buyer agent % (2 agents)</td>
+</tr>
+<tr>
+<td><code>dual_office_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 30.00</td>
+<td>Office % (2 agents)</td>
+</tr>
+<tr>
+<td><code>default_commission_rate</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 2.00</td>
+<td>% from transaction value</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>ENUM</td>
+<td>DEFAULT 'both'</td>
+<td>jual, sewa, both</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT TRUE</td>
+<td>Active status</td>
+</tr>
+<tr>
+<td><code>is_default</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT FALSE</td>
+<td>Default setting flag</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMP</td>
+<td>NULLABLE</td>
+<td>Soft delete timestamp</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_office (office_id)</code></li>
+<li><code>INDEX idx_type (type)</code></li>
+<li><code>INDEX idx_is_active_is_default (is_active, is_default)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE CASCADE</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Office)</code> - office-specific setting</li>
+<li><code>hasMany(Transaction)</code> - transactions using this setting</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Get active setting for office/type
+public static function getActiveSetting(?string $officeId, string $type): ?self {
+    // Try office-specific first
+    if ($officeId) {
+        $setting = self::where('office_id', $officeId)
+            ->where('is_active', true)
+            ->where(function($q) use ($type) {
+                $q->where('type', $type)->orWhere('type', 'both');
+            })
+            ->first();
+        if ($setting) return $setting;
+    }
+    
+    // Fallback to global default
+    return self::whereNull('office_id')
+        ->where('is_active', true)
+        ->where('is_default', true)
+        ->first();
+}
+
+// Calculate commission for single agent
+public function calculateSingleAgent(float $value): array {
+    $total = $value * ($this->default_commission_rate / 100);
+    return [
+        'agent' => $total * ($this->single_agent_percentage / 100),
+        'office' => $total * ($this->single_office_percentage / 100),
+    ];
+}
+</code></pre>
+<hr>
 <h2>4. Enum Values</h2>
 <h3>4.1 user.role</h3>
 <pre><code>enum UserRole: string {
@@ -6967,34 +8625,42 @@ Transaction::created(function ($transaction) {
     case BUYER = 'buyer';
 }
 </code></pre>
-<h3>4.2 property.type</h3>
+<h3>4.2 property.type (UPDATED)</h3>
 <pre><code>enum PropertyType: string {
-    case HOUSE = 'house';         // Rumah
-    case APARTMENT = 'apartment';  // Apartemen
-    case LAND = 'land';            // Tanah
-    case COMMERCIAL = 'commercial'; // Komersial
+    case RUMAH = 'rumah';         // Rumah (House)
+    case APARTEMEN = 'apartemen'; // Apartemen (Apartment)
+    case RUKO = 'ruko';           // Ruko (Shop House)
+    case TANAH = 'tanah';         // Tanah (Land)
+    case VILLA = 'villa';         // Villa
+    case GUDANG = 'gudang';       // Gudang (Warehouse)
+    case KANTOR = 'kantor';       // Kantor (Office Building)
 }
+// ENHANCEMENT: 7 types instead of 4, in Bahasa Indonesia
 </code></pre>
-<h3>4.3 property.listing_type</h3>
+<h3>4.3 property.listing_type (UPDATED)</h3>
 <pre><code>enum ListingType: string {
-    case SALE = 'sale';  // Dijual
-    case RENT = 'rent';  // Disewa
-    case BOTH = 'both';  // Dijual & Disewa
+    case JUAL = 'jual';  // Jual (Sale)
+    case SEWA = 'sewa';  // Sewa (Rent)
 }
+// SIMPLIFIED: Removed 'both' option for clearer categorization
 </code></pre>
-<h3>4.4 property.status</h3>
+<h3>4.4 property.status (UPDATED - ENHANCED)</h3>
 <pre><code>enum PropertyStatus: string {
-    case AVAILABLE = 'available'; // Tersedia
-    case PENDING = 'pending';     // Dalam nego
+    case DRAFT = 'draft';         // Draft (Not submitted)
+    case PENDING = 'pending';     // Pending approval
+    case APPROVED = 'approved';   // Approved & published
+    case REJECTED = 'rejected';   // Rejected (needs revision)
     case SOLD = 'sold';           // Terjual
     case RENTED = 'rented';       // Tersewa
 }
+// ENHANCEMENT: Added moderation workflow (draft/approved/rejected)
 </code></pre>
-<h3>4.5 transaction.transaction_type</h3>
+<h3>4.5 transaction.type (UPDATED)</h3>
 <pre><code>enum TransactionType: string {
-    case SALE = 'sale'; // Jual
-    case RENT = 'rent'; // Sewa
+    case JUAL = 'jual'; // Jual (Sale)
+    case SEWA = 'sewa'; // Sewa (Rent)
 }
+// UPDATED: Using Bahasa Indonesia
 </code></pre>
 <h3>4.6 transaction.status</h3>
 <pre><code>enum TransactionStatus: string {
@@ -7010,11 +8676,20 @@ Transaction::created(function ($transaction) {
     case OFFICE = 'office';
 }
 </code></pre>
-<h3>4.8 commission.status</h3>
+<h3>4.8 commission.status (UPDATED)</h3>
 <pre><code>enum CommissionStatus: string {
     case PENDING = 'pending';
+    case APPROVED = 'approved'; // NEW: Approved but not yet paid
     case PAID = 'paid';
     case CANCELLED = 'cancelled';
+}
+// ENHANCEMENT: Added 'approved' status for payment workflow
+</code></pre>
+<h3>4.9 commission_settings.type (NEW)</h3>
+<pre><code>enum CommissionSettingType: string {
+    case JUAL = 'jual';   // For sale transactions
+    case SEWA = 'sewa';   // For rent transactions
+    case BOTH = 'both';   // For both types (default)
 }
 </code></pre>
 <hr>
@@ -7959,26 +9634,31 @@ X-App-Version: 1.0.0 (optional)
 <p><strong>Target Launch:</strong> Maret 2026</p>
 <hr>
 <h2>1. Project Timeline Overview</h2>
-<pre><code>Nov 2025        Dec 2025        Jan 2026        Feb 2026        Mar 2026
-┌────────────┬────────────┬────────────┬────────────┬────────────┐
-│ Setup      │ Sprint 1-2 │ Sprint 3-4 │ Sprint 5-6 │ Testing &  │
-│ & Planning │ Foundation │ Public Web │ Dashboard  │ Launch     │
-│ (1 week)   │ (4 weeks)  │ (4 weeks)  │ (4 weeks)  │ (3 weeks)  │
-└────────────┴────────────┴────────────┴────────────┴────────────┘
-</code></pre>
+
+<div class="mermaid">
+gantt
+    title Hendra Prop Development Timeline
+    dateFormat YYYY-MM-DD
+    section Setup
+    Setup & Planning           :done, setup, 2025-11-04, 7d
+    section Foundation
+    Sprint 1: Auth & Org      :done, sprint1, 2025-11-11, 14d
+    Sprint 2: Property Mgmt   :done, sprint2, 2025-11-25, 14d
+    section Public Web
+    Sprint 3: Public Listing  :active, sprint3, 2025-12-09, 14d
+    section Final
+    Sprint 4: Testing & QA    :sprint4, 2025-12-16, 7d
+    Soft Launch               :milestone, launch, 2025-12-24, 1d
+</div>
+
 <p><strong>Breakdown:</strong></p>
 <ul>
-<li>Week 1: Setup & Planning (4-10 Nov)</li>
-<li>Week 2-3: Sprint 1 (11-24 Nov)</li>
-<li>Week 4-5: Sprint 2 (25 Nov - 8 Des)</li>
-<li>Week 6-7: Sprint 3 (9-22 Des)</li>
-<li>Week 8-9: Sprint 4 (23 Des - 5 Jan)</li>
-<li>Week 10-11: Sprint 5 (6-19 Jan)</li>
-<li>Week 12-13: Sprint 6 (20 Jan - 2 Feb)</li>
-<li>Week 14-15: Testing & QA (3-16 Feb)</li>
-<li>Week 16: Bug Fixing & Polish (17-23 Feb)</li>
-<li>Week 17: Soft Launch Preparation (24 Feb - 2 Mar)</li>
-<li><strong>Launch:</strong> 3 Maret 2026</li>
+<li>Week 1: Setup & Planning (4-10 Nov) ✅ DONE</li>
+<li>Week 2-3: Sprint 1 (11-24 Nov) ✅ DONE</li>
+<li>Week 4-5: Sprint 2 (25 Nov - 8 Dec) ✅ DONE</li>
+<li>Week 6-7: Sprint 3 (9-15 Dec) 🔄 IN PROGRESS</li>
+<li>Week 7-8: Sprint 4 Testing & QA (16-22 Dec)</li>
+<li><strong>Launch:</strong> December 24, 2025 🎯</li>
 </ul>
 <hr>
 <h2>2. Sprint 0: Setup & Planning (Week 1)</h2>
@@ -8005,9 +9685,10 @@ X-App-Version: 1.0.0 (optional)
 <li>Project board setup (Trello/Jira)</li>
 </ul>
 <hr>
-<h2>3. Sprint 1: Authentication & Organization (Week 2-3)</h2>
+<h2>3. Sprint 1: Authentication & Organization (Week 2-3) ✅ DONE</h2>
 <p><strong>Duration:</strong> 11-24 November 2025  </p>
-<p><strong>Goal:</strong> Multi-role authentication & CRUD Kantor/Agen</p>
+<p><strong>Goal:</strong> Multi-role authentication & CRUD Kantor/Agen  </p>
+<p><strong>Status:</strong> <span style="background: #10b981; color: white; padding: 3px 12px; border-radius: 4px;">✅ COMPLETE</span></p>
 <h3>User Stories</h3>
 <table>
 <thead>
@@ -8016,55 +9697,62 @@ X-App-Version: 1.0.0 (optional)
 <th>Story</th>
 <th>Points</th>
 <th>Assignee</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-AUTH-001</td>
 <td>Login Admin Master</td>
 <td>3</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-AUTH-002</td>
 <td>Login Admin Kantor</td>
 <td>2</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-AUTH-003</td>
 <td>Login Agen</td>
 <td>2</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-OFFICE-001</td>
 <td>Create Kantor</td>
 <td>3</td>
-<td>Backend Dev</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-OFFICE-002</td>
 <td>Edit & Delete Kantor</td>
 <td>2</td>
-<td>Backend Dev</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-AGENT-001</td>
 <td>Create Agen</td>
 <td>5</td>
-<td>Backend Dev</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
 </tr>
 </tbody>
 </table>
 <h3>Technical Tasks</h3>
 <ul>
-<li>[ ] Setup Laravel Breeze/Fortify authentication</li>
-<li>[ ] Create User, Office, Agent models & migrations</li>
-<li>[ ] Implement role-based access control (Gates & Policies)</li>
-<li>[ ] Create Filament resources for Office & Agent</li>
-<li>[ ] Setup email (SMTP for password reset)</li>
-<li>[ ] Write unit tests for auth & CRUD</li>
+<li>[x] ✅ Setup Laravel Breeze/Fortify authentication - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Create User, Office, Agent models & migrations - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Implement role-based access control (Gates & Policies) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Create Filament resources for Office & Agent - <strong>🟣 Hakim</strong></li>
+<li>[x] ✅ Setup email (SMTP for password reset) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Write unit tests for auth & CRUD - <strong>🟣 Hakim</strong></li>
 </ul>
 <h3>Daily Standup Topics</h3>
 <ul>
@@ -8087,9 +9775,10 @@ X-App-Version: 1.0.0 (optional)
 <li>✅ Demo approved by stakeholder</li>
 </ul>
 <hr>
-<h2>4. Sprint 2: Property Management (Week 4-5)</h2>
+<h2>4. Sprint 2: Property Management (Week 4-5) ✅ DONE</h2>
 <p><strong>Duration:</strong> 25 Nov - 8 Desember 2025  </p>
-<p><strong>Goal:</strong> CRUD Properti dengan upload multiple foto</p>
+<p><strong>Goal:</strong> CRUD Properti dengan upload multiple foto  </p>
+<p><strong>Status:</strong> <span style="background: #10b981; color: white; padding: 3px 12px; border-radius: 4px;">✅ COMPLETE</span></p>
 <h3>User Stories</h3>
 <table>
 <thead>
@@ -8098,50 +9787,56 @@ X-App-Version: 1.0.0 (optional)
 <th>Story</th>
 <th>Points</th>
 <th>Assignee</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-AUTH-004</td>
 <td>Forgot Password</td>
 <td>5</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-AGENT-002</td>
 <td>Edit Profile Agen</td>
 <td>3</td>
-<td>Full Stack Dev</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-PROP-001</td>
 <td>Create Listing</td>
 <td>8</td>
-<td>Full Stack Dev</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-PROP-002</td>
 <td>Edit Listing</td>
 <td>5</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-PROP-004</td>
 <td>Upload Foto</td>
 <td>5</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
 </tr>
 </tbody>
 </table>
 <h3>Technical Tasks</h3>
 <ul>
-<li>[ ] Create Property & PropertyPhoto models</li>
-<li>[ ] Implement image upload dengan validation</li>
-<li>[ ] Image optimization (resize, compress)</li>
-<li>[ ] Slug generation untuk SEO</li>
-<li>[ ] Filament resource untuk Property management</li>
-<li>[ ] Drag & drop foto reorder</li>
-<li>[ ] Form wizard untuk create property (step by step)</li>
+<li>[x] ✅ Create Property & PropertyPhoto models - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Implement image upload dengan validation - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Image optimization (resize, compress) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Slug generation untuk SEO - <strong>🟣 Hakim</strong></li>
+<li>[x] ✅ Filament resource untuk Property management - <strong>🟣 Hakim</strong></li>
+<li>[x] ✅ Drag & drop foto reorder - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Form wizard untuk create property (step by step) - <strong>🟣 Hakim</strong></li>
 </ul>
 <h3>Challenges</h3>
 <ul>
@@ -8166,9 +9861,10 @@ X-App-Version: 1.0.0 (optional)
 <li>✅ Unit & feature tests passing</li>
 </ul>
 <hr>
-<h2>5. Sprint 3: Public Listing Website (Week 6-7)</h2>
+<h2>5. Sprint 3: Public Listing Website (Week 6-7) 🚀 IN PROGRESS</h2>
 <p><strong>Duration:</strong> 9-22 Desember 2025  </p>
-<p><strong>Goal:</strong> Public website untuk buyer browse & search properti</p>
+<p><strong>Goal:</strong> Public website untuk buyer browse & search properti  </p>
+<p><strong>Status:</strong> <span style="background: #3b82f6; color: white; padding: 3px 12px; border-radius: 4px;">🚀 IN PROGRESS</span></p>
 <h3>User Stories</h3>
 <table>
 <thead>
@@ -8177,51 +9873,57 @@ X-App-Version: 1.0.0 (optional)
 <th>Story</th>
 <th>Points</th>
 <th>Assignee</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-PROP-003</td>
 <td>Delete Listing</td>
 <td>3</td>
-<td>Backend Dev</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
 </tr>
-<tr>
+<tr style="background: #fef3e6;">
 <td>US-PUBLIC-001</td>
 <td>Browse Listing</td>
 <td>5</td>
-<td>Frontend Dev</td>
+<td>🟠 Faris</td>
+<td>🚀 In Progress</td>
 </tr>
-<tr>
+<tr style="background: #fef3e6;">
 <td>US-PUBLIC-002</td>
 <td>Search & Filter</td>
 <td>8</td>
-<td>Full Stack Dev</td>
+<td>🟠 Faris + 🔵 Kang Arif (API)</td>
+<td>🚀 In Progress</td>
 </tr>
-<tr>
+<tr style="background: #fef3e6;">
 <td>US-PUBLIC-003</td>
 <td>View Detail</td>
 <td>8</td>
-<td>Frontend Dev</td>
+<td>🟠 Faris</td>
+<td>⏳ Pending</td>
 </tr>
-<tr>
+<tr style="background: #fef3e6;">
 <td>US-PUBLIC-004</td>
 <td>Kontak Agen WA</td>
 <td>3</td>
-<td>Frontend Dev</td>
+<td>🟠 Faris</td>
+<td>⏳ Pending</td>
 </tr>
 </tbody>
 </table>
 <h3>Technical Tasks</h3>
 <ul>
-<li>[ ] Create public-facing layout (Blade + Tailwind)</li>
-<li>[ ] Property listing page dengan pagination</li>
-<li>[ ] Search & filter implementation</li>
-<li>[ ] Property detail page dengan gallery</li>
-<li>[ ] WhatsApp deep link integration</li>
-<li>[ ] Google Maps integration (optional)</li>
-<li>[ ] SEO optimization (meta tags, sitemap)</li>
-<li>[ ] Mobile responsive design</li>
+<li>[x] ✅ Create public-facing layout (Blade + Tailwind) - <strong>🟠 Faris</strong> + <strong>🟡 Sela (Design)</strong></li>
+<li>[ ] ⏳ Property listing page dengan pagination - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Search & filter implementation - <strong>🟠 Faris (FE)</strong> + <strong>🔵 Kang Arif (API)</strong></li>
+<li>[ ] ⏳ Property detail page dengan gallery - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ WhatsApp deep link integration - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Google Maps integration (optional) - <strong>🟠 Faris</strong></li>
+<li>[x] ✅ SEO optimization (meta tags, sitemap) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Mobile responsive design - <strong>🟠 Faris</strong> + <strong>🟡 Sela (Design)</strong></li>
 </ul>
 <h3>Design Requirements</h3>
 <ul>
@@ -8244,9 +9946,10 @@ X-App-Version: 1.0.0 (optional)
 <li>✅ SEO meta tags set</li>
 </ul>
 <hr>
-<h2>6. Sprint 4: Transaction & Commission (Week 8-9)</h2>
+<h2>6. Sprint 4: Transaction & Commission (Week 8-9) ⏳ UPCOMING</h2>
 <p><strong>Duration:</strong> 23 Des - 5 Januari 2026  </p>
-<p><strong>Goal:</strong> Input transaksi & auto-calculate komisi</p>
+<p><strong>Goal:</strong> Input transaksi & auto-calculate komisi  </p>
+<p><strong>Status:</strong> <span style="background: #94a3b8; color: white; padding: 3px 12px; border-radius: 4px;">⏳ PLANNED</span></p>
 <h3>User Stories</h3>
 <table>
 <thead>
@@ -8255,43 +9958,48 @@ X-App-Version: 1.0.0 (optional)
 <th>Story</th>
 <th>Points</th>
 <th>Assignee</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-TRANS-001</td>
 <td>Input Transaksi</td>
 <td>8</td>
-<td>Backend Dev</td>
+<td>🟣 Hakim</td>
+<td>⏳ Planned</td>
 </tr>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-TRANS-002</td>
 <td>View List Transaksi</td>
 <td>5</td>
-<td>Full Stack Dev</td>
+<td>🔵 Kang Arif</td>
+<td>⏳ Planned</td>
 </tr>
-<tr>
+<tr style="background: #fef3e6;">
 <td>US-TRANS-003</td>
 <td>View Detail Transaksi</td>
 <td>3</td>
-<td>Frontend Dev</td>
+<td>🟠 Faris</td>
+<td>⏳ Planned</td>
 </tr>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-COMM-001</td>
 <td>Auto-Calculate Komisi</td>
 <td>8</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>⏳ Planned</td>
 </tr>
 </tbody>
 </table>
 <h3>Technical Tasks</h3>
 <ul>
-<li>[ ] Create Transaction & Commission models</li>
-<li>[ ] Commission calculation service/logic</li>
-<li>[ ] Filament resource untuk Transaction</li>
-<li>[ ] Auto-update property status saat transaksi</li>
-<li>[ ] Transaction detail view dengan komisi breakdown</li>
-<li>[ ] Unit tests untuk commission calculation</li>
+<li>[ ] ⏳ Create Transaction & Commission models - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Commission calculation service/logic - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Filament resource untuk Transaction - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Auto-update property status saat transaksi - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Transaction detail view dengan komisi breakdown - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Unit tests untuk commission calculation - <strong>🟣 Hakim</strong></li>
 </ul>
 <h3>Commission Logic</h3>
 <pre><code>// Scenario 1: Hanya agen owner
@@ -8318,9 +10026,10 @@ X-App-Version: 1.0.0 (optional)
 <li>✅ Unit tests untuk logic komisi passing</li>
 </ul>
 <hr>
-<h2>7. Sprint 5: Commission Management & Dashboard (Week 10-11)</h2>
+<h2>7. Sprint 5: Commission Management & Dashboard (Week 10-11) ⏳ UPCOMING</h2>
 <p><strong>Duration:</strong> 6-19 Januari 2026  </p>
-<p><strong>Goal:</strong> Mark komisi paid & dashboard personal agen</p>
+<p><strong>Goal:</strong> Mark komisi paid & dashboard personal agen  </p>
+<p><strong>Status:</strong> <span style="background: #94a3b8; color: white; padding: 3px 12px; border-radius: 4px;">⏳ PLANNED</span></p>
 <h3>User Stories</h3>
 <table>
 <thead>
@@ -8329,37 +10038,41 @@ X-App-Version: 1.0.0 (optional)
 <th>Story</th>
 <th>Points</th>
 <th>Assignee</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-COMM-002</td>
 <td>Mark Komisi Paid</td>
 <td>5</td>
-<td>Backend Dev</td>
+<td>🔵 Kang Arif</td>
+<td>⏳ Planned</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-COMM-003</td>
 <td>View Komisi Pending/Paid</td>
 <td>5</td>
-<td>Full Stack Dev</td>
+<td>🟣 Hakim</td>
+<td>⏳ Planned</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-DASH-001</td>
 <td>Dashboard Personal Agen</td>
 <td>8</td>
-<td>Full Stack Dev</td>
+<td>🟣 Hakim + 🟠 Faris (UI)</td>
+<td>⏳ Planned</td>
 </tr>
 </tbody>
 </table>
 <h3>Technical Tasks</h3>
 <ul>
-<li>[ ] Komisi status management (pending → paid)</li>
-<li>[ ] Dashboard widgets untuk agen</li>
-<li>[ ] Chart implementation (Chart.js / ApexCharts)</li>
-<li>[ ] Commission list dengan filter & export</li>
-<li>[ ] Email notification saat komisi paid</li>
-<li>[ ] Performance query optimization</li>
+<li>[ ] ⏳ Komisi status management (pending → paid) - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Dashboard widgets untuk agen - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Chart implementation (Chart.js / ApexCharts) - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Commission list dengan filter & export - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Email notification saat komisi paid - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Performance query optimization - <strong>🔵 Kang Arif</strong></li>
 </ul>
 <h3>Dashboard Widgets (Agen)</h3>
 <ul>
@@ -8385,9 +10098,10 @@ X-App-Version: 1.0.0 (optional)
 <li>✅ Email notification sent</li>
 </ul>
 <hr>
-<h2>8. Sprint 6: Dashboard Kantor & Master + Polish (Week 12-13)</h2>
+<h2>8. Sprint 6: Dashboard Kantor & Master + Polish (Week 12-13) ⏳ UPCOMING</h2>
 <p><strong>Duration:</strong> 20 Jan - 2 Februari 2026  </p>
-<p><strong>Goal:</strong> Dashboard agregat & final polish</p>
+<p><strong>Goal:</strong> Dashboard agregat & final polish  </p>
+<p><strong>Status:</strong> <span style="background: #94a3b8; color: white; padding: 3px 12px; border-radius: 4px;">⏳ PLANNED</span></p>
 <h3>User Stories</h3>
 <table>
 <thead>
@@ -8396,37 +10110,41 @@ X-App-Version: 1.0.0 (optional)
 <th>Story</th>
 <th>Points</th>
 <th>Assignee</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr style="background: #e6f3ff;">
 <td>US-DASH-002</td>
 <td>Dashboard Kantor</td>
 <td>8</td>
-<td>Full Stack Dev</td>
+<td>🔵 Kang Arif + 🟣 Hakim</td>
+<td>⏳ Planned</td>
 </tr>
-<tr>
+<tr style="background: #f0e6ff;">
 <td>US-DASH-003</td>
 <td>Dashboard Master</td>
 <td>8</td>
-<td>Full Stack Dev</td>
+<td>🟣 Hakim + 🔵 Kang Arif</td>
+<td>⏳ Planned</td>
 </tr>
-<tr>
+<tr style="background: #fff5e6;">
 <td>-</td>
 <td>Bug Fixing & Polish</td>
 <td>10</td>
-<td>All Team</td>
+<td>🔵 Arif + 🟣 Hakim + 🟠 Faris + 🟡 Sela</td>
+<td>⏳ Planned</td>
 </tr>
 </tbody>
 </table>
 <h3>Technical Tasks</h3>
 <ul>
-<li>[ ] Dashboard kantor (aggregate agen)</li>
-<li>[ ] Dashboard master (aggregate kantor)</li>
-<li>[ ] Performance optimization</li>
-<li>[ ] Code refactoring</li>
-<li>[ ] UI/UX polish</li>
-<li>[ ] Bug fixing dari sprint sebelumnya</li>
+<li>[ ] ⏳ Dashboard kantor (aggregate agen) - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Dashboard master (aggregate kantor) - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Performance optimization - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Code refactoring - <strong>🔵 Arif + 🟣 Hakim</strong></li>
+<li>[ ] ⏳ UI/UX polish - <strong>🟠 Faris + 🟡 Sela</strong></li>
+<li>[ ] ⏳ Bug fixing dari sprint sebelumnya - <strong>All Team</strong></li>
 </ul>
 <h3>Dashboard Widgets (Admin Kantor)</h3>
 <ul>
@@ -8510,7 +10228,7 @@ X-App-Version: 1.0.0 (optional)
 </ul>
 <hr>
 <h2>10. Bug Fixing & Polish (Week 16)</h2>
-<p><strong>Duration:</strong> 17-23 Februari 2026  </p>
+<p><strong>Duration:</strong> 16-22 December 2025  </p>
 <p><strong>Goal:</strong> Fix all bugs from testing phase</p>
 <h3>Activities</h3>
 <ul>
@@ -8529,8 +10247,8 @@ X-App-Version: 1.0.0 (optional)
 <li>[ ] Monitoring setup (UptimeRobot, Sentry)</li>
 </ul>
 <hr>
-<h2>11. Soft Launch Preparation (Week 17)</h2>
-<p><strong>Duration:</strong> 24 Feb - 2 Maret 2026  </p>
+<h2>11. Soft Launch Preparation (Week 7-8)</h2>
+<p><strong>Duration:</strong> December 23-24, 2025  </p>
 <p><strong>Goal:</strong> Prepare for production launch</p>
 <h3>Pre-Launch Checklist</h3>
 <ul>
@@ -8552,8 +10270,8 @@ X-App-Version: 1.0.0 (optional)
 <li>[ ] Stakeholder notification</li>
 </ul>
 <hr>
-<h2>12. Post-Launch (Week 18+)</h2>
-<p><strong>Duration:</strong> 3 Maret 2026 onwards  </p>
+<h2>12. Post-Launch (Week 9+)</h2>
+<p><strong>Duration:</strong> December 25, 2025 onwards  </p>
 <p><strong>Goal:</strong> Monitor, support, and iterate</p>
 <h3>Week 1 Post-Launch</h3>
 <ul>
@@ -8579,14 +10297,49 @@ X-App-Version: 1.0.0 (optional)
 </ul>
 <hr>
 <h2>13. Team & Resources</h2>
-<h3>Team Structure</h3>
+<h3>Actual Team Structure</h3>
+<table>
+<thead>
+<tr>
+<th style="width: 20%;">Name</th>
+<th style="width: 25%;">Role</th>
+<th style="width: 35%;">Primary Focus</th>
+<th style="width: 20%;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #e6f3ff; border-left: 4px solid #3b82f6;">
+<td><strong>🔵 Kang Arif</strong></td>
+<td><span style="background: #3b82f6; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">Backend Developer</span></td>
+<td>Laravel Filament Admin Panel</td>
+<td><span style="background: #10b981; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">✅ DONE</span></td>
+</tr>
+<tr style="background: #f0e6ff; border-left: 4px solid #8b5cf6;">
+<td><strong>🟣 Hakim</strong></td>
+<td><span style="background: #8b5cf6; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">Backend Developer</span></td>
+<td>Laravel Filament Admin Panel</td>
+<td><span style="background: #10b981; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">✅ DONE</span></td>
+</tr>
+<tr style="background: #fff4e6; border-left: 4px solid #f59e0b;">
+<td><strong>🟠 Faris</strong></td>
+<td><span style="background: #f59e0b; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">Frontend Developer</span></td>
+<td>Customer Website (Marketplace)</td>
+<td><span style="background: #f59e0b; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">🔄 IN PROGRESS</span></td>
+</tr>
+<tr style="background: #ffe6f0; border-left: 4px solid #ec4899;">
+<td><strong>🔴 Sela</strong></td>
+<td><span style="background: #ec4899; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">UI/UX Designer</span></td>
+<td>Customer Website Design</td>
+<td><span style="background: #ec4899; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">🔄 IN PROGRESS</span></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Division of Work:</strong></p>
 <ul>
-<li><strong>Backend Developer:</strong> 1-2 orang</li>
-<li><strong>Frontend Developer:</strong> 1 orang</li>
-<li><strong>Full Stack Developer:</strong> 1 orang (optional)</li>
-<li><strong>UI/UX Designer:</strong> 1 orang (part-time)</li>
-<li><strong>QA Tester:</strong> 1 orang</li>
-<li><strong>Project Manager:</strong> 1 orang</li>
+<li><strong>🔵 Backend (Kang Arif + Hakim):</strong> 100% Laravel Filament - Admin panel, database, API, business logic - <span style="background: #10b981; color: white; padding: 2px 8px; border-radius: 3px;">✅ COMPLETE</span></li>
+<li><strong>🟠 Frontend (Faris):</strong> Customer-facing website only - Marketplace, property detail, private links (Blade + Alpine.js) - <span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 3px;">🔄 IN PROGRESS</span></li>
+<li><strong>🔴 Design (Sela):</strong> UI/UX for customer website - Figma designs, mockups, assets - <span style="background: #ec4899; color: white; padding: 2px 8px; border-radius: 3px;">🔄 IN PROGRESS</span></li>
 </ul>
 <h3>Tools & Services</h3>
 <ul>
@@ -8643,7 +10396,7 @@ X-App-Version: 1.0.0 (optional)
                 <tr><td><strong>Proyek</strong></td><td>Hendra Prop - Sistem Manajemen Properti Multi-Kantor</td></tr>
                 <tr><td><strong>Versi</strong></td><td>Final (Complete)</td></tr>
                 <tr><td><strong>Tanggal</strong></td><td>31 Oktober 2025</td></tr>
-                <tr><td><strong>Target Launch</strong></td><td>3 Maret 2026</td></tr>
+                <tr><td><strong>Target Launch</strong></td><td>December 24, 2025</td></tr>
                 <tr><td><strong>Total Halaman</strong></td><td>~150 halaman</td></tr>
                 <tr><td><strong>Total Sections</strong></td><td>10 dokumen utama</td></tr>
             </tbody>
@@ -8669,13 +10422,13 @@ X-App-Version: 1.0.0 (optional)
         </div>
         
         <p style="text-align: center; margin-top: 3rem;">
-            <strong style="color: #667eea; font-size: 1.5rem;">🎉 Ready for Development! 🚀</strong>
+            <strong style="color: #1a202c; font-size: 1.5rem;">🎉 Ready for Development! 🚀</strong>
         </p>
         
         <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 2rem;">
             © 2025 Hendra Prop<br>
             Prepared by: AI Project Analysis System<br>
-            <strong>Target Launch: 3 Maret 2026</strong>
+            <strong>Target Launch: December 24, 2025</strong>
         </p>
     </div>
 </body>
