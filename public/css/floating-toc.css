@@ -1,0 +1,150 @@
+/**
+ * Floating TOC Styles
+ * Floating table of contents sidebar
+ */
+
+.floating-toc {
+    position: fixed;
+    right: 2rem;
+    top: 2rem;
+    width: 300px;
+    max-height: 85vh;
+    overflow: hidden;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    z-index: 999;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-toc.collapsed {
+    width: 60px;
+    right: 2rem;
+}
+
+.floating-toc.collapsed .floating-toc-content {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.floating-toc-header {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: white;
+    padding: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: border-radius 0.3s;
+    position: relative;
+    min-height: 50px;
+}
+
+.floating-toc.collapsed .floating-toc-header {
+    border-radius: 12px;
+    padding: 1rem 0.8rem;
+    justify-content: center;
+}
+
+.floating-toc.collapsed .floating-toc-header span:first-child {
+    display: none;
+}
+
+.floating-toc-header:hover {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+}
+
+.floating-toc-toggle {
+    background: rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.floating-toc-toggle:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.floating-toc-content {
+    padding: 1rem;
+    max-height: calc(85vh - 70px);
+    overflow-y: auto;
+    transition: all 0.4s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.floating-toc-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.floating-toc-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.floating-toc-content::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.floating-toc-content::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+.floating-toc .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.floating-toc .toc-list li {
+    margin: 0.3rem 0;
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.floating-toc .toc-list li:hover {
+    background: #f7fafc;
+}
+
+.floating-toc .toc-list li.active {
+    background: #1a202c;
+    transform: translateX(-4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-left: 3px solid #2d3748;
+}
+
+.floating-toc .toc-list li.active a {
+    color: white;
+    font-weight: 600;
+}
+
+.floating-toc .toc-list a {
+    text-decoration: none;
+    color: #4a5568;
+    display: block;
+    transition: color 0.2s;
+}
+
+.floating-toc .toc-title {
+    font-weight: 400;
+}
+
+

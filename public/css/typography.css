@@ -1,0 +1,83 @@
+/**
+ * Typography Styles
+ * Headings, paragraphs, lists, and text formatting
+ */
+
+h1, h2, h3, h4, h5, h6 {
+    position: relative;
+}
+
+h1 {
+    color: #1a202c;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #2d3748;
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    color: #2d3748;
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem 0;
+    border-left: 4px solid #1a202c;
+    padding-left: 1rem;
+}
+
+h3 {
+    color: #4a5568;
+    font-size: 1.4rem;
+    margin: 1.5rem 0 1rem 0;
+}
+
+h4 {
+    color: #718096;
+    font-size: 1.1rem;
+    margin: 1rem 0 0.5rem 0;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: #4a5568;
+}
+
+ul {
+    margin: 1rem 0;
+    padding-left: 2rem;
+    list-style-type: disc;
+    color: #4a5568;
+}
+
+ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+    color: #4a5568;
+}
+
+li {
+    margin: 0.4rem 0;
+    padding-left: 0.3rem;
+}
+
+/* Heading anchor links */
+.heading-link {
+    opacity: 0;
+    margin-left: 0.5rem;
+    color: #cbd5e0;
+    text-decoration: none;
+    font-size: 0.8em;
+    transition: opacity 0.2s, color 0.2s;
+    cursor: pointer;
+}
+
+h1:hover .heading-link,
+h2:hover .heading-link,
+h3:hover .heading-link,
+h4:hover .heading-link {
+    opacity: 1;
+}
+
+.heading-link:hover {
+    color: #1a202c;
+}
+
+

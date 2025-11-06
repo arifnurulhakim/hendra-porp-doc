@@ -1,0 +1,1136 @@
+<div class="content-section page-break" id="section-07">
+<h1>7. Technical Specifications & Architecture</h1>
+
+<p><strong>Dokumen Technical Specifications</strong>  </p>
+<p>Proyek: Hendra Prop - Sistem Manajemen Properti  </p>
+<p>Tanggal: 31 Oktober 2025  </p>
+<p>Versi: Final</p>
+<hr>
+<h2>1. System Architecture</h2>
+<h3>1.1 High-Level Architecture</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                        USERS                                 │
+│  Admin Master │ Admin Kantor │ Agen │ Buyer (Public)        │
+└──────────────┬──────────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   PRESENTATION LAYER                         │
+│  ┌──────────────────┐         ┌─────────────────────┐       │
+│  │  Admin Panel     │         │  Public Website     │       │
+│  │  (Filament 3)    │         │  (Blade + Alpine)   │       │
+│  └──────────────────┘         └─────────────────────┘       │
+└──────────────┬──────────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   APPLICATION LAYER                          │
+│  ┌────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ Auth       │  │ Property     │  │ Transaction  │        │
+│  │ Module     │  │ Module       │  │ Module       │        │
+│  └────────────┘  └──────────────┘  └──────────────┘        │
+│  ┌────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ User       │  │ Commission   │  │ Dashboard    │        │
+│  │ Module     │  │ Module       │  │ Module       │        │
+│  └────────────┘  └──────────────┘  └──────────────┘        │
+└──────────────┬──────────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     DATA LAYER                               │
+│  ┌──────────────────┐         ┌─────────────────────┐       │
+│  │  MySQL Database  │         │  File Storage       │       │
+│  │  (Relational)    │         │  (Local/S3)         │       │
+│  └──────────────────┘         └─────────────────────┘       │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>1.2 Technology Stack</h3>
+<h4>Backend</h4>
+<ul>
+<li><strong>Framework:</strong> Laravel 11.x</li>
+<li><strong>Language:</strong> PHP 8.2+</li>
+<li><strong>Admin Panel:</strong> Filament 3.x</li>
+<li><strong>Authentication:</strong> Laravel Breeze / Fortify</li>
+<li><strong>Authorization:</strong> Laravel Gates & Policies</li>
+<li><strong>Queue:</strong> Laravel Queue (database driver for MVP, Redis for production)</li>
+<li><strong>Cache:</strong> File cache (MVP) → Redis (production)</li>
+<li><strong>Activity Log:</strong> spatie/laravel-activitylog (audit trail)</li>
+<li><strong>Notifications:</strong> Laravel Notification (email & database)</li>
+<li><strong>Scheduler:</strong> Laravel Task Scheduling (cron jobs)</li>
+<li><strong>Export:</strong> Laravel Excel (maatwebsite/excel) & DomPDF</li>
+<li><strong>Soft Delete:</strong> Laravel SoftDeletes trait</li>
+<li><strong>Image Processing:</strong> Intervention/Image</li>
+</ul>
+<h4>Frontend</h4>
+<ul>
+<li><strong>Admin:</strong> Filament 3 (Alpine.js + Livewire)</li>
+<li><strong>Public Site:</strong> Blade Templates + Alpine.js + Tailwind CSS</li>
+<li><strong>CSS Framework:</strong> Tailwind CSS 3.x</li>
+<li><strong>Icons:</strong> Heroicons / Font Awesome</li>
+</ul>
+<h4>Database</h4>
+<ul>
+<li><strong>Primary:</strong> MySQL 8.0+</li>
+<li><strong>Alternative:</strong> PostgreSQL 15+ (jika preferred)</li>
+<li><strong>ORM:</strong> Eloquent</li>
+</ul>
+<h4>Storage</h4>
+<ul>
+<li><strong>MVP:</strong> Local storage (public/storage)</li>
+<li><strong>Production:</strong> AWS S3 / DigitalOcean Spaces / Cloudinary</li>
+</ul>
+<h4>Server & Deployment</h4>
+<ul>
+<li><strong>Web Server:</strong> Caddy (sesuai setup di workspace)</li>
+<li><strong>Server:</strong> VPS (Ubuntu 22.04 LTS)</li>
+<li><strong>Process Manager:</strong> Supervisor (untuk queue worker)</li>
+<li><strong>SSL:</strong> Let's Encrypt (via Caddy auto-https)</li>
+</ul>
+<h4>Development Tools</h4>
+<ul>
+<li><strong>Version Control:</strong> Git + GitHub/GitLab</li>
+<li><strong>Package Manager:</strong> Composer (PHP), npm (JS)</li>
+<li><strong>Code Quality:</strong> Laravel Pint, PHPStan</li>
+<li><strong>Testing:</strong> PHPUnit, Pest (optional)</li>
+</ul>
+<hr>
+<h2>2. Application Modules</h2>
+<h3>2.1 Authentication Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>User login/logout</li>
+<li>Password reset</li>
+<li>Session management</li>
+<li>Remember me functionality</li>
+</ul>
+<p><strong>Technologies:</strong></p>
+<ul>
+<li>Laravel Breeze (starter kit)</li>
+<li>Laravel Sanctum (API auth for future mobile)</li>
+</ul>
+<p><strong>Database Tables:</strong></p>
+<ul>
+<li><code>users</code></li>
+<li><code>password_reset_tokens</code></li>
+<li><code>sessions</code></li>
+</ul>
+<hr>
+<h3>2.2 Authorization Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Role-based access control (RBAC)</li>
+<li>Permission checking</li>
+<li>Policy enforcement</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<pre><code>// Roles
+enum UserRole: string {
+    case ADMIN_MASTER = 'admin_master';
+    case ADMIN_KANTOR = 'admin_kantor';
+    case AGENT = 'agent';
+    case BUYER = 'buyer';
+}
+
+// Gates
+Gate::define('manage-all-offices', function (User $user) {
+    return $user->role === UserRole::ADMIN_MASTER;
+});
+
+// Policies
+class PropertyPolicy {
+    public function update(User $user, Property $property) {
+        return $user->role === UserRole::ADMIN_MASTER
+            || ($user->role === UserRole::ADMIN_KANTOR && $user->manages($property->agent->office))
+            || ($user->role === UserRole::AGENT && $property->agent_id === $user->agent->id);
+    }
+}
+</code></pre>
+<hr>
+<h3>2.3 User Management Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>CRUD Users</li>
+<li>CRUD Offices</li>
+<li>CRUD Agents</li>
+<li>Assign relationships</li>
+</ul>
+<p><strong>Models:</strong></p>
+<ul>
+<li><code>User</code> (polymorphic: bisa Admin Master, Admin Kantor, Agent, Buyer)</li>
+<li><code>Office</code></li>
+<li><code>Agent</code> (belongsTo User, belongsTo Office)</li>
+<li><code>OfficeAdmin</code> (pivot: admin_kantor yang manage office)</li>
+</ul>
+<p><strong>Key Relationships:</strong></p>
+<pre><code>// User Model
+class User extends Authenticatable {
+    public function agent() {
+        return $this->hasOne(Agent::class);
+    }
+    
+    public function managedOffices() {
+        return $this->belongsToMany(Office::class, 'office_admins');
+    }
+}
+
+// Office Model
+class Office extends Model {
+    public function agents() {
+        return $this->hasMany(Agent::class);
+    }
+    
+    public function admins() {
+        return $this->belongsToMany(User::class, 'office_admins');
+    }
+}
+
+// Agent Model
+class Agent extends Model {
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function office() {
+        return $this->belongsTo(Office::class);
+    }
+    
+    public function properties() {
+        return $this->hasMany(Property::class, 'agent_id');
+    }
+}
+</code></pre>
+<hr>
+<h3>2.4 Property Management Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>CRUD Properties</li>
+<li>Photo upload & management</li>
+<li>Status management</li>
+<li>Public listing</li>
+</ul>
+<p><strong>Models:</strong></p>
+<ul>
+<li><code>Property</code></li>
+<li><code>PropertyPhoto</code></li>
+<li><code>PropertyType</code> (enum: Rumah, Apartemen, Tanah, Komersial)</li>
+<li><code>PropertyStatus</code> (enum: Available, Pending, Sold, Rented)</li>
+</ul>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Image upload dengan validation (max 10, max 5MB, JPG/PNG only)</li>
+<li>Image optimization (resize, compress)</li>
+<li>Slug generation untuk SEO-friendly URL</li>
+<li>Soft delete</li>
+</ul>
+<p><strong>Database Tables:</strong></p>
+<ul>
+<li><code>properties</code></li>
+<li><code>property_photos</code></li>
+</ul>
+<hr>
+<h3>2.5 Transaction Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Record transactions</li>
+<li>Link property, agents, buyer</li>
+<li>Track transaction status</li>
+</ul>
+<p><strong>Models:</strong></p>
+<ul>
+<li><code>Transaction</code></li>
+<li><code>TransactionType</code> (enum: Sale, Rent)</li>
+<li><code>TransactionStatus</code> (enum: Pending, Completed, Cancelled)</li>
+</ul>
+<p><strong>Key Relationships:</strong></p>
+<pre><code>class Transaction extends Model {
+    public function property() {
+        return $this->belongsTo(Property::class);
+    }
+    
+    public function agentOwner() {
+        return $this->belongsTo(Agent::class, 'agent_owner_id');
+    }
+    
+    public function agentBuyer() {
+        return $this->belongsTo(Agent::class, 'agent_buyer_id');
+    }
+    
+    public function commissions() {
+        return $this->hasMany(Commission::class);
+    }
+}
+</code></pre>
+<hr>
+<h3>2.6 Commission Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Calculate commission</li>
+<li>Split commission (agent vs office)</li>
+<li>Track payment status</li>
+</ul>
+<p><strong>Models:</strong></p>
+<ul>
+<li><code>Commission</code></li>
+<li><code>CommissionStatus</code> (enum: Pending, Paid, Cancelled)</li>
+</ul>
+<p><strong>Key Logic:</strong></p>
+<pre><code>class CommissionService {
+    public function calculateCommission(Transaction $transaction) {
+        $totalCommission = $transaction->final_price * $transaction->commission_percentage / 100;
+        
+        $commissions = [];
+        
+        if ($transaction->agentBuyer) {
+            // Scenario: 2 agents
+            $agentSplit = 0.35; // 35% each
+            
+            $commissions[] = [
+                'agent_id' => $transaction->agentOwner->id,
+                'amount' => $totalCommission * $agentSplit,
+                'type' => 'agent_owner'
+            ];
+            
+            $commissions[] = [
+                'agent_id' => $transaction->agentBuyer->id,
+                'amount' => $totalCommission * $agentSplit,
+                'type' => 'agent_buyer'
+            ];
+        } else {
+            // Scenario: 1 agent only
+            $commissions[] = [
+                'agent_id' => $transaction->agentOwner->id,
+                'amount' => $totalCommission * 0.70,
+                'type' => 'agent_owner'
+            ];
+        }
+        
+        // Office commission (always 30%)
+        $commissions[] = [
+            'office_id' => $transaction->agentOwner->office_id,
+            'amount' => $totalCommission * 0.30,
+            'type' => 'office'
+        ];
+        
+        return $commissions;
+    }
+}
+</code></pre>
+<hr>
+<h3>2.7 Dashboard Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Aggregate data untuk dashboard</li>
+<li>Generate charts</li>
+<li>Performance metrics</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Use Laravel Query Builder untuk aggregate</li>
+<li>Cache hasil query (TTL: 1 hour)</li>
+<li>Real-time update via Livewire</li>
+</ul>
+<p><strong>Key Metrics:</strong></p>
+<pre><code>class DashboardService {
+    public function getAgentMetrics(Agent $agent, $dateRange) {
+        return [
+            'total_listings' => $agent->properties()->active()->count(),
+            'total_omzet' => $agent->transactions()->sum('final_price'),
+            'total_commission' => $agent->commissions()->sum('amount'),
+            'commission_pending' => $agent->commissions()->pending()->sum('amount'),
+            'commission_paid' => $agent->commissions()->paid()->sum('amount'),
+        ];
+    }
+}
+</code></pre>
+<hr>
+<h3>2.8 Activity Log Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Track all important actions in the system</li>
+<li>Audit trail for compliance</li>
+<li>User activity monitoring</li>
+</ul>
+<p><strong>Package:</strong></p>
+<ul>
+<li><strong>spatie/laravel-activitylog</strong> v4.x</li>
+</ul>
+<p><strong>Installation:</strong></p>
+<pre><code>composer require spatie/activitylog
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
+php artisan migrate
+</code></pre>
+<p><strong>Implementation:</strong></p>
+<pre><code>// Automatic logging on model events
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
+class Property extends Model {
+    use LogsActivity;
+    
+    public function getActivitylogOptions(): LogOptions {
+        return LogOptions::defaults()
+            ->logOnly(['price', 'status', 'is_public', 'published_at'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+}
+
+// Manual logging
+activity()
+    ->performedOn($property)
+    ->causedBy($user)
+    ->withProperties(['old' => [...], 'new' => [...]])
+    ->log('Property price updated');
+</code></pre>
+<p><strong>Database Tables:</strong></p>
+<ul>
+<li><code>activity_log</code></li>
+</ul>
+<hr>
+<h3>2.9 Notification Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Send internal notifications (database)</li>
+<li>Send email notifications</li>
+<li>Notification preferences management</li>
+</ul>
+<p><strong>Laravel Notification Channels:</strong></p>
+<ul>
+<li><strong>Database:</strong> For in-app notifications</li>
+<li><strong>Mail:</strong> For email notifications</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<pre><code>// Create notification
+php artisan make:notification PropertyApprovedNotification
+
+// Send notification
+$agent->notify(new PropertyApprovedNotification($property));
+
+// Retrieve notifications
+$user->notifications; // All
+$user->unreadNotifications; // Unread only
+$user->markAsRead(); // Mark as read
+</code></pre>
+<p><strong>Database Tables:</strong></p>
+<ul>
+<li><code>notifications</code> (Laravel default)</li>
+</ul>
+<p><strong>Notification Types:</strong></p>
+<p>1. PropertyApproved</p>
+<p>2. PropertySold</p>
+<p>3. CommissionPaid</p>
+<p>4. PropertyNeedsReview</p>
+<hr>
+<h3>2.10 Scheduled Tasks Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Auto-expire private links</li>
+<li>Clean old notifications</li>
+<li>Generate daily reports</li>
+<li>Archive old logs</li>
+</ul>
+<p><strong>Laravel Scheduler:</strong></p>
+<pre><code>// app/Console/Kernel.php
+protected function schedule(Schedule $schedule)
+{
+    // Expire old property links
+    $schedule->command('links:expire')->hourly();
+    
+    // Clean old notifications (>30 days)
+    $schedule->command('notifications:clean')->daily()->at('02:00');
+    
+    // Cache performance metrics
+    $schedule->command('reports:cache')->daily()->at('08:00');
+    
+    // Archive activity logs (>90 days)
+    $schedule->command('logs:archive')->weekly()->sundays()->at('01:00');
+}
+</code></pre>
+<p><strong>Cron Entry (Server):</strong></p>
+<pre><code>* * * * * cd /var/www/hendra-prop && php artisan schedule:run >> /dev/null 2>&1
+</code></pre>
+<p><strong>Monitoring:</strong></p>
+<ul>
+<li>Log every task execution</li>
+<li>Send alerts on failure</li>
+<li>Track execution time</li>
+</ul>
+<hr>
+<h3>2.11 Export Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Export performance reports to Excel</li>
+<li>Export to PDF (optional)</li>
+<li>Generate downloadable reports</li>
+</ul>
+<p><strong>Packages:</strong></p>
+<ul>
+<li><strong>maatwebsite/excel</strong> v3.x (Laravel Excel)</li>
+<li><strong>barryvdh/laravel-dompdf</strong> (optional for PDF)</li>
+</ul>
+<p><strong>Installation:</strong></p>
+<pre><code>composer require maatwebsite/excel
+composer require barryvdh/laravel-dompdf
+</code></pre>
+<p><strong>Implementation:</strong></p>
+<pre><code>// Export to Excel
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PerformanceExport;
+
+return Excel::download(
+    new PerformanceExport($dateRange), 
+    'performance-report.xlsx'
+);
+
+// Export class
+class PerformanceExport implements FromCollection {
+    public function collection() {
+        return Agent::with('transactions')->get();
+    }
+}
+</code></pre>
+<hr>
+<h3>2.12 Private Link Module</h3>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Generate tokenized private links</li>
+<li>Validate link expiration</li>
+<li>Track link access</li>
+</ul>
+<p><strong>Models:</strong></p>
+<ul>
+<li><code>PropertyLink</code></li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<pre><code>class PropertyLink extends Model {
+    public function isValid(): bool {
+        return $this->expires_at > now() 
+            && (!$this->is_used || $this->access_count == 0);
+    }
+    
+    public static function generateForProperty(Property $property, int $days = 7): self {
+        return self::create([
+            'property_id' => $property->id,
+            'token' => Str::random(64),
+            'expires_at' => now()->addDays($days),
+            'created_by' => auth()->id(),
+        ]);
+    }
+    
+    public function recordAccess(): void {
+        $this->increment('access_count');
+        $this->accessed_at = $this->accessed_at ?? now();
+        $this->save();
+    }
+}
+</code></pre>
+<p><strong>Database Tables:</strong></p>
+<ul>
+<li><code>property_links</code></li>
+</ul>
+<hr>
+<h2>3. Database Design</h2>
+<h3>3.1 Entity Relationship Diagram (ERD)</h3>
+<pre><code>┌─────────────┐
+│   USERS     │
+├─────────────┤
+│ id          │
+│ name        │
+│ email       │
+│ password    │
+│ role        │
+│ created_at  │
+└──────┬──────┘
+       │
+       │ 1:1 (untuk agent)
+       │
+       ▼
+┌─────────────┐         ┌─────────────┐
+│   AGENTS    │ N:1     │   OFFICES   │
+├─────────────┤────────▶├─────────────┤
+│ id          │         │ id          │
+│ user_id     │         │ name        │
+│ office_id   │         │ address     │
+│ phone       │         │ phone       │
+│ status      │         │ email       │
+│ created_at  │         │ created_at  │
+└──────┬──────┘         └─────────────┘
+       │
+       │ 1:N
+       │
+       ▼
+┌─────────────────────┐
+│    PROPERTIES       │
+├─────────────────────┤
+│ id                  │
+│ agent_id            │
+│ title               │
+│ description         │
+│ type                │
+│ listing_type        │◀─────┐
+│ price               │      │ 1:1
+│ price_per_sqm       │      │
+│ land_area           │      │
+│ building_area       │      │
+│ address             │      │
+│ status              │      │
+│ created_at          │      │
+└──────┬──────────────┘      │
+       │                     │
+       │ 1:N                 │
+       │                     │
+       ▼                     │
+┌──────────────────┐         │
+│ PROPERTY_PHOTOS  │         │
+├──────────────────┤         │
+│ id               │         │
+│ property_id      │         │
+│ photo_url        │         │
+│ order            │         │
+│ is_cover         │         │
+└──────────────────┘         │
+                             │
+                             │
+┌────────────────────────────┘
+│
+│
+▼
+┌─────────────────────┐
+│   TRANSACTIONS      │
+├─────────────────────┤
+│ id                  │
+│ property_id         │
+│ agent_owner_id      │
+│ agent_buyer_id      │ (nullable)
+│ buyer_name          │
+│ buyer_phone         │
+│ transaction_type    │
+│ final_price         │
+│ commission_pct      │
+│ transaction_date    │
+│ status              │
+│ notes               │
+│ created_at          │
+└──────┬──────────────┘
+       │
+       │ 1:N
+       │
+       ▼
+┌─────────────────────┐
+│   COMMISSIONS       │
+├─────────────────────┤
+│ id                  │
+│ transaction_id      │
+│ agent_id            │ (nullable)
+│ office_id           │ (nullable)
+│ amount              │
+│ percentage          │
+│ type                │ (agent_owner/agent_buyer/office)
+│ status              │ (pending/paid/cancelled)
+│ paid_date           │
+│ notes               │
+│ created_at          │
+└─────────────────────┘
+</code></pre>
+<hr>
+<h3>3.2 Database Tables Detail</h3>
+<h4>Table: `users`</h4>
+<pre><code>CREATE TABLE users (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    email_verified_at TIMESTAMP NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin_master', 'admin_kantor', 'agent', 'buyer') NOT NULL,
+    phone VARCHAR(20),
+    avatar VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    remember_token VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    INDEX idx_email (email),
+    INDEX idx_role (role),
+    INDEX idx_is_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<h4>Table: `offices`</h4>
+<pre><code>CREATE TABLE offices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address TEXT,
+    phone VARCHAR(20),
+    email VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    INDEX idx_is_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<h4>Table: `office_admins` (Pivot)</h4>
+<pre><code>CREATE TABLE office_admins (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    office_id BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_office (user_id, office_id),
+    INDEX idx_user (user_id),
+    INDEX idx_office (office_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<h4>Table: `agents`</h4>
+<pre><code>CREATE TABLE agents (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    office_id BIGINT UNSIGNED NOT NULL,
+    phone VARCHAR(20),
+    whatsapp VARCHAR(20),
+    bio TEXT,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE RESTRICT,
+    UNIQUE KEY unique_user (user_id),
+    INDEX idx_office (office_id),
+    INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<h4>Table: `properties`</h4>
+<pre><code>CREATE TABLE properties (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    agent_id BIGINT UNSIGNED NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    type ENUM('house', 'apartment', 'land', 'commercial') NOT NULL,
+    listing_type ENUM('sale', 'rent', 'both') NOT NULL,
+    price DECIMAL(15, 2) NOT NULL,
+    price_per_sqm DECIMAL(15, 2),
+    land_area DECIMAL(10, 2),
+    building_area DECIMAL(10, 2),
+    bedrooms INT UNSIGNED,
+    bathrooms INT UNSIGNED,
+    address TEXT,
+    city VARCHAR(100),
+    province VARCHAR(100),
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8),
+    certificate_type VARCHAR(50),
+    status ENUM('available', 'pending', 'sold', 'rented') DEFAULT 'available',
+    is_featured BOOLEAN DEFAULT FALSE,
+    views INT UNSIGNED DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (agent_id) REFERENCES agents(id) ON DELETE RESTRICT,
+    INDEX idx_agent (agent_id),
+    INDEX idx_type (type),
+    INDEX idx_listing_type (listing_type),
+    INDEX idx_status (status),
+    INDEX idx_city (city),
+    INDEX idx_price (price),
+    FULLTEXT idx_search (title, description, address)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<h4>Table: `property_photos`</h4>
+<pre><code>CREATE TABLE property_photos (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    property_id BIGINT UNSIGNED NOT NULL,
+    photo_url VARCHAR(255) NOT NULL,
+    order_number INT UNSIGNED DEFAULT 0,
+    is_cover BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE,
+    INDEX idx_property (property_id),
+    INDEX idx_order (order_number)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<h4>Table: `transactions`</h4>
+<pre><code>CREATE TABLE transactions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    property_id BIGINT UNSIGNED NOT NULL,
+    agent_owner_id BIGINT UNSIGNED NOT NULL,
+    agent_buyer_id BIGINT UNSIGNED NULL,
+    buyer_name VARCHAR(255) NOT NULL,
+    buyer_phone VARCHAR(20),
+    buyer_email VARCHAR(255),
+    transaction_type ENUM('sale', 'rent') NOT NULL,
+    final_price DECIMAL(15, 2) NOT NULL,
+    commission_percentage DECIMAL(5, 2) DEFAULT 2.00,
+    transaction_date DATE NOT NULL,
+    status ENUM('pending', 'completed', 'cancelled') DEFAULT 'completed',
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE RESTRICT,
+    FOREIGN KEY (agent_owner_id) REFERENCES agents(id) ON DELETE RESTRICT,
+    FOREIGN KEY (agent_buyer_id) REFERENCES agents(id) ON DELETE RESTRICT,
+    INDEX idx_property (property_id),
+    INDEX idx_agent_owner (agent_owner_id),
+    INDEX idx_agent_buyer (agent_buyer_id),
+    INDEX idx_transaction_date (transaction_date),
+    INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<h4>Table: `commissions`</h4>
+<pre><code>CREATE TABLE commissions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    transaction_id BIGINT UNSIGNED NOT NULL,
+    agent_id BIGINT UNSIGNED NULL,
+    office_id BIGINT UNSIGNED NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    percentage DECIMAL(5, 2) NOT NULL,
+    type ENUM('agent_owner', 'agent_buyer', 'office') NOT NULL,
+    status ENUM('pending', 'paid', 'cancelled') DEFAULT 'pending',
+    paid_date DATE NULL,
+    payment_method VARCHAR(50),
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE,
+    FOREIGN KEY (agent_id) REFERENCES agents(id) ON DELETE RESTRICT,
+    FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE RESTRICT,
+    INDEX idx_transaction (transaction_id),
+    INDEX idx_agent (agent_id),
+    INDEX idx_office (office_id),
+    INDEX idx_status (status),
+    INDEX idx_paid_date (paid_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+</code></pre>
+<hr>
+<h2>4. API Specifications</h2>
+<h3>4.1 API Endpoints (Internal - For Future Mobile App)</h3>
+<h4>Authentication</h4>
+<pre><code>POST   /api/auth/login
+POST   /api/auth/logout
+POST   /api/auth/refresh
+GET    /api/auth/me
+</code></pre>
+<h4>Properties</h4>
+<pre><code>GET    /api/properties              - List all properties
+GET    /api/properties/{id}         - Get property detail
+POST   /api/properties              - Create property (agent/admin)
+PUT    /api/properties/{id}         - Update property
+DELETE /api/properties/{id}         - Delete property
+POST   /api/properties/{id}/photos  - Upload photos
+</code></pre>
+<h4>Agents</h4>
+<pre><code>GET    /api/agents                  - List agents
+GET    /api/agents/{id}             - Get agent detail
+GET    /api/agents/{id}/properties  - Get agent's properties
+GET    /api/agents/{id}/performance - Get agent metrics
+</code></pre>
+<h4>Transactions</h4>
+<pre><code>GET    /api/transactions            - List transactions
+POST   /api/transactions            - Create transaction
+GET    /api/transactions/{id}       - Get transaction detail
+</code></pre>
+<h4>Commissions</h4>
+<pre><code>GET    /api/commissions             - List commissions
+PUT    /api/commissions/{id}/pay    - Mark as paid
+</code></pre>
+<h3>4.2 Response Format</h3>
+<p><strong>Success Response:</strong></p>
+<pre><code>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "title": "Rumah Mewah di Jakarta Selatan",
+    "price": 5000000000
+  },
+  "message": "Property retrieved successfully"
+}
+</code></pre>
+<p><strong>Error Response:</strong></p>
+<pre><code>{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "The given data was invalid.",
+    "details": {
+      "title": ["The title field is required."],
+      "price": ["The price must be a number."]
+    }
+  }
+}
+</code></pre>
+<hr>
+<h2>5. Security Considerations</h2>
+<h3>5.1 Authentication Security</h3>
+<ul>
+<li>Password hashing: bcrypt (cost: 12)</li>
+<li>Password policy: min 8 characters, 1 uppercase, 1 number</li>
+<li>Rate limiting: 5 failed attempts → 15 min lockout</li>
+<li>Session timeout: 24 hours</li>
+<li>CSRF protection: enabled (Laravel default)</li>
+</ul>
+<h3>5.2 Authorization Security</h3>
+<ul>
+<li>Policy-based authorization for all resources</li>
+<li>Middleware protection pada setiap route</li>
+<li>Row-level security (check ownership)</li>
+<li>Audit trail untuk sensitive actions</li>
+</ul>
+<h3>5.3 Data Security</h3>
+<ul>
+<li>SQL injection prevention: Eloquent ORM</li>
+<li>XSS prevention: Blade escaping, CSP headers</li>
+<li>File upload validation: type, size, content check</li>
+<li>Image sanitization: strip EXIF data</li>
+<li>HTTPS enforcement</li>
+<li>Secure headers: HSTS, X-Frame-Options, etc.</li>
+</ul>
+<h3>5.4 Database Security</h3>
+<ul>
+<li>Prepared statements (via Eloquent)</li>
+<li>Least privilege principle untuk DB user</li>
+<li>Encrypted connection to database</li>
+<li>Regular backups with encryption</li>
+</ul>
+<hr>
+<h2>6. Performance Optimization</h2>
+<h3>6.1 Query Optimization</h3>
+<pre><code>// Eager loading untuk N+1 problem
+$properties = Property::with(['agent.user', 'photos'])
+    ->paginate(20);
+
+// Select only needed columns
+$properties = Property::select(['id', 'title', 'price', 'status'])
+    ->get();
+
+// Index semua foreign keys & frequently queried columns
+</code></pre>
+<h3>6.2 Caching Strategy</h3>
+<pre><code>// Cache listing untuk public page (TTL: 5 menit)
+$properties = Cache::remember('properties:public', 300, function() {
+    return Property::available()->with('photos')->get();
+});
+
+// Cache dashboard metrics (TTL: 1 jam)
+$metrics = Cache::remember("agent:{$agentId}:metrics", 3600, function() {
+    return DashboardService::getAgentMetrics($agentId);
+});
+</code></pre>
+<h3>6.3 Image Optimization</h3>
+<pre><code>// Resize & compress images
+use Intervention\Image\Facades\Image;
+
+Image::make($uploadedFile)
+    ->fit(1200, 800)
+    ->encode('jpg', 85)
+    ->save($path);
+
+// Generate thumbnail
+Image::make($uploadedFile)
+    ->fit(400, 300)
+    ->encode('jpg', 80)
+    ->save($thumbnailPath);
+</code></pre>
+<h3>6.4 Database Optimization</h3>
+<ul>
+<li>Index pada foreign keys</li>
+<li>Index pada frequently filtered columns (status, type, city)</li>
+<li>FULLTEXT index untuk search</li>
+<li>Query caching</li>
+<li>Connection pooling</li>
+</ul>
+<hr>
+<h2>7. Deployment Architecture</h2>
+<h3>7.1 Production Environment</h3>
+<pre><code>┌─────────────────────────────────────────┐
+│          CLOUDFLARE CDN                 │
+│  (DNS, SSL, DDoS Protection, Cache)     │
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌─────────────────────────────────────────┐
+│          VPS SERVER (Ubuntu 22.04)      │
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │  CADDY (Web Server + Auto HTTPS)  │ │
+│  └────────────┬──────────────────────┘ │
+│               │                         │
+│               ▼                         │
+│  ┌───────────────────────────────────┐ │
+│  │  PHP-FPM 8.2 (Laravel 11)         │ │
+│  └───────────────────────────────────┘ │
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │  MySQL 8.0                        │ │
+│  └───────────────────────────────────┘ │
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │  Redis (Cache & Queue)            │ │
+│  └───────────────────────────────────┘ │
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │  Supervisor (Queue Worker)        │ │
+│  └───────────────────────────────────┘ │
+│                                         │
+└─────────────────────────────────────────┘
+</code></pre>
+<h3>7.2 Deployment Steps (CI/CD)</h3>
+<pre><code># .github/workflows/deploy.yml
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+      
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+      
+      - name: Run tests
+        run: php artisan test
+      
+      - name: Deploy to server
+        run: |
+          ssh user@server 'cd /var/www/hendra-prop && git pull'
+          ssh user@server 'cd /var/www/hendra-prop && composer install --no-dev'
+          ssh user@server 'cd /var/www/hendra-prop && php artisan migrate --force'
+          ssh user@server 'cd /var/www/hendra-prop && php artisan optimize'
+          ssh user@server 'sudo systemctl reload php8.2-fpm'
+</code></pre>
+<hr>
+<h2>8. Monitoring & Logging</h2>
+<h3>8.1 Application Monitoring</h3>
+<ul>
+<li><strong>Tool:</strong> Laravel Telescope (development)</li>
+<li><strong>Tool:</strong> Sentry / Bugsnag (production error tracking)</li>
+<li><strong>Metrics:</strong> Response time, error rate, queue backlog</li>
+</ul>
+<h3>8.2 Server Monitoring</h3>
+<ul>
+<li><strong>Tool:</strong> UptimeRobot (uptime monitoring)</li>
+<li><strong>Tool:</strong> New Relic / Datadog (server metrics)</li>
+<li><strong>Alerts:</strong> Email/Slack notification untuk downtime</li>
+</ul>
+<h3>8.3 Logging</h3>
+<pre><code>// Laravel Log channels
+'channels' => [
+    'stack' => [
+        'driver' => 'stack',
+        'channels' => ['daily', 'slack'],
+    ],
+    'daily' => [
+        'driver' => 'daily',
+        'path' => storage_path('logs/laravel.log'),
+        'level' => 'debug',
+        'days' => 14,
+    ],
+    'slack' => [
+        'driver' => 'slack',
+        'url' => env('LOG_SLACK_WEBHOOK_URL'),
+        'level' => 'critical',
+    ],
+];
+</code></pre>
+<hr>
+<h2>9. Testing Strategy</h2>
+<h3>9.1 Unit Tests</h3>
+<pre><code>// Test commission calculation
+test('commission calculation with two agents', function() {
+    $transaction = Transaction::factory()->create([
+        'final_price' => 1000000000,
+        'commission_percentage' => 2.00,
+    ]);
+    
+    $commissions = CommissionService::calculate($transaction);
+    
+    expect($commissions)->toHaveCount(3)
+        ->and($commissions[0]['amount'])->toBe(7000000) // 35% agen owner
+        ->and($commissions[1]['amount'])->toBe(7000000) // 35% agen buyer
+        ->and($commissions[2]['amount'])->toBe(6000000); // 30% office
+});
+</code></pre>
+<h3>9.2 Feature Tests</h3>
+<pre><code>// Test property creation
+test('agent can create property', function() {
+    $agent = User::factory()->agent()->create();
+    
+    $response = $this->actingAs($agent)->post('/properties', [
+        'title' => 'Test Property',
+        'price' => 1000000000,
+        'type' => 'house',
+    ]);
+    
+    $response->assertCreated()
+        ->assertJson(['success' => true]);
+    
+    $this->assertDatabaseHas('properties', [
+        'title' => 'Test Property',
+        'agent_id' => $agent->agent->id,
+    ]);
+});
+</code></pre>
+<h3>9.3 Browser Tests (Dusk)</h3>
+<pre><code>// Test end-to-end listing flow
+test('buyer can view property detail', function() {
+    $property = Property::factory()->create();
+    
+    $this->browse(function (Browser $browser) use ($property) {
+        $browser->visit('/properties/' . $property->slug)
+            ->assertSee($property->title)
+            ->assertSee($property->price)
+            ->click('@contact-agent-button')
+            ->assertPathIs('/contact');
+    });
+});
+</code></pre>
+<hr>
+<h2>10. Development Workflow</h2>
+<h3>10.1 Git Branching Strategy</h3>
+<pre><code>main (production)
+  │
+  ├── develop (staging)
+  │     │
+  │     ├── feature/property-management
+  │     ├── feature/commission-calculation
+  │     ├── feature/dashboard
+  │     └── bugfix/photo-upload
+  │
+  └── hotfix/critical-bug
+</code></pre>
+<h3>10.2 Commit Convention</h3>
+<pre><code>feat: Add property photo upload
+fix: Fix commission calculation for two agents
+refactor: Refactor DashboardService
+docs: Update API documentation
+test: Add tests for TransactionService
+chore: Update dependencies
+</code></pre>
+<h3>10.3 Code Review Checklist</h3>
+<ul>
+<li>[ ] Code follows Laravel best practices</li>
+<li>[ ] All tests passing</li>
+<li>[ ] No security vulnerabilities</li>
+<li>[ ] Performance considerations addressed</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] No linter errors</li>
+</ul>
+<hr>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Date:</strong> 31 Oktober 2025  </p>
+<p><strong>Version:</strong> 1.0.0</p>
+    </div>

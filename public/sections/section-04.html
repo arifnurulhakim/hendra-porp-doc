@@ -1,0 +1,703 @@
+<div class="content-section page-break" id="section-04">
+<h1>4. Data Flow Diagram (DFD)</h1>
+
+<p><strong>Dokumen Data Flow Diagram</strong>  </p>
+<p>Proyek: Hendra Prop - Sistem Manajemen Properti  </p>
+<p>Tanggal: 31 Oktober 2025  </p>
+<p>Versi: Final</p>
+<hr>
+<h2>1. DFD Overview</h2>
+<p>Data Flow Diagram (DFD) menunjukkan bagaimana data mengalir melalui sistem, dari input pengguna hingga penyimpanan dan output. DFD ini menggunakan notasi standar dengan 4 komponen utama:</p>
+<p><strong>Notasi:</strong></p>
+<ul>
+<li><strong>External Entity (□)</strong> - Pengguna atau sistem eksternal</li>
+<li><strong>Process (○)</strong> - Proses/transformasi data</li>
+<li><strong>Data Store (═)</strong> - Database/storage</li>
+<li><strong>Data Flow (→)</strong> - Aliran data</li>
+</ul>
+<hr>
+<h2>2. DFD Level 0 (Context Diagram)</h2>
+<h3>2.1 System Context</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────────┐
+│                         SISTEM HENDRA PROP                        │
+│                    (Property Management System)                   │
+│                                                                    │
+│  Input:                                Output:                    │
+│  • Property Data                       • Listing Information      │
+│  • Transaction Data                    • Performance Reports      │
+│  • User Credentials                    • Commission Reports       │
+│  • Search Queries                      • Notifications            │
+└──────────────────────────────────────────────────────────────────┘
+         ▲                 ▲                 ▲                 ▲
+         │                 │                 │                 │
+    ┌────┴────┐       ┌────┴────┐      ┌────┴────┐      ┌────┴────┐
+    │  Admin  │       │  Admin  │      │  Agen   │      │  Buyer  │
+    │  Master │       │ Kantor  │      │ Properti│      │(Public) │
+    └─────────┘       └─────────┘      └─────────┘      └─────────┘
+</code></pre>
+<h3>2.2 External Entities</h3>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Role</th>
+<th>Interaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Admin Master</strong></td>
+<td>Super Administrator</td>
+<td>Full CRUD on all entities, view all reports</td>
+</tr>
+<tr>
+<td><strong>Admin Kantor</strong></td>
+<td>Office Manager</td>
+<td>Manage office agents & properties, view office reports</td>
+</tr>
+<tr>
+<td><strong>Agen Properti</strong></td>
+<td>Sales Agent</td>
+<td>Create listings, view personal performance</td>
+</tr>
+<tr>
+<td><strong>Buyer (Public)</strong></td>
+<td>Property Seeker</td>
+<td>Browse/search listings, contact agents</td>
+</tr>
+</tbody>
+</table>
+<h2>3. DFD Level 1 (Main Processes)</h2>
+<h3>3.1 Complete Level 1 DFD</h3>
+<pre><code>┌─────────────┐                                           ┌─────────────┐
+│   Admin     │                                           │   Buyer     │
+│   Master    │                                           │  (Public)   │
+└──────┬──────┘                                           └──────┬──────┘
+       │                                                         │
+       │ [Credentials]                            [Search Query]│
+       ▼                                                         ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                         1.0 AUTHENTICATION                              │
+│                      (Login/Logout/Verify)                              │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [User Session]
+       ▼
+   ═════════════════
+   ║ USER_SESSION  ║
+   ═════════════════
+       │
+       │ [Authenticated User Data]
+       ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                      2.0 USER MANAGEMENT                                │
+│              (CRUD Kantor, Agen, Assign Roles)                          │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [User/Office/Agent Data]
+       ▼
+   ═════════════════
+   ║  USERS_DB     ║
+   ║  OFFICES_DB   ║
+   ║  AGENTS_DB    ║
+   ═════════════════
+       │
+       │ [Agent Info]
+       ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                    3.0 PROPERTY MANAGEMENT                              │
+│           (Create Listing, Upload Photos, Publish)                      │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [Property Data + Photos]
+       ▼
+   ═════════════════════════
+   ║  PROPERTIES_DB        ║
+   ║  PROPERTY_PHOTOS_DB   ║
+   ║  PROPERTY_LINKS_DB    ║
+   ═════════════════════════
+       │                                 │
+       │ [Public Properties]             │ [Private Link]
+       ▼                                 ▼
+┌──────────────────────────┐    ┌───────────────────────┐
+│  4.0 PUBLIC MARKETPLACE  │    │ 5.0 PRIVATE VIEWING   │
+│    (Browse/Search)       │    │   (Token Access)      │
+└──────┬───────────────────┘    └───────────────────────┘
+       │                                 │
+       │ [Property View]                 │ [View Count]
+       ▼                                 ▼
+   ═════════════════
+   ║  PROPERTIES   ║ ← [Update Views]
+   ═════════════════
+       │
+       │ [Agent Contact Info]
+       ▼
+   [Buyer Contacts Agent via WA/Phone]
+       │
+       │ [Transaction Details]
+       ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   6.0 TRANSACTION MANAGEMENT                            │
+│          (Input Sale/Rent, Link Agents, Buyer Info)                     │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [Transaction Data]
+       ▼
+   ═════════════════════
+   ║  TRANSACTIONS_DB  ║
+   ═════════════════════
+       │
+       │ [Transaction Record]
+       ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   7.0 COMMISSION CALCULATION                            │
+│              (Auto-Calculate, Split 70/30 or 35/35/30)                  │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [Commission Records]
+       ▼
+   ═════════════════════
+   ║  COMMISSIONS_DB   ║
+   ═════════════════════
+       │
+       │ [Commission Data]
+       ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                    8.0 PERFORMANCE DASHBOARD                            │
+│         (Aggregate Metrics, Generate Charts, Reports)                   │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [Performance Reports]
+       ▼
+   [Admin/Agen View Dashboard]
+       │
+       │ [Activity Data]
+       ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                      9.0 ACTIVITY LOGGING                               │
+│              (Track Changes, Audit Trail)                               │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [Activity Logs]
+       ▼
+   ═════════════════════
+   ║  ACTIVITY_LOG_DB  ║
+   ═════════════════════
+       │
+       │ [Notification Triggers]
+       ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                     10.0 NOTIFICATION SYSTEM                            │
+│            (Email & Database Notifications)                             │
+└──────┬─────────────────────────────────────────────────────────────────┘
+       │ [Notifications]
+       ▼
+   ═════════════════════
+   ║  NOTIFICATIONS_DB ║
+   ═════════════════════
+       │
+       ▼
+   [User Receives Notification]
+</code></pre>
+<hr>
+<h2>4. DFD Level 2 (Detailed Processes)</h2>
+<h3>4.1 Process 3.0 - Property Management (Detailed)</h3>
+<pre><code>┌──────────────┐
+│    Agen      │
+└──────┬───────┘
+       │
+       │ [Property Input Data]
+       ▼
+┌──────────────────────────────────────────┐
+│  3.1 VALIDATE PROPERTY DATA              │
+│  (Check required fields, formats)        │
+└──────┬───────────────────────────────────┘
+       │ [Validated Data]
+       ▼
+┌──────────────────────────────────────────┐
+│  3.2 UPLOAD & OPTIMIZE PHOTOS            │
+│  (Max 10, resize, compress)              │
+└──────┬───────────────────────────────────┘
+       │ [Photos URLs]
+       ▼
+   ═════════════════════
+   ║  PROPERTY_PHOTOS  ║
+   ═════════════════════
+       │
+       │ [Property + Photos]
+       ▼
+┌──────────────────────────────────────────┐
+│  3.3 GENERATE SLUG & METADATA            │
+│  (SEO slug, timestamps)                  │
+└──────┬───────────────────────────────────┘
+       │ [Complete Property Record]
+       ▼
+┌──────────────────────────────────────────┐
+│  3.4 PUBLISH DECISION                    │
+│  (Set is_public, published_at)           │
+└──────┬───────────────────────────────────┘
+       │
+       ├─[is_public=true]──────────────────┐
+       │                                    │
+       │ [Save to DB]                       │ [Index for Search]
+       ▼                                    ▼
+   ═══════════════                  ┌──────────────┐
+   ║ PROPERTIES ║──────────────────▶│  3.5 INDEX   │
+   ═══════════════                  │  FOR SEARCH  │
+       │                            └──────────────┘
+       │ [Property Created]
+       ▼
+┌──────────────────────────────────────────┐
+│  3.6 LOG ACTIVITY                        │
+│  (Record creation in audit log)          │
+└──────┬───────────────────────────────────┘
+       │ [Activity Log Entry]
+       ▼
+   ═════════════════
+   ║ ACTIVITY_LOG  ║
+   ═════════════════
+       │
+       │ [Trigger Notification]
+       ▼
+┌──────────────────────────────────────────┐
+│  3.7 SEND NOTIFICATION                   │
+│  (Notify Admin Kantor for review)        │
+└──────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3>4.2 Process 6.0 - Transaction Management (Detailed)</h3>
+<pre><code>┌──────────────┐
+│ Admin Kantor │
+└──────┬───────┘
+       │
+       │ [Transaction Input]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.1 SELECT PROPERTY                     │
+│  (Dropdown available properties)         │
+└──────┬───────────────────────────────────┘
+       │ [Property ID]
+       ▼
+   ═══════════════
+   ║ PROPERTIES ║────────[Property Data]────┐
+   ═══════════════                           │
+                                             ▼
+┌──────────────────────────────────────────────────────┐
+│  6.2 AUTO-FILL AGENT OWNER                           │
+│  (Get agent from property.agent_id)                  │
+└──────┬───────────────────────────────────────────────┘
+       │ [Agent Owner Data]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.3 INPUT TRANSACTION DETAILS           │
+│  • Agent Buyer (optional)                │
+│  • Buyer Name & Contact                  │
+│  • Final Price                           │
+│  • Transaction Type (sale/rent)          │
+│  • Commission % (default 2%)             │
+└──────┬───────────────────────────────────┘
+       │ [Transaction Data]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.4 CALCULATE COMMISSION PREVIEW        │
+│  (Show: total, agent split, office)      │
+└──────┬───────────────────────────────────┘
+       │ [Confirmed Transaction]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.5 SAVE TRANSACTION                    │
+└──────┬───────────────────────────────────┘
+       │ [Transaction Record]
+       ▼
+   ═════════════════
+   ║ TRANSACTIONS ║
+   ═════════════════
+       │
+       │ [Transaction ID]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.6 GENERATE COMMISSIONS                │
+│  (Create records for agents & office)    │
+└──────┬───────────────────────────────────┘
+       │ [Commission Records]
+       ▼
+   ═════════════════
+   ║ COMMISSIONS  ║
+   ═════════════════
+       │
+       │ [Property ID]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.7 UPDATE PROPERTY STATUS              │
+│  (Set to sold/rented)                    │
+└──────┬───────────────────────────────────┘
+       │ [Updated Property]
+       ▼
+   ═══════════════
+   ║ PROPERTIES ║
+   ═══════════════
+       │
+       │ [Log Entry]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.8 LOG TRANSACTION                     │
+│  (Audit trail)                           │
+└──────┬───────────────────────────────────┘
+       │ [Activity Log]
+       ▼
+   ═════════════════
+   ║ ACTIVITY_LOG ║
+   ═════════════════
+       │
+       │ [Notification Triggers]
+       ▼
+┌──────────────────────────────────────────┐
+│  6.9 NOTIFY AGENTS                       │
+│  (Property sold, commission pending)     │
+└──────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3>4.3 Process 7.0 - Commission Calculation (Detailed)</h3>
+<pre><code>┌──────────────────┐
+│  Transaction     │
+│  Created Event   │
+└──────┬───────────┘
+       │ [Transaction Data]
+       ▼
+┌──────────────────────────────────────────┐
+│  7.1 GET COMMISSION PERCENTAGE           │
+│  (Default 2% or custom from transaction) │
+└──────┬───────────────────────────────────┘
+       │ [Commission %]
+       ▼
+┌──────────────────────────────────────────┐
+│  7.2 CALCULATE TOTAL COMMISSION          │
+│  (final_price × commission_percentage)   │
+└──────┬───────────────────────────────────┘
+       │ [Total Commission Amount]
+       ▼
+┌──────────────────────────────────────────┐
+│  7.3 CHECK AGENT COUNT                   │
+│  (1 agent or 2 agents?)                  │
+└──────┬───────────────────────────────────┘
+       │
+       ├─[1 Agent]────────────────┐
+       │                          │
+       │                          ▼
+       │                   ┌──────────────────────────┐
+       │                   │  7.4a SPLIT 70/30        │
+       │                   │  • Agent: 70%            │
+       │                   │  • Office: 30%           │
+       │                   └──────┬───────────────────┘
+       │                          │
+       │                          │
+       ├─[2 Agents]──────────────┐│
+       │                          ││
+       │                          ▼▼
+       │                   ┌──────────────────────────┐
+       │                   │  7.4b SPLIT 35/35/30     │
+       │                   │  • Agent Owner: 35%      │
+       │                   │  • Agent Buyer: 35%      │
+       │                   │  • Office: 30%           │
+       │                   └──────┬───────────────────┘
+       │                          │
+       ▼                          ▼
+       └──────────────┬───────────┘
+                      │ [Commission Array]
+                      ▼
+┌──────────────────────────────────────────┐
+│  7.5 CREATE COMMISSION RECORDS           │
+│  (One for each agent + one for office)   │
+└──────┬───────────────────────────────────┘
+       │ [Commission Records]
+       ▼
+   ═════════════════
+   ║ COMMISSIONS  ║
+   ═════════════════
+       │ [Status: pending]
+       ▼
+   [Agents can view in dashboard]
+</code></pre>
+<p><strong>Example Calculation:</strong></p>
+<pre><code>Transaction: Rp 1.000.000.000
+Commission %: 2%
+Total Commission: Rp 20.000.000
+
+Scenario A (1 Agent):
+→ Agent Owner: Rp 14.000.000 (70%)
+→ Office: Rp 6.000.000 (30%)
+
+Scenario B (2 Agents):
+→ Agent Owner: Rp 7.000.000 (35%)
+→ Agent Buyer: Rp 7.000.000 (35%)
+→ Office: Rp 6.000.000 (30%)
+</code></pre>
+<hr>
+<h3>4.4 Process 8.0 - Performance Dashboard (Detailed)</h3>
+<pre><code>┌──────────────┐
+│ Agen/Admin   │
+└──────┬───────┘
+       │ [Dashboard Request + Date Range]
+       ▼
+┌──────────────────────────────────────────┐
+│  8.1 IDENTIFY USER ROLE                  │
+│  (Agen: personal, Admin: office/master)  │
+└──────┬───────────────────────────────────┘
+       │ [User Role]
+       │
+       ├─[Agen]──────────────────────────┐
+       │                                  │
+       │                                  ▼
+       │                   ┌────────────────────────────┐
+       │                   │  8.2a QUERY AGENT DATA     │
+       │                   │  • Listings count          │
+       │                   │  • Transactions sum        │
+       │                   │  • Commissions sum         │
+       │                   └──────┬─────────────────────┘
+       │                          │
+       │                          │
+       ├─[Admin Kantor]──────────┐│
+       │                          ││
+       │                          ▼▼
+       │                   ┌────────────────────────────┐
+       │                   │  8.2b QUERY OFFICE DATA    │
+       │                   │  (Aggregate all agents)    │
+       │                   └──────┬─────────────────────┘
+       │                          │
+       │                          │
+       └─[Admin Master]──────────┐│
+                                  ││
+                                  ▼▼
+                          ┌────────────────────────────┐
+                          │  8.2c QUERY GLOBAL DATA    │
+                          │  (Aggregate all offices)   │
+                          └──────┬─────────────────────┘
+                                 │
+       ┌─────────────────────────┴─────────────┐
+       │                                       │
+       ▼                                       ▼
+   ═══════════════                    ═════════════════
+   ║ PROPERTIES ║                    ║ TRANSACTIONS ║
+   ═══════════════                    ═════════════════
+       │                                       │
+       └───────────────┬───────────────────────┘
+                       │ [Raw Data]
+                       ▼
+┌──────────────────────────────────────────┐
+│  8.3 CALCULATE METRICS                   │
+│  • Total Listings                        │
+│  • Total Omzet (sum final_price)         │
+│  • Total Commission                      │
+│  • Closing Rate (sold/total × 100%)     │
+└──────┬───────────────────────────────────┘
+       │ [Calculated Metrics]
+       ▼
+┌──────────────────────────────────────────┐
+│  8.4 GENERATE CHARTS DATA                │
+│  • Omzet per month (line chart)          │
+│  • Listings by status (pie chart)        │
+│  • Performance comparison (bar chart)    │
+└──────┬───────────────────────────────────┘
+       │ [Chart Data JSON]
+       ▼
+┌──────────────────────────────────────────┐
+│  8.5 CACHE RESULTS                       │
+│  (TTL: 1 hour for performance)           │
+└──────┬───────────────────────────────────┘
+       │ [Cached Metrics + Charts]
+       ▼
+   ═══════════════
+   ║ REDIS CACHE║
+   ═══════════════
+       │
+       │ [Dashboard Response]
+       ▼
+   [User Views Dashboard]
+</code></pre>
+<hr>
+<h2>5. Data Stores Detail</h2>
+<h3>5.1 Database Tables & Their Usage</h3>
+<table>
+<thead>
+<tr>
+<th>Data Store</th>
+<th>Used By Processes</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>users</strong></td>
+<td>1.0, 2.0</td>
+<td>Authentication & user management</td>
+</tr>
+<tr>
+<td><strong>offices</strong></td>
+<td>2.0</td>
+<td>Office information</td>
+</tr>
+<tr>
+<td><strong>agents</strong></td>
+<td>2.0, 3.0, 6.0</td>
+<td>Agent profiles & relationships</td>
+</tr>
+<tr>
+<td><strong>properties</strong></td>
+<td>3.0, 4.0, 5.0, 6.0, 8.0</td>
+<td>Property listings</td>
+</tr>
+<tr>
+<td><strong>property_photos</strong></td>
+<td>3.0, 4.0, 5.0</td>
+<td>Property images</td>
+</tr>
+<tr>
+<td><strong>property_links</strong></td>
+<td>5.0</td>
+<td>Private tokenized access</td>
+</tr>
+<tr>
+<td><strong>transactions</strong></td>
+<td>6.0, 7.0, 8.0</td>
+<td>Sale/rent records</td>
+</tr>
+<tr>
+<td><strong>commissions</strong></td>
+<td>7.0, 8.0</td>
+<td>Commission tracking</td>
+</tr>
+<tr>
+<td><strong>activity_log</strong></td>
+<td>9.0</td>
+<td>Audit trail</td>
+</tr>
+<tr>
+<td><strong>notifications</strong></td>
+<td>10.0</td>
+<td>User notifications</td>
+</tr>
+</tbody>
+</table>
+<h2>6. Critical Data Flows</h2>
+<h3>6.1 End-to-End: Property Listing to Commission</h3>
+<pre><code>1. Agen → [Property Data] → Process 3.0 → PROPERTIES_DB
+2. Buyer → [Search] → Process 4.0 → PROPERTIES_DB → [Results] → Buyer
+3. Buyer → [Contact] → Agen (External: WA/Phone)
+4. Admin → [Transaction] → Process 6.0 → TRANSACTIONS_DB
+5. Process 6.0 → [Trigger] → Process 7.0 → COMMISSIONS_DB
+6. Process 7.0 → [Status Update] → PROPERTIES_DB (sold/rented)
+7. Process 6.0 → [Log] → Process 9.0 → ACTIVITY_LOG_DB
+8. Process 9.0 → [Notify] → Process 10.0 → NOTIFICATIONS_DB
+9. Agen → [Dashboard] → Process 8.0 → Query COMMISSIONS_DB → [Report]
+</code></pre>
+<h3>6.2 Data Flow Summary Table</h3>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>Data</th>
+<th>To</th>
+<th>Process</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agen</td>
+<td>Property Info</td>
+<td>System</td>
+<td>3.0 Property Mgmt</td>
+</tr>
+<tr>
+<td>System</td>
+<td>Property Record</td>
+<td>PROPERTIES_DB</td>
+<td>Store</td>
+</tr>
+<tr>
+<td>Buyer</td>
+<td>Search Query</td>
+<td>System</td>
+<td>4.0 Marketplace</td>
+</tr>
+<tr>
+<td>PROPERTIES_DB</td>
+<td>Listing Results</td>
+<td>Buyer</td>
+<td>Display</td>
+</tr>
+<tr>
+<td>Admin</td>
+<td>Transaction Info</td>
+<td>System</td>
+<td>6.0 Transaction Mgmt</td>
+</tr>
+<tr>
+<td>System</td>
+<td>Transaction Record</td>
+<td>TRANSACTIONS_DB</td>
+<td>Store</td>
+</tr>
+<tr>
+<td>System</td>
+<td>Commission Data</td>
+<td>COMMISSIONS_DB</td>
+<td>7.0 Calculation</td>
+</tr>
+<tr>
+<td>System</td>
+<td>Activity Record</td>
+<td>ACTIVITY_LOG_DB</td>
+<td>9.0 Logging</td>
+</tr>
+<tr>
+<td>System</td>
+<td>Notification</td>
+<td>User</td>
+<td>10.0 Notification</td>
+</tr>
+</tbody>
+</table>
+<h2>7. Data Validation & Business Rules</h2>
+<h3>7.1 Process-Level Validation</h3>
+<p><strong>Process 3.0 - Property Management:</strong></p>
+<ul>
+<li>Validate: required fields (title, price, type, agent_id)</li>
+<li>Check: photo count ≤ 10, file size ≤ 5MB</li>
+<li>Generate: unique slug</li>
+<li>Default: status = 'available', is_public = true</li>
+</ul>
+<p><strong>Process 6.0 - Transaction Management:</strong></p>
+<ul>
+<li>Validate: property must be 'available' or 'pending'</li>
+<li>Check: agent_owner from property.agent_id</li>
+<li>Optional: agent_buyer (different from agent_owner)</li>
+<li>Auto-set: property.status = 'sold'/'rented'</li>
+</ul>
+<p><strong>Process 7.0 - Commission Calculation:</strong></p>
+<ul>
+<li>Validate: commission_percentage > 0</li>
+<li>Check: agent count (1 or 2)</li>
+<li>Calculate: split based on agent count</li>
+<li>Default: status = 'pending'</li>
+</ul>
+<hr>
+<h2>8. Performance Considerations</h2>
+<h3>8.1 Data Flow Optimization</h3>
+<p><strong>Caching Strategy:</strong></p>
+<ul>
+<li>Cache dashboard queries (TTL: 1 hour)</li>
+<li>Cache public listing (TTL: 5 minutes)</li>
+<li>Cache search results (TTL: 10 minutes)</li>
+</ul>
+<p><strong>Query Optimization:</strong></p>
+<ul>
+<li>Eager load relationships to avoid N+1</li>
+<li>Index frequently queried columns</li>
+<li>Use pagination for large result sets</li>
+</ul>
+<p><strong>Async Processing:</strong></p>
+<ul>
+<li>Image optimization → Queue</li>
+<li>Email notifications → Queue</li>
+<li>Activity logging → Queue (for bulk operations)</li>
+<li>Report generation → Queue</li>
+</ul>
+<hr>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Date:</strong> 31 Oktober 2025  </p>
+<p><strong>Version:</strong> 1.0.0  </p>
+<p><strong>Status:</strong> Ready for Development Reference</p>
+    </div>

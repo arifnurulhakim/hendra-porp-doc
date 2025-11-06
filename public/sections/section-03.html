@@ -1,0 +1,359 @@
+<div class="content-section page-break" id="section-03">
+<h1>3. Entity Relationship Diagram (ERD)</h1>
+
+<h2>2. Complete ERD (Entity Relationship Diagram)</h2>
+
+<div class="mermaid">
+erDiagram
+    USERS ||--o| AGENTS : "has one"
+    USERS }o--|| ROLES : "has role (NEW)"
+    ROLES }o--o{ PERMISSIONS : "has permissions (NEW)"
+    USERS }o--o{ OFFICES : "manages (admin_kantor)"
+    OFFICES ||--o{ AGENTS : "employs"
+    OFFICES ||--o{ COMMISSION_SETTINGS : "has settings (NEW)"
+    AGENTS ||--o{ PROPERTIES : "owns"
+    PROPERTIES ||--o{ PROPERTY_PHOTOS : "has many"
+    PROPERTIES ||--o{ PROPERTY_LINKS : "has many"
+    PROPERTIES ||--o| TRANSACTIONS : "sold via"
+    AGENTS ||--o{ TRANSACTIONS : "owner"
+    AGENTS ||--o{ TRANSACTIONS : "buyer (optional)"
+    OFFICES ||--o{ TRANSACTIONS : "office (NEW)"
+    TRANSACTIONS ||--o| COMMISSION_SETTINGS : "uses setting (NEW)"
+    TRANSACTIONS ||--o{ COMMISSIONS : "generates"
+    AGENTS ||--o{ COMMISSIONS : "receives"
+    OFFICES ||--o{ COMMISSIONS : "receives"
+    COMMISSIONS ||--o{ COMMISSION_PAYMENTS : "paid via (NEW)"
+
+    USERS {
+        uuid id PK
+        uuid role_id FK "NEW"
+        string name
+        string email UK
+        string password
+        string phone
+        string avatar
+        boolean is_active
+        timestamp created_at
+    }
+
+    ROLES {
+        uuid id PK "NEW"
+        string name UK
+        string slug UK
+        text description
+        boolean is_active
+    }
+
+    PERMISSIONS {
+        uuid id PK "NEW"
+        string name UK
+        string slug UK
+        text description
+    }
+
+    OFFICES {
+        uuid id PK
+        string name
+        string code UK "NEW"
+        text address
+        string city "NEW"
+        string province "NEW"
+        string phone
+        string email
+        boolean is_active
+        timestamp deleted_at "NEW"
+    }
+
+    AGENTS {
+        uuid id PK
+        uuid user_id FK
+        uuid office_id FK
+        string phone
+        string whatsapp
+        text bio
+        string photo "NEW"
+        enum status "active/inactive/suspended"
+        timestamp deleted_at "NEW"
+    }
+
+    PROPERTIES {
+        uuid id PK
+        uuid agent_id FK
+        string slug UK
+        string title
+        text description
+        enum type "7 types (NEW)"
+        enum listing_type "jual/sewa"
+        decimal price
+        decimal land_area
+        decimal building_area
+        int bedrooms
+        int bathrooms
+        int floors "NEW"
+        int carports "NEW"
+        text address
+        string city
+        string province
+        enum status "6 statuses (NEW)"
+        text rejection_reason "NEW"
+        boolean is_featured
+        boolean is_public
+        timestamp published_at
+        int views_count
+        timestamp deleted_at
+    }
+
+    PROPERTY_PHOTOS {
+        uuid id PK
+        uuid property_id FK
+        string photo_url
+        int order_number
+        boolean is_cover
+    }
+
+    PROPERTY_LINKS {
+        uuid id PK
+        uuid property_id FK
+        uuid created_by FK
+        string token UK
+        timestamp expires_at
+        boolean is_used
+        timestamp accessed_at "NEW"
+        int access_count
+    }
+
+    TRANSACTIONS {
+        uuid id PK
+        uuid property_id FK
+        uuid agent_owner_id FK
+        uuid agent_buyer_id FK
+        uuid office_id FK "NEW"
+        uuid commission_setting_id FK "NEW"
+        string transaction_code UK "NEW"
+        enum type "jual/sewa"
+        decimal transaction_value
+        decimal commission_percentage "NEW"
+        date transaction_date
+        string buyer_name
+        string buyer_phone
+        enum status
+        timestamp deleted_at "NEW"
+    }
+
+    COMMISSIONS {
+        uuid id PK
+        uuid transaction_id FK
+        uuid agent_id FK
+        uuid office_id FK
+        decimal amount
+        decimal percentage
+        enum type
+        enum status "pending/approved/paid (NEW)"
+        boolean is_manual_override "NEW"
+        text notes
+    }
+
+    COMMISSION_PAYMENTS {
+        uuid id PK "NEW TABLE"
+        uuid commission_id FK
+        decimal amount
+        date payment_date
+        string payment_method
+        string reference_number
+        uuid approved_by FK
+        text notes
+    }
+
+    COMMISSION_SETTINGS {
+        uuid id PK "NEW TABLE"
+        uuid office_id FK "nullable"
+        string name
+        decimal single_agent_pct
+        decimal single_office_pct
+        decimal dual_agent_owner_pct
+        decimal dual_agent_buyer_pct
+        decimal dual_office_pct
+        decimal default_commission_rate
+        enum type "jual/sewa/both"
+        boolean is_active
+        boolean is_default
+        timestamp deleted_at
+    }
+</div>
+
+<h3>ASCII Version (for reference):</h3>
+<pre><code>                    ┌─────────────────────┐
+                    │       USERS         │
+                    ├─────────────────────┤
+                    │ PK: id              │
+                    │     name            │
+                    │     email (UNIQUE)  │
+                    │     password        │
+                    │     role (ENUM)     │
+                    │     phone           │
+                    │     avatar          │
+                    │     is_active       │
+                    │     created_at      │
+                    └──────┬──────────────┘
+                           │
+          ┌────────────────┼────────────────┐
+          │                │                │
+          │ 1:1            │                │ N:M
+          │                │                │
+          ▼                │                ▼
+┌──────────────────┐       │      ┌──────────────────┐
+│     AGENTS       │       │      │  OFFICE_ADMINS   │
+├──────────────────┤       │      │  (Pivot Table)   │
+│ PK: id           │       │      ├──────────────────┤
+│ FK: user_id      │       │      │ PK: id           │
+│ FK: office_id    │       │      │ FK: user_id      │
+│     phone        │       │      │ FK: office_id    │
+│     whatsapp     │       │      └────────┬─────────┘
+│     bio          │       │               │
+│     status       │       │               │
+│     created_at   │       │               │
+└─────┬────────────┘       │               │
+      │                    │               │
+      │ N:1                │ 1:N           │ N:1
+      │                    │               │
+      ▼                    ▼               ▼
+┌─────────────────────────────────────────────────┐
+│                   OFFICES                       │
+├─────────────────────────────────────────────────┤
+│ PK: id                                          │
+│     name                                        │
+│     address                                     │
+│     phone                                       │
+│     email                                       │
+│     is_active                                   │
+│     created_at                                  │
+└─────────────────────────────────────────────────┘
+
+
+      ┌──────────────────┐
+      │     AGENTS       │ (from above)
+      └─────┬────────────┘
+            │
+            │ 1:N (owner)
+            │
+            ▼
+┌────────────────────────────────────┐
+│          PROPERTIES                │
+├────────────────────────────────────┤
+│ PK: id                             │
+│ FK: agent_id                       │
+│     slug (UNIQUE)                  │
+│     title                          │
+│     description (TEXT)             │
+│     type (ENUM)                    │
+│     listing_type (ENUM)            │
+│     price (DECIMAL)                │
+│     price_per_sqm (DECIMAL)        │
+│     land_area (DECIMAL)            │
+│     building_area (DECIMAL)        │
+│     bedrooms (INT)                 │
+│     bathrooms (INT)                │
+│     address (TEXT)                 │
+│     city                           │
+│     province                       │
+│     latitude (DECIMAL)             │
+│     longitude (DECIMAL)            │
+│     certificate_type               │
+│     status (ENUM)                  │
+│     is_featured (BOOLEAN)          │
+│     is_public (BOOLEAN)            │
+│     published_at (DATETIME)        │
+│     views_count (INT)              │
+│     created_at                     │
+│     deleted_at (DATETIME)          │
+└─────┬──────────────────────────────┘
+      │
+      │ 1:N
+      │
+      ▼
+┌────────────────────────────┐
+│    PROPERTY_PHOTOS         │
+├────────────────────────────┤
+│ PK: id                     │
+│ FK: property_id            │
+│     photo_url              │
+│     order_number           │
+│     is_cover (BOOLEAN)     │
+│     created_at             │
+└────────────────────────────┘
+
+      │ (from properties)
+      │ 1:N
+      ▼
+┌────────────────────────────┐
+│    PROPERTY_LINKS          │
+├────────────────────────────┤
+│ PK: id                     │
+│ FK: property_id            │
+│ FK: created_by (user_id)   │
+│     token (UNIQUE)         │
+│     expires_at (DATETIME)  │
+│     is_used (BOOLEAN)      │
+│     created_at             │
+└────────────────────────────┘
+
+
+┌────────────────────────────────────┐
+│          PROPERTIES                │ (from above)
+└─────┬──────────────────────────────┘
+      │
+      │ 1:1 (per transaction)
+      │
+      ▼
+┌────────────────────────────────────────────┐
+│              TRANSACTIONS                  │
+├────────────────────────────────────────────┤
+│ PK: id                                     │
+│ FK: property_id                            │
+│ FK: agent_owner_id (→ agents.id)           │
+│ FK: agent_buyer_id (→ agents.id, NULLABLE) │
+│     buyer_name                             │
+│     buyer_phone                            │
+│     buyer_email                            │
+│     transaction_type (ENUM)                │
+│     final_price (DECIMAL)                  │
+│     commission_percentage (DECIMAL)        │
+│     transaction_date (DATE)                │
+│     status (ENUM)                          │
+│     notes (TEXT)                           │
+│     created_at                             │
+└─────┬──────────────────────────────────────┘
+      │
+      │ 1:N
+      │
+      ▼
+┌────────────────────────────────────────────┐
+│              COMMISSIONS                   │
+├────────────────────────────────────────────┤
+│ PK: id                                     │
+│ FK: transaction_id                         │
+│ FK: agent_id (NULLABLE)                    │
+│ FK: office_id (NULLABLE)                   │
+│     amount (DECIMAL)                       │
+│     percentage (DECIMAL)                   │
+│     type (ENUM)                            │
+│     status (ENUM)                          │
+│     paid_date (DATE)                       │
+│     payment_method                         │
+│     notes (TEXT)                           │
+│     created_at                             │
+└────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────┐
+│              ACTIVITY_LOG                  │
+├────────────────────────────────────────────┤
+│ PK: id                                     │
+│ FK: causer_id (user_id)                    │
+│     log_name, description                  │
+│     subject_type, subject_id               │
+│     properties (JSON)                      │
+│     created_at                             │
+└────────────────────────────────────────────┘
+</code></pre>
+<hr>
+    </div>

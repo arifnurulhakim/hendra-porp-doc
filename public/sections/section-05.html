@@ -1,0 +1,1016 @@
+<div class="content-section page-break" id="section-05">
+<h1>5. Use Case Diagram & Specifications</h1>
+
+<p><strong>Dokumen Use Case Diagram & Scenarios</strong>  </p>
+<p>Proyek: Hendra Prop - Sistem Manajemen Properti  </p>
+<p>Tanggal: 31 Oktober 2025  </p>
+<p>Versi: Final</p>
+<hr>
+<h2>1. Use Case Overview</h2>
+<p>Use Case Diagram menunjukkan interaksi antara actor (pengguna) dengan sistem. Diagram ini mengidentifikasi siapa yang bisa melakukan apa dalam sistem.</p>
+<p><strong>Notasi:</strong></p>
+<ul>
+<li><strong>Actor (🧑)</strong> - Pengguna atau role</li>
+<li><strong>Use Case (○)</strong> - Fungsi/fitur sistem</li>
+<li><strong>Association (─)</strong> - Actor menggunakan use case</li>
+<li><strong>Include (««include»»)</strong> - Use case wajib memanggil use case lain</li>
+<li><strong>Extend (««extend»»)</strong> - Use case opsional dipanggil jika kondisi tertentu</li>
+<li><strong>Generalization (▲)</strong> - Inheritance/parent-child relationship</li>
+</ul>
+<hr>
+<h2>2. Actors & Their Roles</h2>
+<table>
+<thead>
+<tr>
+<th>Actor</th>
+<th>Description</th>
+<th>Primary Goals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Admin Master</strong></td>
+<td>Super administrator</td>
+<td>Manage seluruh sistem, view all reports</td>
+</tr>
+<tr>
+<td><strong>Admin Kantor</strong></td>
+<td>Office manager</td>
+<td>Manage office agents & properties</td>
+</tr>
+<tr>
+<td><strong>Agen Properti</strong></td>
+<td>Sales agent</td>
+<td>Create listings, view commissions</td>
+</tr>
+<tr>
+<td><strong>Buyer (Public)</strong></td>
+<td>Property seeker</td>
+<td>Browse & search properties</td>
+</tr>
+<tr>
+<td><strong>System</strong></td>
+<td>Automated system</td>
+<td>Run scheduled tasks, send notifications</td>
+</tr>
+</tbody>
+</table>
+<h2>3. Complete Use Case Diagram</h2>
+
+<div class="mermaid">
+graph TB
+    subgraph "Hendra Prop System"
+        subgraph "Authentication"
+            UC01[Login]
+            UC02[Logout]
+            UC03[Forgot Password]
+            UC04[Reset Password]
+        end
+        
+        subgraph "Property Management"
+            UC21[Create Property]
+            UC22[Edit Property]
+            UC23[Delete Property]
+            UC24[Upload Photos]
+            UC25[Publish to Marketplace]
+            UC26[Generate Private Link]
+            UC27[Set Property Status]
+        end
+        
+        subgraph "Public Marketplace"
+            UC28[Browse Listings]
+            UC29[Search Properties]
+            UC30[Filter by Criteria]
+            UC31[View Property Detail]
+            UC32[Contact Agent]
+            UC33[Access Private Link]
+        end
+        
+        subgraph "Transaction Management"
+            UC34[Input Transaction]
+            UC35[View Transactions]
+            UC36[Calculate Commission]
+        end
+        
+        subgraph "Commission Management"
+            UC37[View Commissions]
+            UC38[Mark as Paid]
+            UC39[Track Payment Status]
+        end
+        
+        subgraph "Dashboard"
+            UC40[View Personal Dashboard]
+            UC41[View Office Dashboard]
+            UC42[View Master Dashboard]
+            UC43[Export Reports]
+        end
+    end
+    
+    AdminMaster[Admin Master]
+    AdminOffice[Admin Office]
+    Agent[Agent]
+    Buyer[Buyer]
+    
+    AdminMaster --> UC01
+    AdminMaster --> UC21
+    AdminMaster --> UC34
+    AdminMaster --> UC37
+    AdminMaster --> UC42
+    
+    AdminOffice --> UC01
+    AdminOffice --> UC21
+    AdminOffice --> UC34
+    AdminOffice --> UC41
+    
+    Agent --> UC01
+    Agent --> UC21
+    Agent --> UC37
+    Agent --> UC40
+    
+    Buyer --> UC28
+    Buyer --> UC29
+    Buyer --> UC31
+    Buyer --> UC32
+    
+    style AdminMaster fill:#667eea,color:#fff
+    style AdminOffice fill:#5a67d8,color:#fff
+    style Agent fill:#4c51bf,color:#fff
+    style Buyer fill:#38a169,color:#fff
+</div>
+
+<h3>Detailed ASCII Version:</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                      SISTEM HENDRA PROP                                  │
+│                                                                           │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                    AUTHENTICATION                             │      │
+│  │                                                               │      │
+│  │    ○ Login                   ○ Logout                        │      │
+│  │    ○ Forgot Password         ○ Reset Password                │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│           │                                                              │
+│           │                                                              │
+│  ┌────────┼──────────────────────────────────────────────────────────┐ │
+│  │        │            PROPERTY MANAGEMENT                            │ │
+│  │        │                                                            │ │
+│  │    ○ Create Property           ○ Edit Property                    │ │
+│  │    ○ Delete Property           ○ Upload Photos                    │ │
+│  │    ○ Publish to Marketplace    ○ Generate Private Link           │ │
+│  │    ○ Set Property Status       ○ View Property List              │ │
+│  └──────────────────────────────────────────────────────────────────┘ │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                    PUBLIC MARKETPLACE                          │      │
+│  │                                                               │      │
+│  │    ○ Browse Listings           ○ Search Properties           │      │
+│  │    ○ Filter by Criteria        ○ View Property Detail        │      │
+│  │    ○ Contact Agent (WA/Phone)  ○ Access Private Link         │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                 TRANSACTION MANAGEMENT                         │      │
+│  │                                                               │      │
+│  │    ○ Input Transaction         ○ View Transactions           │      │
+│  │    ○ Edit Transaction          ○ Calculate Commission        │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                 COMMISSION MANAGEMENT                          │      │
+│  │                                                               │      │
+│  │    ○ View Commissions          ○ Mark as Paid                │      │
+│  │    ○ Track Payment Status      ○ View Commission History     │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                   PERFORMANCE DASHBOARD                        │      │
+│  │                                                               │      │
+│  │    ○ View Personal Dashboard   ○ View Office Dashboard       │      │
+│  │    ○ View Master Dashboard     ○ Export Reports              │      │
+│  │    ○ View Closing Rate         ○ Filter by Date Range        │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                    USER MANAGEMENT                             │      │
+│  │                                                               │      │
+│  │    ○ Manage Offices            ○ Manage Agents               │      │
+│  │    ○ Assign Roles              ○ Activate/Deactivate User    │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                 ACTIVITY LOG & AUDIT                           │      │
+│  │                                                               │      │
+│  │    ○ View Activity Log         ○ Search Audit Trail          │      │
+│  │    ○ Filter by User/Action     ○ Export Activity Log         │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                           │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │                    NOTIFICATIONS                               │      │
+│  │                                                               │      │
+│  │    ○ View Notifications        ○ Mark as Read                │      │
+│  │    ○ Receive Email Alerts      ○ Manage Preferences          │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+🧑 Admin Master          🧑 Admin Kantor          🧑 Agen          🧑 Buyer
+     │                        │                      │               │
+     └────────────────────────┴──────────────────────┴───────────────┘
+                  (All connect to relevant use cases above)
+</code></pre>
+<hr>
+<h2>4. Use Cases by Actor</h2>
+<h3>4.1 Admin Master Use Cases</h3>
+<pre><code>┌──────────────────┐
+│  Admin Master    │
+│      🧑         │
+└────────┬─────────┘
+         │
+         ├────────○ UC-01: Login
+         │
+         ├────────○ UC-02: Manage Offices (CRUD)
+         │           ├── Create Office
+         │           ├── Edit Office
+         │           ├── Delete Office (soft)
+         │           └── View All Offices
+         │
+         ├────────○ UC-03: Manage Agents (CRUD)
+         │           ├── Create Agent
+         │           ├── Edit Agent
+         │           ├── Assign to Office
+         │           └── Deactivate Agent
+         │
+         ├────────○ UC-04: Manage Properties
+         │           ├── View All Properties
+         │           ├── Edit Any Property
+         │           ├── Delete Property
+         │           ├── Approve Property
+         │           └── Force Unpublish
+         │
+         ├────────○ UC-05: Manage Transactions
+         │           ├── Input Transaction
+         │           ├── Edit Transaction
+         │           ├── View All Transactions
+         │           └── ««include»» Calculate Commission
+         │
+         ├────────○ UC-06: Manage Commissions
+         │           ├── View All Commissions
+         │           ├── Edit Commission Split
+         │           ├── Mark as Paid
+         │           └── Override Commission %
+         │
+         ├────────○ UC-07: View Master Dashboard
+         │           ├── View Global Metrics
+         │           ├── View All Offices Performance
+         │           ├── View All Agents Performance
+         │           └── ««extend»» Export Reports
+         │
+         ├────────○ UC-08: View Activity Log
+         │           ├── View All Activities
+         │           ├── Filter by User/Date/Action
+         │           └── ««extend»» Export Audit Trail
+         │
+         ├────────○ UC-09: Manage System Settings
+         │           ├── Configure Defaults
+         │           └── Manage Notifications
+         │
+         └────────○ UC-10: Restore Deleted Data
+                     └── Undelete Soft-Deleted Records
+</code></pre>
+<hr>
+<h3>4.2 Admin Kantor Use Cases</h3>
+<pre><code>┌──────────────────┐
+│  Admin Kantor    │
+│      🧑         │
+└────────┬─────────┘
+         │
+         ├────────○ UC-11: Login
+         │
+         ├────────○ UC-12: Manage Office Agents
+         │           ├── Create Agent (own office only)
+         │           ├── Edit Agent
+         │           └── View Office Agents
+         │
+         ├────────○ UC-13: Manage Office Properties
+         │           ├── Create Property
+         │           ├── Edit Property
+         │           ├── Delete Property
+         │           ├── Approve Property
+         │           ├── Publish to Marketplace
+         │           └── Generate Private Link
+         │
+         ├────────○ UC-14: Manage Transactions
+         │           ├── Input Transaction (office properties)
+         │           ├── View Office Transactions
+         │           └── ««include»» Calculate Commission
+         │
+         ├────────○ UC-15: Manage Commissions
+         │           ├── View Office Commissions
+         │           ├── Mark as Paid (office agents)
+         │           └── Edit Commission Notes
+         │
+         ├────────○ UC-16: View Office Dashboard
+         │           ├── View Office Metrics
+         │           ├── View Agents Performance
+         │           ├── View Closing Rates
+         │           └── ««extend»» Export Office Report
+         │
+         ├────────○ UC-17: View Activity Log
+         │           └── View Office Activities
+         │
+         └────────○ UC-18: Manage Notifications
+                     ├── View Notifications
+                     └── Mark as Read
+</code></pre>
+<hr>
+<h3>4.3 Agen Properti Use Cases</h3>
+<pre><code>┌──────────────────┐
+│  Agen Properti   │
+│      🧑         │
+└────────┬─────────┘
+         │
+         ├────────○ UC-19: Login
+         │
+         ├────────○ UC-20: Manage Profile
+         │           ├── Edit Profile Info
+         │           ├── Upload Photo
+         │           └── Update Contact Info
+         │
+         ├────────○ UC-21: Manage Own Properties
+         │           ├── Create Property
+         │           │    ├── ««include»» Upload Photos
+         │           │    └── ««include»» Generate Slug
+         │           ├── Edit Property
+         │           ├── Delete Property
+         │           ├── Set Property Status
+         │           └── ««extend»» Generate Private Link
+         │
+         ├────────○ UC-22: View Property List
+         │           ├── View Own Properties
+         │           └── Filter by Status
+         │
+         ├────────○ UC-23: View Commissions
+         │           ├── View Pending Commissions
+         │           ├── View Paid Commissions
+         │           └── View Commission History
+         │
+         ├────────○ UC-24: View Personal Dashboard
+         │           ├── View Total Listings
+         │           ├── View Total Omzet
+         │           ├── View Total Commission
+         │           ├── View Closing Rate
+         │           └── View Performance Charts
+         │
+         └────────○ UC-25: Manage Notifications
+                     ├── View Notifications
+                     ├── Mark as Read
+                     └── Configure Preferences
+</code></pre>
+<hr>
+<h3>4.4 Buyer (Public) Use Cases</h3>
+<pre><code>┌──────────────────┐
+│   Buyer          │
+│   (Public) 🧑   │
+└────────┬─────────┘
+         │
+         ├────────○ UC-26: Browse Marketplace
+         │           ├── View All Listings
+         │           └── Pagination
+         │
+         ├────────○ UC-27: Search Properties
+         │           ├── Search by Keyword
+         │           └── ««include»» Filter Results
+         │
+         ├────────○ UC-28: Filter Properties
+         │           ├── Filter by Type
+         │           ├── Filter by Price Range
+         │           ├── Filter by Location
+         │           ├── Filter by Listing Type (Jual/Sewa)
+         │           └── Filter by Area Size
+         │
+         ├────────○ UC-29: View Property Detail
+         │           ├── View Photos Gallery
+         │           ├── View Full Description
+         │           ├── View Location Map
+         │           └── View Agent Info
+         │
+         ├────────○ UC-30: Contact Agent
+         │           ├── Call via Phone
+         │           └── Chat via WhatsApp
+         │
+         ├────────○ UC-31: Access Private Link
+         │           ├── Enter Token URL
+         │           ├── ««include»» Validate Token
+         │           └── View Private Property
+         │
+         └────────○ UC-32: (Optional) Register Account
+                     ├── Create Buyer Account
+                     └── Save Favorite Properties
+</code></pre>
+<hr>
+<h3>4.5 System (Automated) Use Cases</h3>
+<pre><code>┌──────────────────┐
+│   System         │
+│   ⚙️            │
+└────────┬─────────┘
+         │
+         ├────────○ UC-33: Auto-Expire Private Links
+         │           ├── Check expired links (hourly)
+         │           └── Mark as expired
+         │
+         ├────────○ UC-34: Clean Old Notifications
+         │           └── Delete notifications >30 days (daily)
+         │
+         ├────────○ UC-35: Generate Daily Reports
+         │           ├── Cache performance metrics
+         │           └── Pre-calculate dashboard data
+         │
+         ├────────○ UC-36: Archive Activity Logs
+         │           └── Archive logs >90 days (weekly)
+         │
+         ├────────○ UC-37: Send Email Notifications
+         │           ├── Property Approved Email
+         │           ├── Property Sold Email
+         │           └── Commission Paid Email
+         │
+         ├────────○ UC-38: Log Activities
+         │           ├── Auto-log CRUD operations
+         │           └── Track user actions
+         │
+         └────────○ UC-39: Optimize Images
+                     ├── Resize uploaded photos
+                     └── Compress for performance
+</code></pre>
+<hr>
+<h2>5. Detailed Use Case Specifications</h2>
+<h3>5.1 UC-21: Create Property (Agen)</h3>
+<p><strong>Use Case ID:</strong> UC-21  </p>
+<p><strong>Use Case Name:</strong> Create Property  </p>
+<p><strong>Actor:</strong> Agen Properti  </p>
+<p><strong>Priority:</strong> High  </p>
+<p><strong>Preconditions:</strong></p>
+<ul>
+<li>Agen sudah login</li>
+<li>Agen memiliki status active</li>
+</ul>
+<p><strong>Main Flow:</strong></p>
+<p>1. Agen memilih menu "Create New Property"</p>
+<p>2. System menampilkan form input property</p>
+<p>3. Agen mengisi data property:</p>
+<ul>
+<li>Judul, deskripsi, tipe, harga, luas tanah/bangunan, alamat</li>
+</ul>
+<p>4. Agen mengupload foto (max 10)</p>
+<ul>
+<li>««include»» UC-21a: Upload & Optimize Photos</li>
+</ul>
+<p>5. Agen memilih publish option (Public/Private)</p>
+<p>6. Agen submit form</p>
+<p>7. System validates input</p>
+<ul>
+<li>««include»» UC-21b: Validate Property Data</li>
+</ul>
+<p>8. System generates slug dari judul</p>
+<p>9. System saves property to database</p>
+<p>10. System logs activity</p>
+<p>11. System sends notification ke Admin Kantor</p>
+<p>12. System menampilkan success message</p>
+<p>13. Property tersimpan dengan status "available"</p>
+<p><strong>Alternative Flows:</strong></p>
+<ul>
+<li><strong>7a. Validation Error:</strong></li>
+<li>System shows error messages</li>
+<li>Return to step 3</li>
+<li><strong>4a. Photo Upload Fail:</strong></li>
+<li>System shows error message</li>
+<li>Agen bisa retry atau skip photo</li>
+</ul>
+<p><strong>Postconditions:</strong></p>
+<ul>
+<li>Property tersimpan di database</li>
+<li>Property muncul di admin panel</li>
+<li>Activity log tercatat</li>
+<li>Notification sent ke Admin Kantor</li>
+</ul>
+<p><strong>Business Rules:</strong></p>
+<ul>
+<li>Max 10 photos per property</li>
+<li>Each photo max 5MB</li>
+<li>Slug must be unique</li>
+<li>Price must be > 0</li>
+<li>Property auto-assigned to logged-in agent</li>
+</ul>
+<hr>
+<h3>5.2 UC-05: Input Transaction (Admin)</h3>
+<p><strong>Use Case ID:</strong> UC-05  </p>
+<p><strong>Use Case Name:</strong> Input Transaction  </p>
+<p><strong>Actor:</strong> Admin Master / Admin Kantor  </p>
+<p><strong>Priority:</strong> Critical  </p>
+<p><strong>Preconditions:</strong></p>
+<ul>
+<li>Admin sudah login</li>
+<li>Ada property dengan status available/pending</li>
+</ul>
+<p><strong>Main Flow:</strong></p>
+<p>1. Admin memilih menu "Create Transaction"</p>
+<p>2. System menampilkan form transaction</p>
+<p>3. Admin select property dari dropdown</p>
+<p>4. System auto-fill agent owner dari property</p>
+<p>5. Admin optionally select agent buyer</p>
+<p>6. Admin input buyer information:</p>
+<ul>
+<li>Nama, phone, email</li>
+</ul>
+<p>7. Admin input transaction details:</p>
+<ul>
+<li>Transaction type (sale/rent)</li>
+<li>Final price</li>
+<li>Commission % (default 2%)</li>
+<li>Transaction date</li>
+</ul>
+<p>8. System calculate commission preview</p>
+<ul>
+<li>««include»» UC-05a: Calculate Commission</li>
+</ul>
+<p>9. Admin review commission split</p>
+<p>10. Admin confirm & submit</p>
+<p>11. System saves transaction</p>
+<p>12. System generates commission records</p>
+<ul>
+<li>««include»» UC-05b: Generate Commissions</li>
+</ul>
+<p>13. System updates property status to sold/rented</p>
+<p>14. System logs transaction</p>
+<p>15. System sends notifications to involved agents</p>
+<p>16. System shows success message</p>
+<p><strong>Alternative Flows:</strong></p>
+<ul>
+<li><strong>3a. No Available Property:</strong></li>
+<li>System shows "No properties available"</li>
+<li>Process ends</li>
+<li><strong>9a. Admin Override Commission %:</strong></li>
+<li>Admin changes commission percentage</li>
+<li>System recalculates</li>
+<li>Continue to step 10</li>
+</ul>
+<p><strong>Postconditions:</strong></p>
+<ul>
+<li>Transaction tersimpan</li>
+<li>Commission records created with status "pending"</li>
+<li>Property status updated</li>
+<li>Agents receive notifications</li>
+<li>Activity log recorded</li>
+</ul>
+<p><strong>Business Rules:</strong></p>
+<ul>
+<li>Agent buyer must be different from agent owner</li>
+<li>Commission % must be > 0</li>
+<li>Final price can be different from listing price</li>
+<li>Commission split: 70/30 (1 agent) or 35/35/30 (2 agents)</li>
+</ul>
+<hr>
+<h3>5.3 UC-27: Search Properties (Buyer)</h3>
+<p><strong>Use Case ID:</strong> UC-27  </p>
+<p><strong>Use Case Name:</strong> Search Properties  </p>
+<p><strong>Actor:</strong> Buyer (Public)  </p>
+<p><strong>Priority:</strong> Critical  </p>
+<p><strong>Preconditions:</strong></p>
+<ul>
+<li>None (public access)</li>
+</ul>
+<p><strong>Main Flow:</strong></p>
+<p>1. Buyer opens marketplace page</p>
+<p>2. Buyer enters search keyword in search box</p>
+<p>3. Buyer optionally applies filters</p>
+<ul>
+<li>««include»» UC-28: Filter Properties</li>
+</ul>
+<p>4. System searches database</p>
+<ul>
+<li>Match: title, description, address (FULLTEXT)</li>
+<li>Filter by: type, price, location, listing_type</li>
+<li>Only show: is_public = true, status = available/pending</li>
+</ul>
+<p>5. System returns paginated results (20 per page)</p>
+<p>6. System displays results with:</p>
+<ul>
+<li>Cover photo, title, price, location, agent name</li>
+</ul>
+<p>7. Buyer clicks on property card</p>
+<p>8. System redirects to property detail page</p>
+<ul>
+<li>««continue»» UC-29: View Property Detail</li>
+</ul>
+<p><strong>Alternative Flows:</strong></p>
+<ul>
+<li><strong>5a. No Results Found:</strong></li>
+<li>System shows "No properties found"</li>
+<li>Suggest remove some filters</li>
+<li><strong>3a. Save Search Filters to URL:</strong></li>
+<li>System updates URL with filter params</li>
+<li>URL is shareable</li>
+</ul>
+<p><strong>Postconditions:</strong></p>
+<ul>
+<li>Search results displayed</li>
+<li>View count not incremented (only on detail view)</li>
+</ul>
+<p><strong>Business Rules:</strong></p>
+<ul>
+<li>Only show properties with is_public = true</li>
+<li>Hide properties with status = sold/rented</li>
+<li>Search is case-insensitive</li>
+<li>Results sorted by: published_at DESC (newest first)</li>
+<li>Debounce search input (300ms)</li>
+</ul>
+<hr>
+<h2>6. Use Case Relationships</h2>
+<h3>6.1 Include Relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Base Use Case</th>
+<th>Includes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC-21: Create Property</td>
+<td>UC-21a: Upload Photos</td>
+<td>Wajib upload minimal 1 foto</td>
+</tr>
+<tr>
+<td>UC-21: Create Property</td>
+<td>UC-21b: Validate Data</td>
+<td>Wajib validasi sebelum save</td>
+</tr>
+<tr>
+<td>UC-05: Input Transaction</td>
+<td>UC-05a: Calculate Commission</td>
+<td>Auto-calculate saat input</td>
+</tr>
+<tr>
+<td>UC-05: Input Transaction</td>
+<td>UC-05b: Generate Commission Records</td>
+<td>Auto-create records</td>
+</tr>
+<tr>
+<td>UC-27: Search Properties</td>
+<td>UC-28: Filter Properties</td>
+<td>Filter applied during search</td>
+</tr>
+<tr>
+<td>UC-29: View Property Detail</td>
+<td>UC-29a: Increment View Counter</td>
+<td>Auto-increment views</td>
+</tr>
+<tr>
+<td>UC-31: Access Private Link</td>
+<td>UC-31a: Validate Token</td>
+<td>Check token validity</td>
+</tr>
+<h3>6.2 Extend Relationships</h3>
+<tr>
+<td>Base Use Case</td>
+<td>Extends</td>
+<td>Condition</td>
+</tr>
+<tr>
+<td>UC-07: View Dashboard</td>
+<td>UC-07a: Export Report</td>
+<td>If user clicks export button</td>
+</tr>
+<tr>
+<td>UC-21: Create Property</td>
+<td>UC-21c: Generate Private Link</td>
+<td>If user wants private link</td>
+</tr>
+<tr>
+<td>UC-24: View Dashboard</td>
+<td>UC-24a: Download Excel</td>
+<td>If user wants export</td>
+</tr>
+<tr>
+<td>UC-29: View Property Detail</td>
+<td>UC-29b: View Map</td>
+<td>If property has lat/long</td>
+</tr>
+<h3>6.3 Generalization</h3>
+<pre><code>           ○ Manage User
+                │
+        ┌───────┴───────┐
+        │               │
+○ Manage Admin     ○ Manage Agent
+        │
+    ┌───┴───┐
+    │       │
+○ Create  ○ Edit
+</code></pre>
+</tbody>
+</table>
+<h2>7. Use Case Priority Matrix</h2>
+<h3>7.1 Critical Use Cases (Must Have for MVP)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Use Case</th>
+<th>Actor</th>
+<th>Dependency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC-01</td>
+<td>Login</td>
+<td>All</td>
+<td>-</td>
+</tr>
+<tr>
+<td>UC-02</td>
+<td>Manage Offices</td>
+<td>Admin Master</td>
+<td>UC-01</td>
+</tr>
+<tr>
+<td>UC-03</td>
+<td>Manage Agents</td>
+<td>Admin Master/Kantor</td>
+<td>UC-02</td>
+</tr>
+<tr>
+<td>UC-21</td>
+<td>Create Property</td>
+<td>Agen</td>
+<td>UC-01</td>
+</tr>
+<tr>
+<td>UC-27</td>
+<td>Search Properties</td>
+<td>Buyer</td>
+<td>-</td>
+</tr>
+<tr>
+<td>UC-29</td>
+<td>View Property Detail</td>
+<td>Buyer</td>
+<td>UC-27</td>
+</tr>
+<tr>
+<td>UC-30</td>
+<td>Contact Agent</td>
+<td>Buyer</td>
+<td>UC-29</td>
+</tr>
+<tr>
+<td>UC-05</td>
+<td>Input Transaction</td>
+<td>Admin</td>
+<td>UC-21</td>
+</tr>
+<tr>
+<td>UC-05a</td>
+<td>Calculate Commission</td>
+<td>System</td>
+<td>UC-05</td>
+</tr>
+<tr>
+<td>UC-24</td>
+<td>View Personal Dashboard</td>
+<td>Agen</td>
+<td>UC-01</td>
+</tr>
+<h3>7.2 High Priority (Should Have)</h3>
+<tr>
+<td>ID</td>
+<td>Use Case</td>
+<td>Actor</td>
+<td>Phase</td>
+</tr>
+<tr>
+<td>UC-13</td>
+<td>Manage Office Properties</td>
+<td>Admin Kantor</td>
+<td>Sprint 2</td>
+</tr>
+<tr>
+<td>UC-15</td>
+<td>Manage Commissions</td>
+<td>Admin Kantor</td>
+<td>Sprint 4</td>
+</tr>
+<tr>
+<td>UC-16</td>
+<td>View Office Dashboard</td>
+<td>Admin Kantor</td>
+<td>Sprint 5</td>
+</tr>
+<tr>
+<td>UC-31</td>
+<td>Access Private Link</td>
+<td>Buyer</td>
+<td>Sprint 3</td>
+</tr>
+<tr>
+<td>UC-17</td>
+<td>View Activity Log</td>
+<td>Admin</td>
+<td>Sprint 5</td>
+</tr>
+<h3>7.3 Medium Priority (Nice to Have - Phase 2)</h3>
+<tr>
+<td>ID</td>
+<td>Use Case</td>
+<td>Actor</td>
+<td>Phase</td>
+</tr>
+<tr>
+<td>UC-09</td>
+<td>Manage System Settings</td>
+<td>Admin Master</td>
+<td>Phase 2</td>
+</tr>
+<tr>
+<td>UC-07a</td>
+<td>Export Reports</td>
+<td>Admin</td>
+<td>Phase 2</td>
+</tr>
+<tr>
+<td>UC-32</td>
+<td>Register Buyer Account</td>
+<td>Buyer</td>
+<td>Phase 2</td>
+</tr>
+<tr>
+<td>UC-37</td>
+<td>Send Email Notifications</td>
+<td>System</td>
+<td>Phase 2</td>
+</tr>
+</tbody>
+</table>
+<h2>8. Actor Permission Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Admin Master</th>
+<th>Admin Kantor</th>
+<th>Agen</th>
+<th>Buyer</th>
+<th>System</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Login</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>⚪</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Manage Offices</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Manage Agents</td>
+<td>✅</td>
+<td>✅ (own)</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Create Property</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Edit Property</td>
+<td>✅ (all)</td>
+<td>✅ (office)</td>
+<td>✅ (own)</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Delete Property</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅ (own)</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Browse Marketplace</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Search Properties</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>View Property Detail</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Contact Agent</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Input Transaction</td>
+<td>✅</td>
+<td>✅ (office)</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>View Commissions</td>
+<td>✅ (all)</td>
+<td>✅ (office)</td>
+<td>✅ (own)</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Mark Commission Paid</td>
+<td>✅</td>
+<td>✅ (office)</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>View Dashboard</td>
+<td>✅ (master)</td>
+<td>✅ (office)</td>
+<td>✅ (personal)</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>View Activity Log</td>
+<td>✅ (all)</td>
+<td>✅ (office)</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Auto-Expire Links</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Send Notifications</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>✅ Full Access</li>
+<li>✅ (scope) Limited Access</li>
+<li>⚪ Optional (if implemented)</li>
+<li>❌ No Access</li>
+</ul>
+<hr>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Date:</strong> 31 Oktober 2025  </p>
+<p><strong>Version:</strong> 1.0.0  </p>
+<p><strong>Status:</strong> Ready for Development Reference</p>
+    </div>

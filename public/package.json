@@ -1,0 +1,15 @@
+{
+  "name": "hendra-prop-doc",
+  "version": "1.0.0",
+  "description": "Hendra Prop Documentation - Static Site",
+  "scripts": {
+    "start": "cd public && python3 -m http.server 8000",
+    "serve": "npx serve public",
+    "dev": "cd public && python3 -m http.server 8000"
+  },
+  "keywords": ["documentation", "static-site"],
+  "author": "",
+  "license": "MIT"
+}
+
+

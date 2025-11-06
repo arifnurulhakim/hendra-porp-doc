@@ -1,0 +1,1048 @@
+<div class="content-section page-break" id="section-01">
+<h1>1. Business Requirements Document (BRD)</h1>
+
+<p><strong>Dokumen Business Requirements Document (BRD)</strong>  </p>
+<p>Proyek: Hendra Prop - Sistem Manajemen Properti  </p>
+<p>Tanggal: 31 Oktober 2025  </p>
+<p>Versi: Final</p>
+<hr>
+<h2>1. Functional Requirements</h2>
+<h3>1.1 Authentication & Authorization</h3>
+<h4>FR-AUTH-001: Multi-Role Login</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>User Story:</strong> Sebagai user, saya ingin login dengan role yang berbeda agar bisa akses fitur sesuai permission  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>System harus support 4 role: Admin Master, Admin Kantor, Agen, Buyer</li>
+<li>Login menggunakan email & password</li>
+<li>Session management dengan timeout 24 jam</li>
+<li>Remember me option (7 hari)</li>
+<li>Forgot password functionality</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ User bisa login dengan email & password</li>
+<li>✅ System mengarahkan ke dashboard sesuai role</li>
+<li>✅ Invalid credentials menampilkan error message</li>
+<li>✅ User bisa logout dan session ter-invalidate</li>
+</ul>
+<hr>
+<h4>FR-AUTH-002: Role-Based Access Control (RBAC)</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Permission Matrix:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Admin Master</th>
+<th>Admin Kantor</th>
+<th>Agen</th>
+<th>Buyer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manage Kantor</td>
+<td>✅ Full</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Manage Agen</td>
+<td>✅ All</td>
+<td>✅ Own Office</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Manage Property</td>
+<td>✅ All</td>
+<td>✅ Own Office</td>
+<td>✅ Own Only</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Input Transaction</td>
+<td>✅ All</td>
+<td>✅ Own Office</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Set Commission</td>
+<td>✅ All</td>
+<td>✅ Own Office</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>View Performance</td>
+<td>✅ All</td>
+<td>✅ Own Office</td>
+<td>✅ Own Only</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>View Public Listing</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>✅ User hanya bisa akses fitur sesuai role</li>
+<li>✅ Unauthorized access menampilkan 403 Forbidden</li>
+<li>✅ URL protection (tidak bisa bypass via direct link)</li>
+</ul>
+<hr>
+<h3>1.2 Kantor Management</h3>
+<h4>FR-OFFICE-001: CRUD Kantor</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Create kantor baru dengan data: nama, alamat, telepon, email</li>
+<li>Read/View daftar semua kantor</li>
+<li>Update data kantor</li>
+<li>Soft delete kantor (tidak hard delete jika sudah ada agen)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Admin Master bisa create kantor baru</li>
+<li>✅ Validation: nama, telepon, email required</li>
+<li>✅ List kantor show jumlah agen di masing-masing kantor</li>
+<li>✅ Delete kantor yang sudah punya agen harus confirm dulu</li>
+</ul>
+<hr>
+<h4>FR-OFFICE-002: Assign Admin Kantor</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Assign user dengan role Admin Kantor ke kantor tertentu</li>
+<li>Satu kantor bisa punya multiple Admin Kantor</li>
+<li>Satu Admin Kantor bisa manage multiple kantor</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Admin Master bisa assign Admin Kantor ke kantor</li>
+<li>✅ Admin Kantor hanya lihat data kantor yang di-assign ke dia</li>
+<li>✅ Bisa unassign Admin Kantor dari kantor</li>
+</ul>
+<hr>
+<h3>1.3 Agen Management</h3>
+<h4>FR-AGENT-001: CRUD Agen</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Create agen baru dengan data: nama, email, telepon, foto, kantor</li>
+<li>Satu agen hanya bisa assigned ke 1 kantor (dedicated)</li>
+<li>Update data agen</li>
+<li>Activate/Deactivate agen (soft delete)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Create agen dengan assign ke kantor</li>
+<li>✅ Validation: email unique, telepon required</li>
+<li>✅ Admin Kantor hanya bisa create agen untuk kantornya</li>
+<li>✅ Admin Master bisa create agen untuk semua kantor</li>
+<li>✅ Agen inactive tidak bisa login dan tidak muncul di listing</li>
+</ul>
+<hr>
+<h4>FR-AGENT-002: Agen Profile</h4>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Actor:</strong> Agen  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Agen bisa edit profile sendiri (foto, bio, kontak)</li>
+<li>Tidak bisa pindah kantor sendiri (harus lewat admin)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Agen bisa update foto profile</li>
+<li>✅ Agen bisa update nomor WA & telepon</li>
+<li>✅ Field kantor read-only (tidak bisa edit)</li>
+</ul>
+<hr>
+<h3>1.4 Property Management</h3>
+<h4>FR-PROP-001: Create Property</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor, Agen  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Input properti dengan field:</li>
+<li>Judul listing</li>
+<li>Deskripsi (rich text)</li>
+<li>Tipe (Rumah, Apartemen, Tanah, Komersial)</li>
+<li>Status listing (Jual/Sewa/Keduanya)</li>
+<li>Harga (IDR)</li>
+<li>Harga per m² (auto-calculate)</li>
+<li>Luas tanah (m²)</li>
+<li>Luas bangunan (m²)</li>
+<li>Alamat lengkap</li>
+<li>Koordinat (optional - for map)</li>
+<li>Jumlah kamar tidur</li>
+<li>Jumlah kamar mandi</li>
+<li>Foto (max 10 foto)</li>
+<li>Sertifikat (SHM, HGB, dll)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Form input properti dengan validation</li>
+<li>✅ Upload multiple foto (max 10, max 5MB per foto)</li>
+<li>✅ Auto-calculate harga/m² dari harga / luas tanah</li>
+<li>✅ Properti otomatis assigned ke agen yang create</li>
+<li>✅ Admin bisa assign properti ke agen lain</li>
+</ul>
+<hr>
+<h4>FR-PROP-002: Edit Property</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor, Agen (owner)  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Agen hanya bisa edit properti miliknya</li>
+<li>Admin Kantor bisa edit properti di kantornya</li>
+<li>Admin Master bisa edit semua properti</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Edit semua field termasuk foto</li>
+<li>✅ Add/remove foto</li>
+<li>✅ Change status (Available → Sold/Rented)</li>
+<li>✅ Log history perubahan (audit trail)</li>
+</ul>
+<hr>
+<h4>FR-PROP-003: Property Status</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Status Flow:</strong></p>
+<pre><code>Available → Pending → Sold/Rented
+    ↑                      |
+    └──────────────────────┘
+         (Batalkan transaksi)
+</code></pre>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Available: Properti bisa dilihat public</li>
+<li>Pending: Ada calon buyer, nego berjalan (masih show di public)</li>
+<li>Sold/Rented: Transaksi selesai (hide dari public)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Status available show di public listing</li>
+<li>✅ Status sold/rented hide dari public (hanya internal view)</li>
+<li>✅ Bisa revert status jika transaksi gagal</li>
+</ul>
+<hr>
+<h4>FR-PROP-004: Property Photos</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Upload max 10 foto per properti</li>
+<li>Format: JPG, PNG</li>
+<li>Max size: 5MB per foto</li>
+<li>Auto-resize & compress untuk performance</li>
+<li>Drag & drop untuk reorder foto</li>
+<li>Foto pertama = cover image</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Upload multiple foto sekaligus</li>
+<li>✅ Drag & drop reorder</li>
+<li>✅ Delete foto</li>
+<li>✅ Set cover image</li>
+<li>✅ Foto ter-compress tanpa degradasi kualitas signifikan</li>
+</ul>
+<hr>
+<h4>FR-PROP-005: Public Marketplace</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor, Agen</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Admin/Agen bisa toggle properti untuk ditampilkan di public marketplace</li>
+<li>Field: <code>is_public</code> (boolean) - default TRUE untuk auto-publish</li>
+<li>Field: <code>published_at</code> (datetime) - timestamp publikasi</li>
+<li>Properti dengan <code>is_public = true</code> dan <code>status = available/pending</code> muncul di marketplace</li>
+<li>Properti dengan <code>status = sold/rented</code> atau <code>is_public = false</code> tidak muncul</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Toggle "Publish to Marketplace" di form property</li>
+<li>✅ Auto-set <code>published_at</code> saat pertama kali di-publish</li>
+<li>✅ Unpublish tidak menghapus property, hanya hide dari public</li>
+<li>✅ Filter di public marketplace: hanya show property yang <code>is_public = true</code></li>
+<li>✅ View counter (<code>views_count</code>) increment setiap property detail dibuka</li>
+</ul>
+<p><strong>Business Rules:</strong></p>
+<ul>
+<li>Hanya properti yang sudah approved yang bisa di-publish</li>
+<li>Soft-deleted properties otomatis unpublish</li>
+<li>Admin bisa force unpublish property agen</li>
+</ul>
+<hr>
+<h4>FR-PROP-006: Private Tokenized Link</h4>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor, Agen</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Generate private link dengan token unik untuk properti tertentu</li>
+<li>Link format: <code>/property/{slug}?token={random_token}</code></li>
+<li>Token expiration: default 7 hari (customizable)</li>
+<li>Single-use option: link hanya bisa dibuka 1x</li>
+<li>Track access: siapa/kapan link dibuka</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Button "Generate Private Link" di property detail (admin panel)</li>
+<li>✅ Form: expiration date, is_single_use checkbox</li>
+<li>✅ Generate random token (64 characters)</li>
+<li>✅ Copy link to clipboard functionality</li>
+<li>✅ List all generated links per property (dengan status: active/expired/used)</li>
+<li>✅ Expired link show "Link Expired" page</li>
+<li>✅ Used single-use link show "Link Already Used" page</li>
+<li>✅ Valid link show property detail (tanpa agent contact info)</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Check if link is valid
+- Token exists in property_links table
+- expires_at > now()
+- If is_used = true: access_count must be 0
+- Property must not be deleted
+</code></pre>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Exclusive/premium property untuk VIP customer</li>
+<li>Pre-launch property viewing</li>
+<li>Agent share ke specific buyer (tanpa publish publik)</li>
+</ul>
+<hr>
+<h3>1.5 Public Listing (Buyer)</h3>
+<h4>FR-PUBLIC-001: Browse Listing</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Buyer (public, no login)  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>List semua properti dengan status Available atau Pending</li>
+<li>Grid view dengan foto cover, judul, harga, lokasi</li>
+<li>Pagination (20 item per page)</li>
+<li>Responsive design (mobile & desktop)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Show semua properti available</li>
+<li>✅ Card show: foto cover, judul, harga, tipe, lokasi</li>
+<li>✅ Click card → detail page</li>
+<li>✅ Mobile responsive</li>
+</ul>
+<hr>
+<h4>FR-PUBLIC-002: Search & Filter</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Buyer  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Search by keyword (judul, lokasi, deskripsi)</li>
+<li>Filter:</li>
+<li>Tipe properti (Rumah, Apartemen, Tanah, Komersial)</li>
+<li>Status (Jual/Sewa)</li>
+<li>Harga range (min-max)</li>
+<li>Lokasi (dropdown kota/area)</li>
+<li>Luas range (min-max m²)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Search real-time (debounce 300ms)</li>
+<li>✅ Multiple filter bisa digabung</li>
+<li>✅ Filter tersimpan di URL (shareable link)</li>
+<li>✅ Show jumlah hasil: "Ditemukan 45 properti"</li>
+</ul>
+<hr>
+<h4>FR-PUBLIC-003: Property Detail</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Buyer  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Show semua detail properti</li>
+<li>Gallery foto (full screen)</li>
+<li>Map lokasi (if koordinat tersedia)</li>
+<li>Kontak agen: Nama, Foto, Telepon, WA</li>
+<li>Button: Call & WhatsApp direct link</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ All fields ditampilkan dengan layout rapi</li>
+<li>✅ Photo gallery dengan lightbox</li>
+<li>✅ Click WA button → open WA dengan pre-filled message</li>
+<li>✅ Click phone → call direct (di mobile)</li>
+<li>✅ Share button (copy link)</li>
+</ul>
+<hr>
+<h3>1.6 Transaction Management</h3>
+<h4>FR-TRANS-001: Input Transaction</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Input transaksi dengan data:</li>
+<li>Properti (dropdown)</li>
+<li>Agen Owner (auto-fill dari properti)</li>
+<li>Agen Buyer (optional, dropdown agen lain)</li>
+<li>Buyer name & contact</li>
+<li>Tipe transaksi (Jual/Sewa)</li>
+<li>Harga final (bisa beda dari harga listing)</li>
+<li>Tanggal transaksi</li>
+<li>Catatan (optional)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Form input transaksi dengan validation</li>
+<li>✅ Pilih properti → auto-fill agen owner</li>
+<li>✅ Optional: pilih agen buyer (jika ada)</li>
+<li>✅ Harga final default = harga listing, bisa diubah</li>
+<li>✅ Submit → status properti otomatis jadi Sold/Rented</li>
+</ul>
+<hr>
+<h4>FR-TRANS-002: Transaction List</h4>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor, Agen  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Admin Master: lihat semua transaksi</li>
+<li>Admin Kantor: lihat transaksi di kantornya</li>
+<li>Agen: lihat transaksi yang involve dia (owner atau buyer)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ List transaksi dengan filter by date, kantor, agen</li>
+<li>✅ Show: properti, agen, buyer, harga, tanggal, status</li>
+<li>✅ Click row → detail transaksi</li>
+</ul>
+<hr>
+<h3>1.7 Commission Management</h3>
+<h4>FR-COMM-001: Set Commission</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Setting komisi per transaksi (bukan global)</li>
+<li>Default: 70% agen, 30% kantor (untuk sewa)</li>
+<li>Customizable per transaksi:</li>
+<li>% komisi dari harga final</li>
+<li>Split agen vs kantor</li>
+<li>Jika 2 agen: split antar agen</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Input transaksi → auto-calculate komisi dengan default split</li>
+<li>✅ Admin bisa override split komisi</li>
+<li>✅ Jika ada 2 agen: split 70% dibagi 2 (35% each)</li>
+<li>✅ Komisi kantor tetap 30%</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code>Harga final: Rp 1.000.000.000
+Default komisi: 2% = Rp 20.000.000
+
+Scenario 1: Hanya agen owner
+- Agen owner: 70% × Rp 20jt = Rp 14jt
+- Kantor: 30% × Rp 20jt = Rp 6jt
+
+Scenario 2: Agen owner + agen buyer
+- Agen owner: 35% × Rp 20jt = Rp 7jt
+- Agen buyer: 35% × Rp 20jt = Rp 7jt
+- Kantor: 30% × Rp 20jt = Rp 6jt
+</code></pre>
+<hr>
+<h4>FR-COMM-002: Commission Status</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Status:</strong></p>
+<ul>
+<li>Pending: Transaksi selesai, komisi belum dibayar</li>
+<li>Paid: Komisi sudah dibayar ke agen</li>
+<li>Cancelled: Transaksi dibatalkan</li>
+</ul>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Admin bisa mark komisi sebagai Paid (dengan tanggal bayar)</li>
+<li>Agen bisa lihat status komisi mereka</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Admin bisa update status komisi</li>
+<li>✅ Notifikasi ke agen saat komisi di-mark Paid</li>
+<li>✅ Log history payment (tanggal, amount, metode)</li>
+</ul>
+<hr>
+<h3>1.8 Performance Dashboard</h3>
+<h4>FR-DASH-001: Agen Personal Dashboard</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Agen  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Widget:</li>
+</ul>
+<p>  1. Total Listing Active</p>
+<p>  2. Total Omzet (sum harga final transaksi)</p>
+<p>  3. Total Komisi (sum komisi)</p>
+<p>  4. Komisi Pending (belum dibayar)</p>
+<p>  5. Komisi Paid (sudah dibayar)</p>
+<ul>
+<li>Filter by date range (bulan ini, 3 bulan, 1 tahun, custom)</li>
+<li>Chart: Omzet per bulan (line chart)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Dashboard show data real-time</li>
+<li>✅ Filter date range update chart & numbers</li>
+<li>✅ Click widget → detail list</li>
+</ul>
+<hr>
+<h4>FR-DASH-002: Kantor Dashboard</h4>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Actor:</strong> Admin Kantor  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Widget (aggregate agen di kantornya):</li>
+</ul>
+<p>  1. Total Agen Active</p>
+<p>  2. Total Listing Active</p>
+<p>  3. Total Omzet</p>
+<p>  4. Total Komisi Kantor</p>
+<ul>
+<li>Table: Performance per agen (nama, listing, omzet, komisi)</li>
+<li>Chart: Omzet per agen (bar chart)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Dashboard show aggregate data</li>
+<li>✅ Table sortable by omzet/komisi</li>
+<li>✅ Click agen → detail performance agen tersebut</li>
+</ul>
+<hr>
+<h4>FR-DASH-003: Master Dashboard</h4>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Actor:</strong> Admin Master  </p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Widget (aggregate semua kantor):</li>
+</ul>
+<p>  1. Total Kantor</p>
+<p>  2. Total Agen</p>
+<p>  3. Total Listing</p>
+<p>  4. Total Omzet</p>
+<p>  5. Total Komisi</p>
+<ul>
+<li>Table: Performance per kantor</li>
+<li>Chart: Omzet per kantor (bar chart)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Dashboard show global data</li>
+<li>✅ Table sortable</li>
+<li>✅ Click kantor → detail performance kantor tersebut</li>
+</ul>
+<hr>
+<h3>1.9 Activity Log & Audit Trail</h3>
+<h4>FR-AUDIT-001: Activity Logging</h4>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Actor:</strong> System (automatic logging)</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Log semua perubahan penting di sistem (using spatie/laravel-activitylog)</li>
+<li>Track siapa (causer) melakukan apa (action) pada data apa (subject)</li>
+<li>Simpan old values & new values untuk audit trail</li>
+<li>Log category: property, transaction, commission, user, approval</li>
+</ul>
+<p><strong>Activities yang di-log:</strong></p>
+<ul>
+<li>Create/Update/Delete properti (track: harga, status, is_public)</li>
+<li>Create/Update transaksi</li>
+<li>Update komisi (track: amount, status)</li>
+<li>Approval/Rejection properti</li>
+<li>User login/logout</li>
+<li>Generate private link</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Auto-logging tanpa manual intervention</li>
+<li>✅ Activity log viewable di admin panel (per entity & per user)</li>
+<li>✅ Show: timestamp, user, action, entity, old/new values</li>
+<li>✅ Filter by: date range, user, log category</li>
+<li>✅ Search by keyword</li>
+<li>✅ Export activity log ke Excel</li>
+</ul>
+<p><strong>Example Log Entry:</strong></p>
+<pre><code>User: Admin Kantor 1
+Action: Updated property price
+Property: Rumah Mewah Jakarta #123
+Changes:
+  - price: 1.000.000.000 → 900.000.000
+  - status: available → pending
+Timestamp: 2025-11-15 14:30:00
+</code></pre>
+<hr>
+<h4>FR-AUDIT-002: Transaction Audit Trail</h4>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Simpan semua perubahan komisi & harga jual dalam transaksi</li>
+<li>Tidak bisa delete transaction history (hard constraint)</li>
+<li>Track manual override komisi oleh admin</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Transaction detail page show full audit trail</li>
+<li>✅ Show: created by, created at, modified by, modified at</li>
+<li>✅ List semua perubahan komisi dengan reason</li>
+<li>✅ Cannot delete/hard delete transactions</li>
+</ul>
+<hr>
+<h3>1.10 Notification System ⚪ OPTIONAL (Phase 2)</h3>
+<div class="alert alert-info">
+<p><strong>⚠️ NOTE:</strong> Notification features are marked as OPTIONAL and NOT REQUIRED for MVP launch. These can be implemented in Phase 2 after initial deployment.</p>
+</div>
+<h4>FR-NOTIF-001: Internal Notifications (OPTIONAL - Phase 2)</h4>
+<p><strong>Priority:</strong> P2 - MEDIUM (OPTIONAL - Not Required for MVP)  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor, Agen</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Notification di dashboard (bell icon dengan counter)</li>
+<li>Notification categories:</li>
+<li>Property approved/rejected</li>
+<li>Property sold (untuk agen owner)</li>
+<li>Commission paid (untuk agen)</li>
+<li>New property needs review (untuk admin kantor)</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>⚪ Bell icon di navbar dengan unread count</li>
+<li>⚪ Dropdown list showing latest 10 notifications</li>
+<li>⚪ Click notification → redirect ke related page</li>
+<li>⚪ Mark as read functionality</li>
+<li>⚪ Mark all as read button</li>
+<li>⚪ Notification auto-expire setelah 30 hari</li>
+</ul>
+<hr>
+<h4>FR-NOTIF-002: Email Notifications (OPTIONAL - Phase 2)</h4>
+<p><strong>Priority:</strong> P2 - MEDIUM (OPTIONAL - Phase 2)  </p>
+<p><strong>Actor:</strong> System (automatic)</p>
+<p><strong>Email Triggers:</strong></p>
+<ul>
+<li>Property approved → Email ke agen</li>
+<li>Property sold → Email ke agen owner & agen buyer</li>
+<li>Commission paid → Email ke agen dengan detail</li>
+<li>New property submitted → Email ke admin kantor untuk review</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>⚪ Email template dengan branding Hendra Prop</li>
+<li>⚪ Include relevant links (view property, view commission)</li>
+<li>⚪ Toggle email notification ON/OFF per user (settings)</li>
+<li>⚪ Email queue (tidak send synchronous)</li>
+</ul>
+<p><strong>Status:</strong> ⚪ <strong>NOT IMPLEMENTED - OPTIONAL for Phase 2</strong></p>
+<hr>
+<h3>1.11 Performance Board Enhanced</h3>
+<h4>FR-PERF-001: Closing Rate Calculation</h4>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Calculate & display closing rate di performance board</li>
+<li>Formula: <code>(Jumlah Properti Terjual / Total Listing) × 100%</code></li>
+<li>Show per agen & per kantor</li>
+<li>Filter by date range</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Closing rate column di performance table</li>
+<li>✅ Color coding: >50% = green, 30-50% = yellow, <30% = red</li>
+<li>✅ Sort by closing rate</li>
+<li>✅ Include dalam export Excel</li>
+</ul>
+<p><strong>Example Display:</strong></p>
+<pre><code>Agent A: 15 sold / 30 listings = 50% closing rate ✅
+Agent B: 5 sold / 25 listings = 20% closing rate ⚠️
+</code></pre>
+<hr>
+<h4>FR-PERF-002: Export Reports</h4>
+<p><strong>Priority:</strong> P2 - MEDIUM (Phase 2)  </p>
+<p><strong>Actor:</strong> Admin Master, Admin Kantor</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Export performance board ke Excel/PDF</li>
+<li>Include: charts, tables, metrics</li>
+<li>Customizable date range</li>
+<li>Auto-generate filename with timestamp</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Button "Export to Excel" & "Export to PDF"</li>
+<li>✅ Excel: multiple sheets (summary, per-agent, per-kantor)</li>
+<li>✅ PDF: professional layout dengan logo</li>
+<li>✅ Download langsung (tidak email)</li>
+</ul>
+<hr>
+<h2>2. Non-Functional Requirements</h2>
+<h3>2.1 Performance</h3>
+<h4>NFR-PERF-001: Page Load Time</h4>
+<p><strong>Requirement:</strong> Page load time < 2 detik (avg)  </p>
+<p><strong>Measurement:</strong> Google PageSpeed Insights score > 80</p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Image lazy loading</li>
+<li>CSS/JS minification</li>
+<li>CDN untuk static assets</li>
+<li>Database query optimization</li>
+<li>Caching (Redis)</li>
+</ul>
+<hr>
+<h4>NFR-PERF-002: Concurrent Users</h4>
+<p><strong>Requirement:</strong> Support 100 concurrent users tanpa degradasi performance  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Load testing dengan JMeter/K6</li>
+<li>Server scaling plan (vertical/horizontal)</li>
+<li>Database connection pooling</li>
+</ul>
+<hr>
+<h3>2.2 Security</h3>
+<h4>NFR-SEC-001: Authentication</h4>
+<p><strong>Requirement:</strong> Secure authentication & session management  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Password hashing dengan bcrypt</li>
+<li>CSRF protection (Laravel default)</li>
+<li>XSS protection</li>
+<li>SQL injection protection (Eloquent ORM)</li>
+<li>Session timeout: 24 jam</li>
+<li>Remember me: encrypted cookie</li>
+</ul>
+<hr>
+<h4>NFR-SEC-002: Authorization</h4>
+<p><strong>Requirement:</strong> Strict role-based access control  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Laravel Gate & Policy</li>
+<li>Middleware untuk setiap route</li>
+<li>Database-level permission check</li>
+<li>Audit trail untuk sensitive actions</li>
+</ul>
+<hr>
+<h4>NFR-SEC-003: Data Privacy</h4>
+<p><strong>Requirement:</strong> Protect sensitive data  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>HTTPS only (SSL certificate)</li>
+<li>Database encryption untuk sensitive fields</li>
+<li>No password storage in plain text</li>
+<li>GDPR compliance (user data deletion)</li>
+</ul>
+<hr>
+<h3>2.3 Usability</h3>
+<h4>NFR-USA-001: Responsive Design</h4>
+<p><strong>Requirement:</strong> 100% responsive di mobile, tablet, desktop  </p>
+<p><strong>Breakpoints:</strong></p>
+<ul>
+<li>Mobile: 320px - 768px</li>
+<li>Tablet: 769px - 1024px</li>
+<li>Desktop: > 1024px</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Mobile-first design</li>
+<li>Touch-friendly buttons (min 44x44px)</li>
+<li>Readable font size (min 16px)</li>
+</ul>
+<hr>
+<h4>NFR-USA-002: User Experience</h4>
+<p><strong>Requirement:</strong> Intuitive & easy to use  </p>
+<p><strong>Metrics:</strong></p>
+<ul>
+<li>User bisa input listing tanpa training</li>
+<li>Max 3 clicks untuk reach any feature</li>
+<li>Consistent UI/UX across pages</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Follow Laravel Filament design patterns</li>
+<li>Form validation dengan helpful error messages</li>
+<li>Loading indicators untuk async actions</li>
+<li>Success/error notifications</li>
+</ul>
+<hr>
+<h3>2.4 Reliability</h3>
+<h4>NFR-REL-001: Uptime</h4>
+<p><strong>Requirement:</strong> 99% uptime (max 7.2 jam downtime per bulan)  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Monitoring dengan UptimeRobot</li>
+<li>Automated backup daily</li>
+<li>Disaster recovery plan</li>
+</ul>
+<hr>
+<h4>NFR-REL-002: Data Backup</h4>
+<p><strong>Requirement:</strong> Daily backup dengan retention 30 hari  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Automated database backup (MySQL dump)</li>
+<li>File backup (foto properti)</li>
+<li>Off-site backup storage</li>
+<li>Tested recovery procedure</li>
+</ul>
+<hr>
+<h3>2.5 Scalability</h3>
+<h4>NFR-SCALE-001: Data Growth</h4>
+<p><strong>Requirement:</strong> Support up to 10,000 listing & 1,000 agen  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Database indexing</li>
+<li>Query optimization</li>
+<li>Archive old data (> 2 tahun)</li>
+</ul>
+<hr>
+<h4>NFR-SCALE-002: Feature Growth</h4>
+<p><strong>Requirement:</strong> Arsitektur yang mudah di-extend untuk Phase 2  </p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Modular architecture</li>
+<li>Service-oriented design</li>
+<li>API-first approach (untuk future mobile app)</li>
+</ul>
+<hr>
+<h3>2.6 Compatibility</h3>
+<h4>NFR-COMP-001: Browser Support</h4>
+<p><strong>Requirement:</strong> Support modern browsers  </p>
+<p><strong>Browsers:</strong></p>
+<ul>
+<li>Chrome (latest 2 versions)</li>
+<li>Firefox (latest 2 versions)</li>
+<li>Safari (latest 2 versions)</li>
+<li>Edge (latest 2 versions)</li>
+</ul>
+<hr>
+<h4>NFR-COMP-002: Mobile OS</h4>
+<p><strong>Requirement:</strong> Support mobile browsers  </p>
+<p><strong>Mobile OS:</strong></p>
+<ul>
+<li>iOS Safari (iOS 14+)</li>
+<li>Android Chrome (Android 10+)</li>
+</ul>
+<hr>
+<h3>2.7 Scheduled Tasks & Automation</h3>
+<h4>NFR-SCHED-001: Cron Jobs</h4>
+<p><strong>Requirement:</strong> Automated background tasks (using Laravel Scheduler)</p>
+<p><strong>Scheduled Tasks:</strong></p>
+<p>1. <strong>Auto-expire Private Links</strong> (Hourly)</p>
+<ul>
+<li>Check <code>property_links</code> where <code>expires_at < now()</code></li>
+<li>Mark as expired atau soft delete</li>
+</ul>
+<p>2. <strong>Clean Old Notifications</strong> (Daily at 2 AM)</p>
+<ul>
+<li>Delete notifications older than 30 days</li>
+</ul>
+<p>3. <strong>Generate Daily Reports</strong> (Daily at 8 AM)</p>
+<ul>
+<li>Cache performance metrics untuk faster dashboard load</li>
+</ul>
+<p>4. <strong>Clean Activity Log</strong> (Weekly)</p>
+<ul>
+<li>Archive activity logs older than 90 days</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<pre><code>// app/Console/Kernel.php
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command('links:expire')->hourly();
+    $schedule->command('notifications:clean')->daily()->at('02:00');
+    $schedule->command('reports:cache')->daily()->at('08:00');
+    $schedule->command('logs:archive')->weekly();
+}
+</code></pre>
+<p><strong>Monitoring:</strong></p>
+<ul>
+<li>Log setiap scheduled task execution</li>
+<li>Alert jika task fail</li>
+<li>Track execution time</li>
+</ul>
+<hr>
+<h4>NFR-SCHED-002: Queue Workers</h4>
+<p><strong>Requirement:</strong> Asynchronous job processing</p>
+<p><strong>Queued Jobs:</strong></p>
+<ul>
+<li>Email notifications</li>
+<li>Image optimization setelah upload</li>
+<li>Export reports (Excel/PDF)</li>
+<li>Activity logging (untuk heavy operations)</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Laravel Queue with database driver (MVP)</li>
+<li>Upgrade to Redis for production</li>
+<li>Supervisor untuk keep queue worker running</li>
+</ul>
+<hr>
+<h3>2.8 Data Integrity & Soft Delete</h3>
+<h4>NFR-DATA-001: Soft Delete</h4>
+<p><strong>Requirement:</strong> Protect important data from accidental deletion</p>
+<p><strong>Tables with Soft Delete:</strong></p>
+<ul>
+<li><code>offices</code> - Kantor tidak bisa hard delete jika ada agen</li>
+<li><code>agents</code> - Agen tidak bisa hard delete jika ada transaksi</li>
+<li><code>properties</code> - Properti soft delete, bisa restore</li>
+<li><code>users</code> - User soft delete, bisa restore</li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<pre><code>use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Property extends Model {
+    use SoftDeletes;
+}
+
+// Query exclude soft-deleted
+Property::all(); // Only non-deleted
+
+// Query include soft-deleted
+Property::withTrashed()->get();
+
+// Restore
+$property->restore();
+</code></pre>
+<p><strong>Business Rules:</strong></p>
+<ul>
+<li>Only Admin Master can permanently delete (force delete)</li>
+<li>Soft-deleted data tidak muncul di dropdown/select</li>
+<li>Soft-deleted properties tidak muncul di public marketplace</li>
+<li>Report tetap include soft-deleted data dengan indicator</li>
+</ul>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Deleted data not showing in normal queries</li>
+<li>✅ Admin panel show "Deleted" tab untuk view soft-deleted items</li>
+<li>✅ Restore button available untuk Admin Master</li>
+<li>✅ Cascade soft delete: Delete office → soft delete all agents</li>
+</ul>
+<hr>
+<h2>3. Business Rules Summary</h2>
+<h3>BR-001: Kantor-Agen Relationship</h3>
+<ul>
+<li>Satu kantor memiliki banyak agen (1:N)</li>
+<li>Satu agen hanya dedicated ke 1 kantor (N:1)</li>
+<li>Agen tidak bisa pindah kantor tanpa approval Admin Master</li>
+</ul>
+<hr>
+<h3>BR-002: Properti-Agen Relationship</h3>
+<ul>
+<li>Satu properti owned oleh 1 agen</li>
+<li>Maksimal 1 agen tambahan sebagai agen buyer</li>
+<li>Total maksimal: 1 agen owner + 1 agen buyer per transaksi</li>
+</ul>
+<hr>
+<h3>BR-003: Komisi Calculation</h3>
+<ul>
+<li>Default split: 70% agen, 30% kantor</li>
+<li>Jika 2 agen: 35% owner + 35% buyer + 30% kantor</li>
+<li>Customizable per transaksi oleh Admin</li>
+<li>Komisi dihitung dari harga final (bukan listing price)</li>
+</ul>
+<hr>
+<h3>BR-004: Property Status Flow</h3>
+<ul>
+<li>New listing → Available (show public)</li>
+<li>Nego → Pending (masih show public)</li>
+<li>Deal → Sold/Rented (hide dari public)</li>
+<li>Cancel → back to Available</li>
+</ul>
+<hr>
+<h3>BR-005: Permission Hierarchy</h3>
+<p>1. Admin Master: Full access semua fitur & data</p>
+<p>2. Admin Kantor: Access terbatas ke kantor & agen di bawahnya</p>
+<p>3. Agen: Access terbatas ke properti & transaksi miliknya</p>
+<p>4. Buyer: Read-only public listing</p>
+<hr>
+<h2>4. User Acceptance Test (UAT) Scenarios</h2>
+<h3>UAT-001: End-to-End Listing Flow</h3>
+<p><strong>Actor:</strong> Agen</p>
+<p><strong>Steps:</strong></p>
+<p>1. Login sebagai agen</p>
+<p>2. Create listing baru (input semua field + upload foto)</p>
+<p>3. Submit listing</p>
+<p>4. Verify listing muncul di public page</p>
+<p>5. Buyer lihat listing & kontak agen via WA</p>
+<p>6. Agen update status → Pending</p>
+<p>7. Admin input transaksi → status jadi Sold</p>
+<p>8. Verify listing hilang dari public</p>
+<p>9. Agen cek dashboard → komisi muncul sebagai Pending</p>
+<p>10. Admin mark komisi sebagai Paid</p>
+<p>11. Agen cek dashboard → komisi Paid</p>
+<p><strong>Expected Result:</strong> ✅ All steps berhasil tanpa error</p>
+<hr>
+<h3>UAT-002: Multi-Agen Transaction</h3>
+<p><strong>Actor:</strong> Admin Kantor</p>
+<p><strong>Scenario:</strong></p>
+<ul>
+<li>Agen A punya listing rumah Rp 1M</li>
+<li>Agen B bawa buyer untuk rumah tersebut</li>
+<li>Deal di Rp 900jt (nego)</li>
+</ul>
+<p><strong>Steps:</strong></p>
+<p>1. Login sebagai Admin Kantor</p>
+<p>2. Input transaksi:</p>
+<ul>
+<li>Properti: Rumah Agen A</li>
+<li>Agen Owner: Agen A</li>
+<li>Agen Buyer: Agen B</li>
+<li>Harga final: Rp 900jt</li>
+</ul>
+<p>3. Submit → auto-calculate komisi</p>
+<p>4. Verify komisi split:</p>
+<ul>
+<li>Komisi total: 2% × Rp 900jt = Rp 18jt</li>
+<li>Agen A: 35% × Rp 18jt = Rp 6.3jt</li>
+<li>Agen B: 35% × Rp 18jt = Rp 6.3jt</li>
+<li>Kantor: 30% × Rp 18jt = Rp 5.4jt</li>
+</ul>
+<p>5. Agen A & B cek dashboard → masing-masing lihat komisi Rp 6.3jt</p>
+<p><strong>Expected Result:</strong> ✅ Komisi ter-split dengan benar</p>
+<hr>
+<h3>UAT-003: Permission Test</h3>
+<p><strong>Actor:</strong> Multiple</p>
+<p><strong>Steps:</strong></p>
+<p>1. Login sebagai Agen A</p>
+<p>2. Try akses list semua agen → ❌ Forbidden</p>
+<p>3. Try edit properti milik Agen B → ❌ Forbidden</p>
+<p>4. Try input transaksi → ❌ Forbidden</p>
+<p>5. Logout, login sebagai Admin Kantor</p>
+<p>6. Access list agen di kantornya → ✅ Success</p>
+<p>7. Try access agen di kantor lain → ❌ Forbidden</p>
+<p>8. Logout, login sebagai Admin Master</p>
+<p>9. Access semua data → ✅ Success</p>
+<p><strong>Expected Result:</strong> ✅ Permission enforcement work correctly</p>
+<hr>
+<h2>5. Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Changes</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>31 Okt 2025</td>
+<td>Initial BRD</td>
+<td>AI Analysis System</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Reviewed by:</strong> [Pending]  </p>
+<p><strong>Approved by:</strong> [Pending]  </p>
+<p><strong>Date:</strong> 31 Oktober 2025</p>
+    </div>

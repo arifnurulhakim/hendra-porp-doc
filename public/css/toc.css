@@ -1,0 +1,46 @@
+/**
+ * Table of Contents Styles
+ * Static TOC styles
+ */
+
+.toc {
+    margin: 2rem 0;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin: 0.8rem 0;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    transition: background 0.2s;
+}
+
+.toc-list li:hover {
+    background: #f7fafc;
+}
+
+.toc-list a {
+    text-decoration: none;
+    color: #4a5568;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toc-title {
+    font-weight: 500;
+    flex: 1;
+}
+
+.toc-page {
+    color: #4a5568;
+    font-weight: 600;
+    margin-left: 1rem;
+}
+
+

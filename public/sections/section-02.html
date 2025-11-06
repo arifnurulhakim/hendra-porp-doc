@@ -1,0 +1,727 @@
+<div class="content-section page-break" id="section-02">
+<h1>2. Software Requirements Specification (SRS)</h1>
+
+<p><strong>Dokumen User Stories & Acceptance Criteria</strong>  </p>
+<p>Proyek: Hendra Prop - Sistem Manajemen Properti  </p>
+<p>Tanggal: 31 Oktober 2025  </p>
+<p>Versi: Final</p>
+<hr>
+<h2>1. Epic Overview</h2>
+<h3>Epic 1: Authentication & User Management 🔐</h3>
+<p>Manage users, roles, and permissions untuk Admin Master, Admin Kantor, dan Agen</p>
+<h3>Epic 2: Office & Agent Management 🏢</h3>
+<p>Manage kantor cabang dan agen-agen properti</p>
+<h3>Epic 3: Property Management 🏠</h3>
+<p>Manage listing properti dengan foto dan detail lengkap</p>
+<h3>Epic 4: Public Listing 🌐</h3>
+<p>Public website untuk buyer mencari dan melihat properti</p>
+<h3>Epic 5: Transaction Management 💰</h3>
+<p>Record transaksi jual/sewa properti</p>
+<h3>Epic 6: Commission Management 💵</h3>
+<p>Manage komisi agen dan kantor dengan tracking pembayaran</p>
+<h3>Epic 7: Dashboard & Reports 📊</h3>
+<p>Performance dashboard untuk setiap role</p>
+<hr>
+<h2>2. User Stories per Epic</h2>
+<h3>EPIC 1: Authentication & User Management 🔐</h3>
+<h4>US-AUTH-001: Login sebagai Admin Master</h4>
+<p><strong>As a</strong> Super Admin  </p>
+<p><strong>I want to</strong> login ke sistem dengan email dan password  </p>
+<p><strong>So that</strong> saya bisa manage seluruh sistem</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Halaman login dengan form email & password</li>
+<li>✅ Validasi: email format valid, password min 8 karakter</li>
+<li>✅ Error message jika credentials salah</li>
+<li>✅ Redirect ke dashboard setelah login berhasil</li>
+<li>✅ Session active selama 24 jam</li>
+<li>✅ Remember me option (7 hari)</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 3  </p>
+<p><strong>Sprint:</strong> 1</p>
+<hr>
+<h4>US-AUTH-002: Login sebagai Admin Kantor</h4>
+<p><strong>As a</strong> Admin Kantor  </p>
+<p><strong>I want to</strong> login dan hanya lihat data kantor saya  </p>
+<p><strong>So that</strong> saya bisa manage agen dan properti di kantor saya</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Login dengan role admin_kantor</li>
+<li>✅ Dashboard hanya show data kantor yang di-assign</li>
+<li>✅ Tidak bisa akses data kantor lain</li>
+<li>✅ Bisa manage agen di kantornya</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 2  </p>
+<p><strong>Sprint:</strong> 1</p>
+<hr>
+<h4>US-AUTH-003: Login sebagai Agen</h4>
+<p><strong>As a</strong> Agen Properti  </p>
+<p><strong>I want to</strong> login dan lihat listing & komisi saya  </p>
+<p><strong>So that</strong> saya bisa track performa saya</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Login dengan role agent</li>
+<li>✅ Dashboard personal show: listing, omzet, komisi</li>
+<li>✅ Hanya bisa edit properti miliknya</li>
+<li>✅ Tidak bisa akses properti agen lain</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 2  </p>
+<p><strong>Sprint:</strong> 1</p>
+<hr>
+<h4>US-AUTH-004: Forgot Password</h4>
+<p><strong>As a</strong> User  </p>
+<p><strong>I want to</strong> reset password jika lupa  </p>
+<p><strong>So that</strong> saya bisa login lagi</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Link "Forgot Password" di halaman login</li>
+<li>✅ Form input email</li>
+<li>✅ Send email dengan reset link</li>
+<li>✅ Reset link valid selama 1 jam</li>
+<li>✅ Form set password baru</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 2</p>
+<hr>
+<h3>EPIC 2: Office & Agent Management 🏢</h3>
+<h4>US-OFFICE-001: Create Kantor Baru</h4>
+<p><strong>As a</strong> Admin Master  </p>
+<p><strong>I want to</strong> create kantor cabang baru  </p>
+<p><strong>So that</strong> saya bisa expand bisnis ke kota lain</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Form input: nama kantor, alamat, telepon, email</li>
+<li>✅ Validation: nama & telepon required</li>
+<li>✅ Success notification setelah create</li>
+<li>✅ Redirect ke list kantor</li>
+<li>✅ New kantor muncul di dropdown</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 3  </p>
+<p><strong>Sprint:</strong> 1</p>
+<hr>
+<h4>US-OFFICE-002: Edit & Delete Kantor</h4>
+<p><strong>As a</strong> Admin Master  </p>
+<p><strong>I want to</strong> edit atau delete kantor  </p>
+<p><strong>So that</strong> saya bisa update info atau non-aktifkan kantor</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Button edit di list kantor</li>
+<li>✅ Form pre-filled dengan data existing</li>
+<li>✅ Soft delete (status inactive)</li>
+<li>✅ Confirm dialog sebelum delete</li>
+<li>✅ Tidak bisa delete jika ada agen active</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 2  </p>
+<p><strong>Sprint:</strong> 1</p>
+<hr>
+<h4>US-AGENT-001: Create Agen Baru</h4>
+<p><strong>As a</strong> Admin Master/Admin Kantor  </p>
+<p><strong>I want to</strong> create agen baru dan assign ke kantor  </p>
+<p><strong>So that</strong> agen bisa mulai input listing</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Form input: nama, email, phone, WA, kantor</li>
+<li>✅ Auto-create user account (role: agent)</li>
+<li>✅ Send email dengan password default</li>
+<li>✅ Agen langsung bisa login</li>
+<li>✅ Admin Kantor hanya bisa assign ke kantornya</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 1</p>
+<hr>
+<h4>US-AGENT-002: Edit Profile Agen</h4>
+<p><strong>As a</strong> Agen  </p>
+<p><strong>I want to</strong> edit profile saya (foto, bio, kontak)  </p>
+<p><strong>So that</strong> buyer bisa lihat info saya dengan jelas</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Form edit profile</li>
+<li>✅ Upload foto profile (max 2MB)</li>
+<li>✅ Edit bio, phone, WA</li>
+<li>✅ Field kantor read-only (tidak bisa pindah sendiri)</li>
+<li>✅ Auto-save dengan notification</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 3  </p>
+<p><strong>Sprint:</strong> 2</p>
+<hr>
+<h3>EPIC 3: Property Management 🏠</h3>
+<h4>US-PROP-001: Create Listing Properti</h4>
+<p><strong>As a</strong> Agen  </p>
+<p><strong>I want to</strong> create listing properti baru dengan foto  </p>
+<p><strong>So that</strong> properti bisa dilihat buyer di public page</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Form input: judul, deskripsi, tipe, harga, luas, alamat</li>
+<li>✅ Upload max 10 foto (JPG/PNG, max 5MB each)</li>
+<li>✅ Drag & drop foto untuk reorder</li>
+<li>✅ Set cover image (foto pertama default)</li>
+<li>✅ Auto-generate slug dari judul</li>
+<li>✅ Auto-assign ke agen yang login</li>
+<li>✅ Status default: available</li>
+<li>✅ Preview before submit</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 2</p>
+<hr>
+<h4>US-PROP-002: Edit Listing Properti</h4>
+<p><strong>As a</strong> Agen  </p>
+<p><strong>I want to</strong> edit listing saya  </p>
+<p><strong>So that</strong> saya bisa update harga atau info terbaru</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Button edit di list properti</li>
+<li>✅ Form pre-filled dengan data existing</li>
+<li>✅ Bisa add/remove foto</li>
+<li>✅ Bisa change status (available → pending → sold)</li>
+<li>✅ Audit trail: track perubahan harga</li>
+<li>✅ Agen hanya bisa edit properti miliknya</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 2</p>
+<hr>
+<h4>US-PROP-003: Delete Listing</h4>
+<p><strong>As a</strong> Admin Master/Admin Kantor  </p>
+<p><strong>I want to</strong> delete listing yang invalid  </p>
+<p><strong>So that</strong> public page hanya show properti valid</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Soft delete (bukan permanent delete)</li>
+<li>✅ Confirm dialog</li>
+<li>✅ Tidak bisa delete jika sudah ada transaksi</li>
+<li>✅ Deleted listing tidak muncul di public</li>
+<li>✅ Admin bisa restore jika perlu</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 3  </p>
+<p><strong>Sprint:</strong> 3</p>
+<hr>
+<h4>US-PROP-004: Upload Foto Properti</h4>
+<p><strong>As a</strong> Agen  </p>
+<p><strong>I want to</strong> upload multiple foto sekaligus  </p>
+<p><strong>So that</strong> buyer bisa lihat properti dari berbagai sudut</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Upload max 10 foto per properti</li>
+<li>✅ Validation: JPG/PNG only, max 5MB</li>
+<li>✅ Auto-resize ke 1200x800px</li>
+<li>✅ Auto-compress tanpa quality loss signifikan</li>
+<li>✅ Progress bar saat upload</li>
+<li>✅ Error handling jika upload gagal</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 2</p>
+<hr>
+<h3>EPIC 4: Public Listing 🌐</h3>
+<h4>US-PUBLIC-001: Browse Listing Properti</h4>
+<p><strong>As a</strong> Buyer  </p>
+<p><strong>I want to</strong> lihat semua properti available  </p>
+<p><strong>So that</strong> saya bisa cari properti yang sesuai</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Grid view dengan foto cover, judul, harga, lokasi</li>
+<li>✅ Responsive design (mobile & desktop)</li>
+<li>✅ Pagination (20 item per page)</li>
+<li>✅ Sort by: harga, tanggal, views</li>
+<li>✅ Show jumlah hasil: "Ditemukan 45 properti"</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 3</p>
+<hr>
+<h4>US-PUBLIC-002: Search & Filter Properti</h4>
+<p><strong>As a</strong> Buyer  </p>
+<p><strong>I want to</strong> search dan filter properti  </p>
+<p><strong>So that</strong> saya bisa cari properti sesuai budget dan lokasi</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Search box (keyword: judul, deskripsi, alamat)</li>
+<li>✅ Filter: tipe, status (jual/sewa), harga range, lokasi</li>
+<li>✅ Multiple filter bisa digabung</li>
+<li>✅ Filter tersimpan di URL (shareable)</li>
+<li>✅ Button "Reset Filter"</li>
+<li>✅ Real-time search (debounce 300ms)</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 3</p>
+<hr>
+<h4>US-PUBLIC-003: View Detail Properti</h4>
+<p><strong>As a</strong> Buyer  </p>
+<p><strong>I want to</strong> lihat detail lengkap properti  </p>
+<p><strong>So that</strong> saya bisa evaluasi sebelum kontak agen</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ All info ditampilkan: harga, luas, kamar, alamat, deskripsi</li>
+<li>✅ Photo gallery dengan lightbox</li>
+<li>✅ Map lokasi (Google Maps embedded)</li>
+<li>✅ Info agen: nama, foto, phone, WA</li>
+<li>✅ Button: Call & WhatsApp (pre-filled message)</li>
+<li>✅ Share button (copy link, WA, FB)</li>
+<li>✅ View counter +1 setiap page load</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 3</p>
+<hr>
+<h4>US-PUBLIC-004: Kontak Agen via WhatsApp</h4>
+<p><strong>As a</strong> Buyer  </p>
+<p><strong>I want to</strong> kontak agen via WA dengan 1 klik  </p>
+<p><strong>So that</strong> saya bisa tanya langsung tentang properti</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Button "Chat via WhatsApp"</li>
+<li>✅ Pre-filled message: "Halo, saya tertarik dengan [Judul Properti] - [Link]"</li>
+<li>✅ Open WhatsApp web/app</li>
+<li>✅ Mobile: deep link ke WA app</li>
+<li>✅ Desktop: open wa.me link</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 3  </p>
+<p><strong>Sprint:</strong> 3</p>
+<hr>
+<h3>EPIC 5: Transaction Management 💰</h3>
+<h4>US-TRANS-001: Input Transaksi Jual/Sewa</h4>
+<p><strong>As a</strong> Admin Master/Admin Kantor  </p>
+<p><strong>I want to</strong> input transaksi ketika deal  </p>
+<p><strong>So that</strong> komisi bisa dihitung otomatis</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Form input: properti, agen owner (auto-fill), agen buyer (optional)</li>
+<li>✅ Input: buyer name, phone, harga final, tanggal</li>
+<li>✅ Tipe: jual atau sewa</li>
+<li>✅ Komisi %: default 2%, bisa diubah</li>
+<li>✅ Auto-calculate total komisi</li>
+<li>✅ Preview komisi split sebelum submit</li>
+<li>✅ Submit → auto-generate commissions</li>
+<li>✅ Property status auto-change ke sold/rented</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 4</p>
+<hr>
+<h4>US-TRANS-002: View List Transaksi</h4>
+<p><strong>As a</strong> Admin/Agen  </p>
+<p><strong>I want to</strong> lihat list transaksi  </p>
+<p><strong>So that</strong> saya bisa track sales</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Table view: properti, agen, buyer, harga, tanggal</li>
+<li>✅ Filter by: date range, kantor, agen, status</li>
+<li>✅ Sort by: tanggal, harga</li>
+<li>✅ Pagination</li>
+<li>✅ Admin Master: all transactions</li>
+<li>✅ Admin Kantor: kantornya saja</li>
+<li>✅ Agen: transaksi yang involve dia</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 4</p>
+<hr>
+<h4>US-TRANS-003: View Detail Transaksi</h4>
+<p><strong>As a</strong> Admin/Agen  </p>
+<p><strong>I want to</strong> lihat detail transaksi  </p>
+<p><strong>So that</strong> saya bisa review komisi breakdown</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Info properti: judul, foto, alamat</li>
+<li>✅ Info agen owner & buyer (jika ada)</li>
+<li>✅ Info buyer: nama, kontak</li>
+<li>✅ Harga listing vs harga final</li>
+<li>✅ Komisi breakdown: total, agen, kantor</li>
+<li>✅ Status pembayaran komisi</li>
+<li>✅ Tanggal transaksi & created</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 3  </p>
+<p><strong>Sprint:</strong> 4</p>
+<hr>
+<h3>EPIC 6: Commission Management 💵</h3>
+<h4>US-COMM-001: Auto-Calculate Komisi</h4>
+<p><strong>As a</strong> Admin  </p>
+<p><strong>I want to</strong> sistem auto-calculate komisi saat input transaksi  </p>
+<p><strong>So that</strong> saya tidak perlu hitung manual</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Input harga final → auto-calculate total komisi (% × price)</li>
+<li>✅ Scenario 1 agen: 70% agen, 30% kantor</li>
+<li>✅ Scenario 2 agen: 35% + 35% agen, 30% kantor</li>
+<li>✅ Preview sebelum submit</li>
+<li>✅ Bisa override % manual jika perlu</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 4</p>
+<hr>
+<h4>US-COMM-002: Mark Komisi sebagai Paid</h4>
+<p><strong>As a</strong> Admin Master/Admin Kantor  </p>
+<p><strong>I want to</strong> mark komisi sebagai paid  </p>
+<p><strong>So that</strong> agen tahu komisinya sudah dibayar</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Button "Mark as Paid" di list komisi</li>
+<li>✅ Input: tanggal bayar, metode (transfer/cash), notes</li>
+<li>✅ Status change: pending → paid</li>
+<li>✅ Notifikasi ke agen (email/WA)</li>
+<li>✅ Tidak bisa unmark (audit trail)</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 5</p>
+<hr>
+<h4>US-COMM-003: View Komisi Pending & Paid</h4>
+<p><strong>As a</strong> Agen  </p>
+<p><strong>I want to</strong> lihat komisi pending dan paid  </p>
+<p><strong>So that</strong> saya tahu berapa yang harus saya terima</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Tab: Pending | Paid | All</li>
+<li>✅ Table: transaksi, properti, amount, tanggal, status</li>
+<li>✅ Total pending di header</li>
+<li>✅ Total paid (bulan ini, total)</li>
+<li>✅ Filter by date range</li>
+<li>✅ Export ke Excel</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 5  </p>
+<p><strong>Sprint:</strong> 5</p>
+<hr>
+<h3>EPIC 7: Dashboard & Reports 📊</h3>
+<h4>US-DASH-001: Dashboard Personal Agen</h4>
+<p><strong>As a</strong> Agen  </p>
+<p><strong>I want to</strong> lihat dashboard performa saya  </p>
+<p><strong>So that</strong> saya tahu produktivitas saya</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Widget:</li>
+<li>Total Listing Active</li>
+<li>Total Omzet (sum harga final)</li>
+<li>Total Komisi</li>
+<li>Komisi Pending</li>
+<li>Komisi Paid</li>
+<li>✅ Filter by date range (bulan ini, 3 bulan, 1 tahun, custom)</li>
+<li>✅ Chart: Omzet per bulan (line chart)</li>
+<li>✅ Chart: Listing by status (pie chart)</li>
+<li>✅ Real-time data (no caching)</li>
+</ul>
+<p><strong>Priority:</strong> P0 - CRITICAL  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 5</p>
+<hr>
+<h4>US-DASH-002: Dashboard Kantor</h4>
+<p><strong>As a</strong> Admin Kantor  </p>
+<p><strong>I want to</strong> lihat dashboard performa kantor saya  </p>
+<p><strong>So that</strong> saya bisa monitor agen-agen saya</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Widget:</li>
+<li>Total Agen Active</li>
+<li>Total Listing Active</li>
+<li>Total Omzet Kantor</li>
+<li>Total Komisi Kantor</li>
+<li>✅ Table: Performance per agen (nama, listing, omzet, komisi)</li>
+<li>✅ Sort by omzet/komisi</li>
+<li>✅ Chart: Omzet per agen (bar chart)</li>
+<li>✅ Click agen → detail performance agen</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 6</p>
+<hr>
+<h4>US-DASH-003: Dashboard Master (Global)</h4>
+<p><strong>As a</strong> Admin Master  </p>
+<p><strong>I want to</strong> lihat dashboard global semua kantor  </p>
+<p><strong>So that</strong> saya bisa monitor bisnis secara keseluruhan</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li>✅ Widget:</li>
+<li>Total Kantor</li>
+<li>Total Agen</li>
+<li>Total Listing</li>
+<li>Total Omzet Global</li>
+<li>Total Komisi</li>
+<li>✅ Table: Performance per kantor (nama, agen, listing, omzet)</li>
+<li>✅ Chart: Omzet per kantor (bar chart)</li>
+<li>✅ Chart: Trend omzet (line chart)</li>
+<li>✅ Click kantor → detail performance kantor</li>
+</ul>
+<p><strong>Priority:</strong> P1 - HIGH  </p>
+<p><strong>Story Points:</strong> 8  </p>
+<p><strong>Sprint:</strong> 6</p>
+<hr>
+<h2>3. User Story Summary per Sprint</h2>
+<h3>Sprint 1 (Week 1-2): Foundation 🏗️</h3>
+<p><strong>Goal:</strong> Setup authentication & basic CRUD</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-AUTH-001</td>
+<td>Login Admin Master</td>
+<td>3</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-AUTH-002</td>
+<td>Login Admin Kantor</td>
+<td>2</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-AUTH-003</td>
+<td>Login Agen</td>
+<td>2</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-OFFICE-001</td>
+<td>Create Kantor</td>
+<td>3</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-OFFICE-002</td>
+<td>Edit & Delete Kantor</td>
+<td>2</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-AGENT-001</td>
+<td>Create Agen</td>
+<td>5</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Velocity Target:</strong> 20</p>
+<hr>
+<h3>Sprint 2 (Week 3-4): Property Management 🏠</h3>
+<p><strong>Goal:</strong> CRUD Properti dengan foto upload</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-AUTH-004</td>
+<td>Forgot Password</td>
+<td>5</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>US-AGENT-002</td>
+<td>Edit Profile Agen</td>
+<td>3</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>US-PROP-001</td>
+<td>Create Listing</td>
+<td>8</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-PROP-002</td>
+<td>Edit Listing</td>
+<td>5</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-PROP-004</td>
+<td>Upload Foto</td>
+<td>5</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Velocity Target:</strong> 25</p>
+<hr>
+<h3>Sprint 3 (Week 5-6): Public Listing 🌐</h3>
+<p><strong>Goal:</strong> Public website untuk buyer</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-PROP-003</td>
+<td>Delete Listing</td>
+<td>3</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>US-PUBLIC-001</td>
+<td>Browse Listing</td>
+<td>5</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-PUBLIC-002</td>
+<td>Search & Filter</td>
+<td>8</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-PUBLIC-003</td>
+<td>View Detail</td>
+<td>8</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-PUBLIC-004</td>
+<td>Kontak Agen WA</td>
+<td>3</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Velocity Target:</strong> 25</p>
+<hr>
+<h3>Sprint 4 (Week 7-8): Transaction & Commission 💰</h3>
+<p><strong>Goal:</strong> Input transaksi & auto-calculate komisi</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-TRANS-001</td>
+<td>Input Transaksi</td>
+<td>8</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-TRANS-002</td>
+<td>View List Transaksi</td>
+<td>5</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>US-TRANS-003</td>
+<td>View Detail Transaksi</td>
+<td>3</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>US-COMM-001</td>
+<td>Auto-Calculate Komisi</td>
+<td>8</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Velocity Target:</strong> 25</p>
+<hr>
+<h3>Sprint 5 (Week 9-10): Commission Management & Dashboard 💵📊</h3>
+<p><strong>Goal:</strong> Mark komisi paid & dashboard personal</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-COMM-002</td>
+<td>Mark Komisi Paid</td>
+<td>5</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>US-COMM-003</td>
+<td>View Komisi Pending/Paid</td>
+<td>5</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>US-DASH-001</td>
+<td>Dashboard Personal Agen</td>
+<td>8</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Velocity Target:</strong> 20</p>
+<hr>
+<h3>Sprint 6 (Week 11-12): Dashboard Kantor & Master 📊</h3>
+<p><strong>Goal:</strong> Dashboard agregat & final polish</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-DASH-002</td>
+<td>Dashboard Kantor</td>
+<td>8</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>US-DASH-003</td>
+<td>Dashboard Master</td>
+<td>8</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>-</td>
+<td>Bug Fixing & Polish</td>
+<td>10</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Velocity Target:</strong> 25</p>
+<hr>
+<h2>4. Total Summary</h2>
+<p><strong>Total User Stories:</strong> 26  </p>
+<p><strong>Total Story Points:</strong> 138  </p>
+<p><strong>Average Velocity:</strong> 23 points/sprint  </p>
+<p><strong>Total Sprints:</strong> 6 (12 weeks)  </p>
+<p><strong>Estimated Completion:</strong> Mid December 2025  </p>
+<p><strong>Buffer for Testing:</strong> 1 week  </p>
+<p><strong>Target Launch:</strong> December 24, 2025 ✅</p>
+<hr>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Date:</strong> 31 Oktober 2025  </p>
+<p><strong>Version:</strong> 1.0.0</p>
+    </div>

@@ -1,0 +1,1626 @@
+<div class="content-section page-break" id="section-08">
+<h1>8. Database Design & Schema</h1>
+
+<h2>3. Detailed Table Schemas</h2>
+<h3>3.1 Authentication & Users</h3>
+<h4>Table: `users`</h4>
+<p><strong>Purpose:</strong> Store all user accounts (Admin Master, Admin Kantor, Agen, Buyer)</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Full name</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>VARCHAR(255)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>Login email</td>
+</tr>
+<tr>
+<td><code>email_verified_at</code></td>
+<td>TIMESTAMP</td>
+<td>NULLABLE</td>
+<td>Email verification time</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Hashed password (bcrypt)</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td>ENUM</td>
+<td>NOT NULL</td>
+<td>admin_master, admin_kantor, agent, buyer</td>
+</tr>
+<tr>
+<td><code>phone</code></td>
+<td>VARCHAR(20)</td>
+<td>NULLABLE</td>
+<td>Phone number</td>
+</tr>
+<tr>
+<td><code>avatar</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>Avatar image path</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT TRUE</td>
+<td>Active status</td>
+</tr>
+<tr>
+<td><code>remember_token</code></td>
+<td>VARCHAR(100)</td>
+<td>NULLABLE</td>
+<td>Remember me token</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation time</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update time</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>UNIQUE KEY unique_email (email)</code></li>
+<li><code>INDEX idx_role (role)</code></li>
+<li><code>INDEX idx_is_active (is_active)</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>hasOne(Agent)</code> - untuk user dengan role agent</li>
+<li><code>belongsToMany(Office)</code> - via office_admins untuk admin kantor</li>
+</ul>
+<hr>
+<h4>Table: `password_reset_tokens`</h4>
+<p><strong>Purpose:</strong> Store password reset tokens (Laravel default)</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>email</code></td>
+<td>VARCHAR(255)</td>
+<td>PK</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Reset token</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>NULLABLE</td>
+<td>Token creation time</td>
+</tr>
+</tbody>
+</table>
+<h4>Table: `sessions`</h4>
+<p><strong>Purpose:</strong> Store user sessions (Laravel default)</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>VARCHAR(255)</td>
+<td>PK</td>
+<td>Session ID</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>NULLABLE, INDEX</td>
+<td>User ID</td>
+</tr>
+<tr>
+<td><code>ip_address</code></td>
+<td>VARCHAR(45)</td>
+<td>NULLABLE</td>
+<td>IP address</td>
+</tr>
+<tr>
+<td><code>user_agent</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>User agent</td>
+</tr>
+<tr>
+<td><code>payload</code></td>
+<td>LONGTEXT</td>
+<td>NOT NULL</td>
+<td>Session data</td>
+</tr>
+<tr>
+<td><code>last_activity</code></td>
+<td>INT</td>
+<td>INDEX</td>
+<td>Last activity timestamp</td>
+</tr>
+</tbody>
+</table>
+<h3>3.2 Organization Structure</h3>
+<h4>Table: `offices`</h4>
+<p><strong>Purpose:</strong> Store office/branch information</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Office name</td>
+</tr>
+<tr>
+<td><code>address</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Full address</td>
+</tr>
+<tr>
+<td><code>phone</code></td>
+<td>VARCHAR(20)</td>
+<td>NULLABLE</td>
+<td>Office phone</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>Office email</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT TRUE</td>
+<td>Active status</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_is_active (is_active)</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>hasMany(Agent)</code> - satu kantor punya banyak agen</li>
+<li><code>belongsToMany(User)</code> - via office_admins</li>
+<li><code>hasMany(Commission)</code> - komisi kantor</li>
+</ul>
+<hr>
+<h4>Table: `office_admins`</h4>
+<p><strong>Purpose:</strong> Pivot table untuk assign Admin Kantor ke Office</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → users.id</td>
+<td>Admin Kantor user ID</td>
+</tr>
+<tr>
+<td><code>office_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → offices.id</td>
+<td>Office ID</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Assignment time</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>UNIQUE KEY unique_user_office (user_id, office_id)</code></li>
+<li><code>INDEX idx_user (user_id)</code></li>
+<li><code>INDEX idx_office (office_id)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE</code></li>
+<li><code>FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE CASCADE</code></li>
+</ul>
+<hr>
+<h4>Table: `agents`</h4>
+<p><strong>Purpose:</strong> Store agent profiles (linked to users table)</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>UNIQUE, FK → users.id</td>
+<td>User account</td>
+</tr>
+<tr>
+<td><code>office_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → offices.id</td>
+<td>Office affiliation</td>
+</tr>
+<tr>
+<td><code>phone</code></td>
+<td>VARCHAR(20)</td>
+<td>NULLABLE</td>
+<td>Contact phone</td>
+</tr>
+<tr>
+<td><code>whatsapp</code></td>
+<td>VARCHAR(20)</td>
+<td>NULLABLE</td>
+<td>WhatsApp number</td>
+</tr>
+<tr>
+<td><code>bio</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Agent bio/description</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>ENUM</td>
+<td>DEFAULT 'active'</td>
+<td>active, inactive</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>UNIQUE KEY unique_user (user_id)</code></li>
+<li><code>INDEX idx_office (office_id)</code></li>
+<li><code>INDEX idx_status (status)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE</code></li>
+<li><code>FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE RESTRICT</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(User)</code> - agent punya user account</li>
+<li><code>belongsTo(Office)</code> - agent belong to satu kantor</li>
+<li><code>hasMany(Property)</code> - agent punya banyak listing</li>
+<li><code>hasMany(Transaction as owner)</code> - transaksi sebagai pemilik</li>
+<li><code>hasMany(Transaction as buyer)</code> - transaksi sebagai pembawa buyer</li>
+<li><code>hasMany(Commission)</code> - komisi agen</li>
+</ul>
+<hr>
+<h3>3.3 Property Management</h3>
+<h4>Table: `properties`</h4>
+<p><strong>Purpose:</strong> Store property listings</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>agent_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → agents.id</td>
+<td>Property owner (agent)</td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>VARCHAR(255)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>URL-friendly slug</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Property title</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Full description</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>ENUM</td>
+<td>NOT NULL</td>
+<td>house, apartment, land, commercial</td>
+</tr>
+<tr>
+<td><code>listing_type</code></td>
+<td>ENUM</td>
+<td>NOT NULL</td>
+<td>sale, rent, both</td>
+</tr>
+<tr>
+<td><code>price</code></td>
+<td>DECIMAL(15,2)</td>
+<td>NOT NULL</td>
+<td>Listing price (IDR)</td>
+</tr>
+<tr>
+<td><code>price_per_sqm</code></td>
+<td>DECIMAL(15,2)</td>
+<td>NULLABLE</td>
+<td>Price per m²</td>
+</tr>
+<tr>
+<td><code>land_area</code></td>
+<td>DECIMAL(10,2)</td>
+<td>NULLABLE</td>
+<td>Land area (m²)</td>
+</tr>
+<tr>
+<td><code>building_area</code></td>
+<td>DECIMAL(10,2)</td>
+<td>NULLABLE</td>
+<td>Building area (m²)</td>
+</tr>
+<tr>
+<td><code>bedrooms</code></td>
+<td>INT UNSIGNED</td>
+<td>NULLABLE</td>
+<td>Number of bedrooms</td>
+</tr>
+<tr>
+<td><code>bathrooms</code></td>
+<td>INT UNSIGNED</td>
+<td>NULLABLE</td>
+<td>Number of bathrooms</td>
+</tr>
+<tr>
+<td><code>address</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Full address</td>
+</tr>
+<tr>
+<td><code>city</code></td>
+<td>VARCHAR(100)</td>
+<td>NULLABLE</td>
+<td>City/Kabupaten</td>
+</tr>
+<tr>
+<td><code>province</code></td>
+<td>VARCHAR(100)</td>
+<td>NULLABLE</td>
+<td>Province</td>
+</tr>
+<tr>
+<td><code>latitude</code></td>
+<td>DECIMAL(10,8)</td>
+<td>NULLABLE</td>
+<td>GPS latitude</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td>DECIMAL(11,8)</td>
+<td>NULLABLE</td>
+<td>GPS longitude</td>
+</tr>
+<tr>
+<td><code>certificate_type</code></td>
+<td>VARCHAR(50)</td>
+<td>NULLABLE</td>
+<td>SHM, HGB, dll</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>ENUM</td>
+<td>DEFAULT 'available'</td>
+<td>available, pending, sold, rented</td>
+</tr>
+<tr>
+<td><code>is_featured</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT FALSE</td>
+<td>Featured listing</td>
+</tr>
+<tr>
+<td><code>is_public</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT TRUE</td>
+<td>Show in public marketplace</td>
+</tr>
+<tr>
+<td><code>published_at</code></td>
+<td>TIMESTAMP</td>
+<td>NULLABLE</td>
+<td>Publication timestamp</td>
+</tr>
+<tr>
+<td><code>views_count</code></td>
+<td>INT UNSIGNED</td>
+<td>DEFAULT 0</td>
+<td>View counter</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMP</td>
+<td>NULLABLE</td>
+<td>Soft delete timestamp</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>UNIQUE KEY unique_slug (slug)</code></li>
+<li><code>INDEX idx_agent (agent_id)</code></li>
+<li><code>INDEX idx_type (type)</code></li>
+<li><code>INDEX idx_listing_type (listing_type)</code></li>
+<li><code>INDEX idx_status (status)</code></li>
+<li><code>INDEX idx_city (city)</code></li>
+<li><code>INDEX idx_price (price)</code></li>
+<li><code>INDEX idx_is_public (is_public)</code></li>
+<li><code>INDEX idx_published_at (published_at)</code></li>
+<li><code>INDEX idx_created_at (created_at)</code></li>
+<li><code>INDEX idx_deleted_at (deleted_at)</code></li>
+<li><code>FULLTEXT idx_search (title, description, address)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (agent_id) REFERENCES agents(id) ON DELETE RESTRICT</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Agent)</code> - property dimiliki agent</li>
+<li><code>hasMany(PropertyPhoto)</code> - property punya banyak foto</li>
+<li><code>hasMany(PropertyLink)</code> - property bisa punya banyak private links</li>
+<li><code>hasOne(Transaction)</code> - property punya max 1 transaksi</li>
+</ul>
+<p><strong>Soft Delete:</strong></p>
+<ul>
+<li>Uses Laravel's <code>SoftDeletes</code> trait</li>
+<li>Deleted properties tidak muncul di query default</li>
+<li>Admin Master bisa restore jika diperlukan</li>
+</ul>
+<hr>
+<h4>Table: `property_photos`</h4>
+<p><strong>Purpose:</strong> Store property photos/images</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>property_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → properties.id</td>
+<td>Property reference</td>
+</tr>
+<tr>
+<td><code>photo_url</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>File path/URL</td>
+</tr>
+<tr>
+<td><code>order_number</code></td>
+<td>INT UNSIGNED</td>
+<td>DEFAULT 0</td>
+<td>Display order</td>
+</tr>
+<tr>
+<td><code>is_cover</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT FALSE</td>
+<td>Cover image flag</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Upload time</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_property (property_id)</code></li>
+<li><code>INDEX idx_order (order_number)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Property)</code> - foto belong to property</li>
+</ul>
+<hr>
+<h4>Table: `property_links`</h4>
+<p><strong>Purpose:</strong> Store tokenized private links for exclusive property viewing</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>property_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → properties.id</td>
+<td>Property reference</td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → users.id</td>
+<td>User who created the link</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td>VARCHAR(64)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>Random access token</td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMP</td>
+<td>NOT NULL</td>
+<td>Link expiration time</td>
+</tr>
+<tr>
+<td><code>is_used</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT FALSE</td>
+<td>Single-use flag</td>
+</tr>
+<tr>
+<td><code>accessed_at</code></td>
+<td>TIMESTAMP</td>
+<td>NULLABLE</td>
+<td>First access timestamp</td>
+</tr>
+<tr>
+<td><code>access_count</code></td>
+<td>INT UNSIGNED</td>
+<td>DEFAULT 0</td>
+<td>Number of times accessed</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Link creation time</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>UNIQUE KEY unique_token (token)</code></li>
+<li><code>INDEX idx_property (property_id)</code></li>
+<li><code>INDEX idx_created_by (created_by)</code></li>
+<li><code>INDEX idx_expires_at (expires_at)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE</code></li>
+<li><code>FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Property)</code> - link untuk property tertentu</li>
+<li><code>belongsTo(User as creator)</code> - user yang generate link</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Check if link is valid
+public function isValid(): bool {
+    return $this->expires_at > now() 
+        && (!$this->is_used || $this->access_count == 0);
+}
+
+// Generate random token
+public static function generateToken(): string {
+    return Str::random(64);
+}
+</code></pre>
+<hr>
+<h3>3.4 Transactions & Commissions</h3>
+<h4>Table: `transactions`</h4>
+<p><strong>Purpose:</strong> Store property transactions (sale/rent)</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>property_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → properties.id</td>
+<td>Property sold/rented</td>
+</tr>
+<tr>
+<td><code>agent_owner_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → agents.id</td>
+<td>Property owner agent</td>
+</tr>
+<tr>
+<td><code>agent_buyer_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>NULLABLE, FK → agents.id</td>
+<td>Buyer's agent (optional)</td>
+</tr>
+<tr>
+<td><code>buyer_name</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Buyer full name</td>
+</tr>
+<tr>
+<td><code>buyer_phone</code></td>
+<td>VARCHAR(20)</td>
+<td>NULLABLE</td>
+<td>Buyer contact</td>
+</tr>
+<tr>
+<td><code>buyer_email</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>Buyer email</td>
+</tr>
+<tr>
+<td><code>transaction_type</code></td>
+<td>ENUM</td>
+<td>NOT NULL</td>
+<td>sale, rent</td>
+</tr>
+<tr>
+<td><code>final_price</code></td>
+<td>DECIMAL(15,2)</td>
+<td>NOT NULL</td>
+<td>Closing price (IDR)</td>
+</tr>
+<tr>
+<td><code>commission_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 2.00</td>
+<td>Commission % (e.g., 2%)</td>
+</tr>
+<tr>
+<td><code>transaction_date</code></td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Transaction date</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>ENUM</td>
+<td>DEFAULT 'completed'</td>
+<td>pending, completed, cancelled</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Additional notes</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_property (property_id)</code></li>
+<li><code>INDEX idx_agent_owner (agent_owner_id)</code></li>
+<li><code>INDEX idx_agent_buyer (agent_buyer_id)</code></li>
+<li><code>INDEX idx_transaction_date (transaction_date)</code></li>
+<li><code>INDEX idx_status (status)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE RESTRICT</code></li>
+<li><code>FOREIGN KEY (agent_owner_id) REFERENCES agents(id) ON DELETE RESTRICT</code></li>
+<li><code>FOREIGN KEY (agent_buyer_id) REFERENCES agents(id) ON DELETE RESTRICT</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Property)</code> - transaction untuk property tertentu</li>
+<li><code>belongsTo(Agent as agentOwner)</code> - agen pemilik</li>
+<li><code>belongsTo(Agent as agentBuyer)</code> - agen pembawa buyer (optional)</li>
+<li><code>hasMany(Commission)</code> - transaction generate multiple commissions</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Auto-update property status when transaction created
+Transaction::creating(function ($transaction) {
+    $property = $transaction->property;
+    
+    if ($transaction->transaction_type === 'sale') {
+        $property->status = 'sold';
+    } else {
+        $property->status = 'rented';
+    }
+    
+    $property->save();
+});
+</code></pre>
+<hr>
+<h4>Table: `commissions`</h4>
+<p><strong>Purpose:</strong> Store commission records for agents and offices</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>transaction_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>FK → transactions.id</td>
+<td>Related transaction</td>
+</tr>
+<tr>
+<td><code>agent_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>NULLABLE, FK → agents.id</td>
+<td>Agent (if applicable)</td>
+</tr>
+<tr>
+<td><code>office_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>NULLABLE, FK → offices.id</td>
+<td>Office (if applicable)</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>DECIMAL(15,2)</td>
+<td>NOT NULL</td>
+<td>Commission amount (IDR)</td>
+</tr>
+<tr>
+<td><code>percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>NOT NULL</td>
+<td>Percentage from total</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>ENUM</td>
+<td>NOT NULL</td>
+<td>agent_owner, agent_buyer, office</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>ENUM</td>
+<td>DEFAULT 'pending'</td>
+<td>pending, paid, cancelled</td>
+</tr>
+<tr>
+<td><code>paid_date</code></td>
+<td>DATE</td>
+<td>NULLABLE</td>
+<td>Payment date</td>
+</tr>
+<tr>
+<td><code>payment_method</code></td>
+<td>VARCHAR(50)</td>
+<td>NULLABLE</td>
+<td>Transfer, Cash, etc</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Payment notes</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_transaction (transaction_id)</code></li>
+<li><code>INDEX idx_agent (agent_id)</code></li>
+<li><code>INDEX idx_office (office_id)</code></li>
+<li><code>INDEX idx_status (status)</code></li>
+<li><code>INDEX idx_paid_date (paid_date)</code></li>
+<li><code>INDEX idx_type (type)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE</code></li>
+<li><code>FOREIGN KEY (agent_id) REFERENCES agents(id) ON DELETE RESTRICT</code></li>
+<li><code>FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE RESTRICT</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Transaction)</code> - commission dari transaction</li>
+<li><code>belongsTo(Agent)</code> - agent commission</li>
+<li><code>belongsTo(Office)</code> - office commission</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Auto-generate commissions when transaction created
+Transaction::created(function ($transaction) {
+    $commissions = CommissionService::calculate($transaction);
+    
+    foreach ($commissions as $commission) {
+        Commission::create([
+            'transaction_id' => $transaction->id,
+            'agent_id' => $commission['agent_id'] ?? null,
+            'office_id' => $commission['office_id'] ?? null,
+            'amount' => $commission['amount'],
+            'percentage' => $commission['percentage'],
+            'type' => $commission['type'],
+            'status' => 'pending',
+        ]);
+    }
+});
+</code></pre>
+<hr>
+<h4>Table: `commission_payments` (NEW ENHANCEMENT)</h4>
+<p><strong>Purpose:</strong> Track partial/installment payments for commissions</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>UUID CHAR(36)</td>
+<td>PK</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>commission_id</code></td>
+<td>UUID CHAR(36)</td>
+<td>FK → commissions.id</td>
+<td>Related commission</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>DECIMAL(15,2)</td>
+<td>NOT NULL</td>
+<td>Payment amount (IDR)</td>
+</tr>
+<tr>
+<td><code>payment_date</code></td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>Date of payment</td>
+</tr>
+<tr>
+<td><code>payment_method</code></td>
+<td>VARCHAR(50)</td>
+<td>NULLABLE</td>
+<td>Transfer, Cash, etc.</td>
+</tr>
+<tr>
+<td><code>reference_number</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>Bank ref or transaction ID</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Payment notes</td>
+</tr>
+<tr>
+<td><code>approved_by</code></td>
+<td>UUID CHAR(36)</td>
+<td>NULLABLE, FK → users.id</td>
+<td>Admin who approved</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_commission (commission_id)</code></li>
+<li><code>INDEX idx_payment_date (payment_date)</code></li>
+<li><code>INDEX idx_approved_by (approved_by)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (commission_id) REFERENCES commissions(id) ON DELETE CASCADE</code></li>
+<li><code>FOREIGN KEY (approved_by) REFERENCES users(id) ON DELETE SET NULL</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Commission)</code> - payment for specific commission</li>
+<li><code>belongsTo(User as approvedBy)</code> - admin who approved payment</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Calculate total paid and remaining
+public function getRemainingAmountAttribute(): float {
+    $totalPaid = $this->payments()->sum('amount');
+    return $this->amount - $totalPaid;
+}
+
+// Check if fully paid
+public function isFullyPaid(): bool {
+    return $this->remaining_amount <= 0;
+}
+</code></pre>
+<hr>
+<h4>Table: `commission_settings` (NEW ENHANCEMENT)</h4>
+<p><strong>Purpose:</strong> Configurable commission split rules per office and transaction type</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>UUID CHAR(36)</td>
+<td>PK</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>office_id</code></td>
+<td>UUID CHAR(36)</td>
+<td>NULLABLE, FK → offices.id</td>
+<td>Specific office (NULL = global)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>Setting name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>TEXT</td>
+<td>NULLABLE</td>
+<td>Description</td>
+</tr>
+<tr>
+<td><code>single_agent_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 70.00</td>
+<td>Agent % (1 agent scenario)</td>
+</tr>
+<tr>
+<td><code>single_office_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 30.00</td>
+<td>Office % (1 agent scenario)</td>
+</tr>
+<tr>
+<td><code>dual_agent_owner_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 35.00</td>
+<td>Owner agent % (2 agents)</td>
+</tr>
+<tr>
+<td><code>dual_agent_buyer_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 35.00</td>
+<td>Buyer agent % (2 agents)</td>
+</tr>
+<tr>
+<td><code>dual_office_percentage</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 30.00</td>
+<td>Office % (2 agents)</td>
+</tr>
+<tr>
+<td><code>default_commission_rate</code></td>
+<td>DECIMAL(5,2)</td>
+<td>DEFAULT 2.00</td>
+<td>% from transaction value</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>ENUM</td>
+<td>DEFAULT 'both'</td>
+<td>jual, sewa, both</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT TRUE</td>
+<td>Active status</td>
+</tr>
+<tr>
+<td><code>is_default</code></td>
+<td>BOOLEAN</td>
+<td>DEFAULT FALSE</td>
+<td>Default setting flag</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Record creation</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>AUTO UPDATE</td>
+<td>Last update</td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMP</td>
+<td>NULLABLE</td>
+<td>Soft delete timestamp</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_office (office_id)</code></li>
+<li><code>INDEX idx_type (type)</code></li>
+<li><code>INDEX idx_is_active_is_default (is_active, is_default)</code></li>
+</ul>
+<p><strong>Foreign Keys:</strong></p>
+<ul>
+<li><code>FOREIGN KEY (office_id) REFERENCES offices(id) ON DELETE CASCADE</code></li>
+</ul>
+<p><strong>Relationships:</strong></p>
+<ul>
+<li><code>belongsTo(Office)</code> - office-specific setting</li>
+<li><code>hasMany(Transaction)</code> - transactions using this setting</li>
+</ul>
+<p><strong>Business Logic:</strong></p>
+<pre><code>// Get active setting for office/type
+public static function getActiveSetting(?string $officeId, string $type): ?self {
+    // Try office-specific first
+    if ($officeId) {
+        $setting = self::where('office_id', $officeId)
+            ->where('is_active', true)
+            ->where(function($q) use ($type) {
+                $q->where('type', $type)->orWhere('type', 'both');
+            })
+            ->first();
+        if ($setting) return $setting;
+    }
+    
+    // Fallback to global default
+    return self::whereNull('office_id')
+        ->where('is_active', true)
+        ->where('is_default', true)
+        ->first();
+}
+
+// Calculate commission for single agent
+public function calculateSingleAgent(float $value): array {
+    $total = $value * ($this->default_commission_rate / 100);
+    return [
+        'agent' => $total * ($this->single_agent_percentage / 100),
+        'office' => $total * ($this->single_office_percentage / 100),
+    ];
+}
+</code></pre>
+<hr>
+<h2>4. Enum Values</h2>
+<h3>4.1 user.role</h3>
+<pre><code>enum UserRole: string {
+    case ADMIN_MASTER = 'admin_master';
+    case ADMIN_KANTOR = 'admin_kantor';
+    case AGENT = 'agent';
+    case BUYER = 'buyer';
+}
+</code></pre>
+<h3>4.2 property.type (UPDATED)</h3>
+<pre><code>enum PropertyType: string {
+    case RUMAH = 'rumah';         // Rumah (House)
+    case APARTEMEN = 'apartemen'; // Apartemen (Apartment)
+    case RUKO = 'ruko';           // Ruko (Shop House)
+    case TANAH = 'tanah';         // Tanah (Land)
+    case VILLA = 'villa';         // Villa
+    case GUDANG = 'gudang';       // Gudang (Warehouse)
+    case KANTOR = 'kantor';       // Kantor (Office Building)
+}
+// ENHANCEMENT: 7 types instead of 4, in Bahasa Indonesia
+</code></pre>
+<h3>4.3 property.listing_type (UPDATED)</h3>
+<pre><code>enum ListingType: string {
+    case JUAL = 'jual';  // Jual (Sale)
+    case SEWA = 'sewa';  // Sewa (Rent)
+}
+// SIMPLIFIED: Removed 'both' option for clearer categorization
+</code></pre>
+<h3>4.4 property.status (UPDATED - ENHANCED)</h3>
+<pre><code>enum PropertyStatus: string {
+    case DRAFT = 'draft';         // Draft (Not submitted)
+    case PENDING = 'pending';     // Pending approval
+    case APPROVED = 'approved';   // Approved & published
+    case REJECTED = 'rejected';   // Rejected (needs revision)
+    case SOLD = 'sold';           // Terjual
+    case RENTED = 'rented';       // Tersewa
+}
+// ENHANCEMENT: Added moderation workflow (draft/approved/rejected)
+</code></pre>
+<h3>4.5 transaction.type (UPDATED)</h3>
+<pre><code>enum TransactionType: string {
+    case JUAL = 'jual'; // Jual (Sale)
+    case SEWA = 'sewa'; // Sewa (Rent)
+}
+// UPDATED: Using Bahasa Indonesia
+</code></pre>
+<h3>4.6 transaction.status</h3>
+<pre><code>enum TransactionStatus: string {
+    case PENDING = 'pending';
+    case COMPLETED = 'completed';
+    case CANCELLED = 'cancelled';
+}
+</code></pre>
+<h3>4.7 commission.type</h3>
+<pre><code>enum CommissionType: string {
+    case AGENT_OWNER = 'agent_owner';
+    case AGENT_BUYER = 'agent_buyer';
+    case OFFICE = 'office';
+}
+</code></pre>
+<h3>4.8 commission.status (UPDATED)</h3>
+<pre><code>enum CommissionStatus: string {
+    case PENDING = 'pending';
+    case APPROVED = 'approved'; // NEW: Approved but not yet paid
+    case PAID = 'paid';
+    case CANCELLED = 'cancelled';
+}
+// ENHANCEMENT: Added 'approved' status for payment workflow
+</code></pre>
+<h3>4.9 commission_settings.type (NEW)</h3>
+<pre><code>enum CommissionSettingType: string {
+    case JUAL = 'jual';   // For sale transactions
+    case SEWA = 'sewa';   // For rent transactions
+    case BOTH = 'both';   // For both types (default)
+}
+</code></pre>
+<hr>
+<h2>4.9 Additional Tables</h2>
+<h3>Table: `activity_log`</h3>
+<p><strong>Purpose:</strong> Store audit trail for all important actions (using spatie/laravel-activitylog)</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>PK, AUTO_INCREMENT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>log_name</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>Log category</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>TEXT</td>
+<td>NOT NULL</td>
+<td>Action description</td>
+</tr>
+<tr>
+<td><code>subject_type</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>Model class name</td>
+</tr>
+<tr>
+<td><code>subject_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>NULLABLE</td>
+<td>Model ID</td>
+</tr>
+<tr>
+<td><code>causer_type</code></td>
+<td>VARCHAR(255)</td>
+<td>NULLABLE</td>
+<td>User model class</td>
+</tr>
+<tr>
+<td><code>causer_id</code></td>
+<td>BIGINT UNSIGNED</td>
+<td>NULLABLE</td>
+<td>User ID who caused</td>
+</tr>
+<tr>
+<td><code>properties</code></td>
+<td>JSON</td>
+<td>NULLABLE</td>
+<td>Old & new values</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>DEFAULT NOW</td>
+<td>Action timestamp</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>PRIMARY KEY (id)</code></li>
+<li><code>INDEX idx_subject (subject_type, subject_id)</code></li>
+<li><code>INDEX idx_causer (causer_type, causer_id)</code></li>
+<li><code>INDEX idx_log_name (log_name)</code></li>
+<li><code>INDEX idx_created_at (created_at)</code></li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Track siapa yang create/update/delete properti</li>
+<li>Track perubahan komisi</li>
+<li>Track perubahan harga jual</li>
+<li>Track approval/rejection</li>
+<li>Track login/logout activity</li>
+</ul>
+<p><strong>Example Log:</strong></p>
+<pre><code>// Automatic logging with spatie/laravel-activitylog
+activity()
+    ->performedOn($property)
+    ->causedBy($user)
+    ->withProperties([
+        'old' => ['price' => 1000000000],
+        'new' => ['price' => 900000000]
+    ])
+    ->log('Property price updated');
+</code></pre>
+<hr>
+<h2>5. Database Migrations (Laravel)</h2>
+<h3>5.1 Migration Order</h3>
+<pre><code>1. 2025_11_01_000000_create_users_table.php
+2. 2025_11_01_000001_create_password_reset_tokens_table.php
+3. 2025_11_01_000002_create_sessions_table.php
+4. 2025_11_01_000003_create_offices_table.php
+5. 2025_11_01_000004_create_agents_table.php
+6. 2025_11_01_000005_create_office_admins_table.php
+7. 2025_11_01_000006_create_properties_table.php
+8. 2025_11_01_000007_create_property_photos_table.php
+9. 2025_11_01_000008_create_property_links_table.php
+10. 2025_11_01_000009_create_transactions_table.php
+11. 2025_11_01_000010_create_commissions_table.php
+12. 2025_11_01_000011_create_activity_log_table.php
+</code></pre>
+<p><strong>Note:</strong> <code>activity_log</code> table will be auto-created by spatie/laravel-activitylog package via:</p>
+<pre><code>php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
+php artisan migrate
+</code></pre>
+<hr>
+<h2>6. Sample Data (Seeders)</h2>
+<h3>6.1 Admin Master (Default)</h3>
+<pre><code>User::create([
+    'name' => 'Super Admin',
+    'email' => 'admin@hendraprop.com',
+    'password' => Hash::make('password'),
+    'role' => 'admin_master',
+    'is_active' => true,
+]);
+</code></pre>
+<h3>6.2 Sample Offices</h3>
+<pre><code>Office::create(['name' => 'Hendra Prop 1', 'address' => 'Jakarta', 'phone' => '021-xxx']);
+Office::create(['name' => 'Hendra Prop 2', 'address' => 'Bandung', 'phone' => '022-xxx']);
+Office::create(['name' => 'Hendra Prop 3', 'address' => 'Surabaya', 'phone' => '031-xxx']);
+</code></pre>
+<h3>6.3 Sample Agents</h3>
+<pre><code>// Create user first
+$user = User::create([
+    'name' => 'Agent 1',
+    'email' => 'agent1@hendraprop.com',
+    'password' => Hash::make('password'),
+    'role' => 'agent',
+]);
+
+// Create agent profile
+Agent::create([
+    'user_id' => $user->id,
+    'office_id' => 1,
+    'phone' => '08123456789',
+    'whatsapp' => '08123456789',
+    'status' => 'active',
+]);
+</code></pre>
+<hr>
+<h2>7. Query Examples</h2>
+<h3>7.1 Get all properties with agent info</h3>
+<pre><code>SELECT 
+    p.id, p.title, p.price, p.status,
+    a.id as agent_id,
+    u.name as agent_name,
+    o.name as office_name
+FROM properties p
+JOIN agents a ON p.agent_id = a.id
+JOIN users u ON a.user_id = u.id
+JOIN offices o ON a.office_id = o.id
+WHERE p.status = 'available'
+ORDER BY p.created_at DESC
+LIMIT 20;
+</code></pre>
+<h3>7.2 Get agent performance (omzet & komisi)</h3>
+<pre><code>SELECT 
+    a.id,
+    u.name as agent_name,
+    COUNT(DISTINCT p.id) as total_listings,
+    COUNT(DISTINCT t.id) as total_transactions,
+    SUM(t.final_price) as total_omzet,
+    SUM(c.amount) as total_commission,
+    SUM(CASE WHEN c.status = 'pending' THEN c.amount ELSE 0 END) as commission_pending,
+    SUM(CASE WHEN c.status = 'paid' THEN c.amount ELSE 0 END) as commission_paid
+FROM agents a
+JOIN users u ON a.user_id = u.id
+LEFT JOIN properties p ON p.agent_id = a.id
+LEFT JOIN transactions t ON t.agent_owner_id = a.id OR t.agent_buyer_id = a.id
+LEFT JOIN commissions c ON c.agent_id = a.id
+WHERE a.id = ?
+GROUP BY a.id, u.name;
+</code></pre>
+<h3>7.3 Get office performance</h3>
+<pre><code>SELECT 
+    o.id,
+    o.name as office_name,
+    COUNT(DISTINCT a.id) as total_agents,
+    COUNT(DISTINCT p.id) as total_listings,
+    COUNT(DISTINCT t.id) as total_transactions,
+    SUM(t.final_price) as total_omzet,
+    SUM(c.amount) as office_commission
+FROM offices o
+LEFT JOIN agents a ON a.office_id = o.id
+LEFT JOIN properties p ON p.agent_id = a.id
+LEFT JOIN transactions t ON t.property_id = p.id
+LEFT JOIN commissions c ON c.office_id = o.id
+WHERE o.id = ?
+GROUP BY o.id, o.name;
+</code></pre>
+<hr>
+<h2>8. Performance Optimization</h2>
+<h3>8.1 Index Strategy</h3>
+<ul>
+<li><strong>Primary Keys:</strong> All tables have auto-increment BIGINT primary key</li>
+<li><strong>Foreign Keys:</strong> All FKs are indexed automatically</li>
+<li><strong>Search Columns:</strong> city, type, status, price (for filtering)</li>
+<li><strong>FULLTEXT:</strong> title, description, address (for search)</li>
+<li><strong>Composite Index:</strong> (agent_id, status) pada properties</li>
+</ul>
+<h3>8.2 Query Optimization</h3>
+<pre><code>// ❌ BAD: N+1 problem
+$properties = Property::all();
+foreach ($properties as $property) {
+    echo $property->agent->user->name; // N queries
+}
+
+// ✅ GOOD: Eager loading
+$properties = Property::with('agent.user', 'photos')->get(); // 1 query
+</code></pre>
+<h3>8.3 Caching Strategy</h3>
+<pre><code>// Cache expensive queries
+$topProperties = Cache::remember('properties:featured', 3600, function() {
+    return Property::where('is_featured', true)
+        ->with('agent.user', 'photos')
+        ->take(10)
+        ->get();
+});
+</code></pre>
+<hr>
+<h2>9. Backup Strategy</h2>
+<h3>9.1 Daily Backup</h3>
+<pre><code>#!/bin/bash
+# Daily backup script
+mysqldump -u root -p hendra_prop > /backup/hendra_prop_$(date +%Y%m%d).sql
+</code></pre>
+<h3>9.2 Retention Policy</h3>
+<ul>
+<li>Daily backups: Keep for 7 days</li>
+<li>Weekly backups: Keep for 1 month</li>
+<li>Monthly backups: Keep for 1 year</li>
+</ul>
+<hr>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Date:</strong> 31 Oktober 2025  </p>
+<p><strong>Version:</strong> 1.0.0</p>
+    </div>

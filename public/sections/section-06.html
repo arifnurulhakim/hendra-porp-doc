@@ -1,0 +1,910 @@
+<div class="content-section page-break" id="section-06">
+<h1>6. Activity Diagrams & Business Process Flows</h1>
+
+<p><strong>Dokumen Activity Diagrams (Business Process Flows)</strong>  </p>
+<p>Proyek: Hendra Prop - Sistem Manajemen Properti  </p>
+<p>Tanggal: 31 Oktober 2025  </p>
+<p>Versi: Final</p>
+<hr>
+<h2>1. Activity Diagram Overview</h2>
+<p>Activity Diagram menunjukkan alur aktivitas/proses bisnis dari awal hingga akhir, dengan decision points dan parallel activities.</p>
+<p><strong>Notasi:</strong></p>
+<ul>
+<li><strong>Start (●)</strong> - Titik mulai</li>
+<li><strong>End (◉)</strong> - Titik selesai</li>
+<li><strong>Activity [□]</strong> - Aksi/proses</li>
+<li><strong>Decision {◇}</strong> - Decision point (if/else)</li>
+<li><strong>Fork/Join (═)</strong> - Parallel activities</li>
+<li><strong>Swimlane (│)</strong> - Responsibility area per actor</li>
+</ul>
+<hr>
+<h2>2. Activity Diagram: End-to-End Property Listing to Sale</h2>
+<pre><code>═══════════════════════════════════════════════════════════════════════════
+SWIMLANE: AGEN          │  SYSTEM         │  BUYER      │  ADMIN KANTOR
+═══════════════════════════════════════════════════════════════════════════
+
+    ●  START                │                │             │
+    │                       │                │             │
+    ▼                       │                │             │
+[Login ke Sistem]          │                │             │
+    │                       │                │             │
+    ▼                       │                │             │
+[Create New Property]      │                │             │
+    │                       │                │             │
+    ▼                       │                │             │
+[Input Data Properti]      │                │             │
+(Judul, harga, deskripsi)  │                │             │
+    │                       │                │             │
+    ▼                       │                │             │
+[Upload Foto (max 10)]     │                │             │
+    │                       │                │             │
+    ▼                       ▼                │             │
+[Submit Form]          [Validate Data]      │             │
+    │                       │                │             │
+    │                       ▼                │             │
+    │                  {Valid?}              │             │
+    │                    /    \              │             │
+    │               [No]      [Yes]          │             │
+    │                /            \          │             │
+    ◀──[Error Msg]──              │         │             │
+    │                              ▼         │             │
+    │                    [Optimize Photos]   │             │
+    │                    (Resize & Compress) │             │
+    │                              │         │             │
+    │                              ▼         │             │
+    │                    [Generate Slug]     │             │
+    │                              │         │             │
+    │                              ▼         │             │
+    │                    [Save to Database]  │             │
+    │                              │         │             │
+    │                              ▼         │             │
+    │                    {Publish Mode?}     │             │
+    │                      /          \      │             │
+    │                [Public]      [Private]│             │
+    │                  /                \    │             │
+    │                 ▼                  ▼   │             │
+    │      [Set is_public=true]  [Set is_public=false]    │
+    │      [Set published_at]    [Generate Token Link]    │
+    │                  │                  │  │             │
+    │                  └─────────┬────────┘  │             │
+    │                            ▼            │             │
+    │                    [Log Activity]       │             │
+    │                            │            │             │
+    │                            ▼            │             │
+    │                    [Send Notification]──────────────▶│
+    ◀──[Success Msg]────                     │             │
+    │                                         │             ▼
+    │                                         │    [Receive Notification]
+    │                                         │             │
+    │                                         │             ▼
+    │                                         │    {Approve/Reject?}
+    │                                         │       /        \
+    │                                         │  [Approve]  [Reject]
+    │                                         │     /            \
+    │                                         ▼    ▼              ▼
+    │                                    [Set Status]     [Send Reason]
+    │                                    [Approved]             │
+    │                                         │                 ▼
+    │◀────[Notification: Approved]────────────┘         [Notify Agen]
+    │                                         │                 │
+    │                                         ▼                 ◀─┐
+    │                              {Property on Marketplace}      │
+    │                                         │                   │
+    │                                         │                   │
+    │                                         ▼                   │
+    ┼─────────────────────────────────────────┼───────────────────┼───
+    │                                         │                   │
+    │                                         │  ● Buyer START    │
+    │                                         │        │          │
+    │                                         │        ▼          │
+    │                                         │  [Browse Listings]│
+    │                                         │        │          │
+    │                                         │        ▼          │
+    │                                         │  [Search & Filter]│
+    │                                         │        │          │
+    │                                         │        ▼          │
+    │                                         ▼  [View Detail]   │
+    │                                [Query Database]│           │
+    │                                         │      ▼           │
+    │                                         │ [Display Info]   │
+    │                                         │      │           │
+    │                                         │      ▼           │
+    │                                         │ {Interested?}    │
+    │                                         │   /      \       │
+    │                                         │[No]      [Yes]   │
+    │                                         │ /          \     │
+    │                                         ▼◉         [Contact Agent]
+    │                                         END           │    │
+    │                                                       ▼    │
+    │                                              [Open WhatsApp]
+    │                                                       │    │
+    │                                                       ▼    │
+    │◀──────────[Buyer Contact via WA]────────────────────────┘│
+    │                                                            │
+    │ (Negotiation happens externally)                          │
+    │                                                            │
+    ▼                                                            │
+[Deal Reached]                                                  │
+    │                                                            │
+    ▼                                                            │
+[Inform Admin Kantor]──────────────────────────────────────────▶│
+    │                                                            ▼
+    │                                                   [Input Transaction]
+    │                                                            │
+    │                                                            ▼
+    │                          ┌────────────────────[Select Property]
+    │                          │                                 │
+    │                          │                                 ▼
+    │                          │                    [Auto-fill Agent Owner]
+    │                          │                                 │
+    │                          │                                 ▼
+    │                          │                    [Input Buyer Info]
+    │                          │                                 │
+    │                          │                                 ▼
+    │                          │                    [Input Final Price]
+    │                          │                                 │
+    │                          │                                 ▼
+    │                          ▼                    [Calculate Commission]
+    │                   [Commission Preview]                     │
+    │                          │                                 ▼
+    │                          │                        {Commission OK?}
+    │                          │                          /          \
+    │                          │                     [Yes]          [No]
+    │                          │                      /                \
+    │                          │                     ▼                  ▼
+    │                          │              [Save Transaction]  [Adjust %]
+    │                          │                     │                  │
+    │                          │                     ▼                  │
+    │                          │           [Generate Commissions]◀──────┘
+    │                          │                     │
+    │                          │     ┌───────────────┼───────────────┐
+    │                          │     │               │               │
+    │                          │     ▼               ▼               ▼
+    │                          │ [Comm Agent]  [Comm Buyer]  [Comm Office]
+    │                          │     │               │               │
+    │                          │     └───────────────┼───────────────┘
+    │                          │                     │
+    │                          │                     ▼
+    │                          │          [Update Property Status]
+    │                          │          (Status → Sold/Rented)
+    │                          │                     │
+    │                          │                     ▼
+    │                          │             [Log Activity]
+    │                          │                     │
+    │                          │                     ▼
+    │                          │          [Send Notifications]
+    │                          │            /              \
+    │                          │           ▼                ▼
+    │◀──[Notif: Property Sold]─┘     [To Agen Owner]  [To Agen Buyer]
+    │                                                       │
+    ▼                                                       ▼
+[View Dashboard]                                    [View Dashboard]
+    │                                                       │
+    ▼                                                       ▼
+[See Pending Commission]                        [See Pending Commission]
+    │                                                       │
+    │                                                       │
+    │        (Later: Admin marks as Paid)                   │
+    │                      │                                │
+    │                      ▼                                │
+    │             [Mark Commission as Paid]◀────────────────┘
+    │                      │                                │
+    │                      ▼                                │
+    │           [Set status = paid]                         │
+    │           [Set paid_date]                             │
+    │                      │                                │
+    │                      ▼                                │
+    │           [Send Payment Notification]                 │
+    │                  /          \                         │
+    │                 ▼            ▼                        │
+    │◀──[Email Notif]   [Dashboard Notif]──────────────────▶│
+    │                                                        │
+    ▼                                                        ▼
+[See Paid Commission]                          [See Paid Commission]
+    │                                                        │
+    ▼                                                        ▼
+   ◉  END                                                  ◉  END
+</code></pre>
+<hr>
+<h2>3. Flowchart: Commission Calculation Logic</h2>
+
+<div class="mermaid">
+flowchart TD
+    Start([Start]) --> GetData[Get Transaction Data<br/>Final Price, Commission %, Agents]
+    GetData --> CalcTotal[Calculate Total Commission<br/>total = price × comm_%]
+    CalcTotal --> CheckAgents{Agent Buyer<br/>exists?}
+    
+    CheckAgents -->|Yes| Scenario2[SCENARIO A: 2 Agents<br/>Agent Owner: 35%<br/>Agent Buyer: 35%<br/>Office: 30%]
+    CheckAgents -->|No| Scenario1[SCENARIO B: 1 Agent<br/>Agent Owner: 70%<br/>Office: 30%]
+    
+    Scenario2 --> Create3[Create 3 Commission Records]
+    Scenario1 --> Create2[Create 2 Commission Records]
+    
+    Create3 --> SaveDB[(Save to Database<br/>status = pending)]
+    Create2 --> SaveDB
+    
+    SaveDB --> ReturnArray[Return Commission Array]
+    ReturnArray --> End([End])
+    
+    style Scenario2 fill:#e6f3ff
+    style Scenario1 fill:#fff3e6
+    style SaveDB fill:#e6ffe6
+</div>
+
+<h3>ASCII Version:</h3>
+<pre><code>                    ● START
+                    │
+                    ▼
+        ┌───────────────────────────┐
+        │ Get Transaction Data      │
+        │ • Final Price             │
+        │ • Commission %            │
+        │ • Agent Owner ID          │
+        │ • Agent Buyer ID (or null)│
+        └─────────────┬─────────────┘
+                      │
+                      ▼
+        ┌───────────────────────────┐
+        │ Calculate Total Commission│
+        │ total = price × comm_%    │
+        └─────────────┬─────────────┘
+                      │
+                      ▼
+                {Agent Buyer exists?}
+                  /              \
+             [YES]              [NO]
+              /                    \
+             ▼                      ▼
+┌──────────────────────┐  ┌──────────────────────┐
+│ SCENARIO A: 2 Agents │  │ SCENARIO B: 1 Agent  │
+├──────────────────────┤  ├──────────────────────┤
+│ Agent Owner: 35%     │  │ Agent Owner: 70%     │
+│ Agent Buyer: 35%     │  │ Office: 30%          │
+│ Office: 30%          │  │                      │
+└──────────┬───────────┘  └──────────┬───────────┘
+           │                         │
+           ▼                         ▼
+   ┌──────────────┐          ┌──────────────┐
+   │ Create 3     │          │ Create 2     │
+   │ Commission   │          │ Commission   │
+   │ Records      │          │ Records      │
+   └──────┬───────┘          └──────┬───────┘
+          │                         │
+          └────────────┬────────────┘
+                       │
+                       ▼
+           ┌───────────────────────┐
+           │ Save to commissions   │
+           │ table with status     │
+           │ = 'pending'           │
+           └─────────┬─────────────┘
+                     │
+                     ▼
+           ┌───────────────────────┐
+           │ Return Commission     │
+           │ Records Array         │
+           └─────────┬─────────────┘
+                     │
+                     ▼
+                    ◉ END
+</code></pre>
+<p><strong>Sample Output:</strong></p>
+<pre><code>// Scenario A (2 Agents): Rp 1M, 2% commission
+[
+  {
+    "agent_id": 3,
+    "amount": 7000000,
+    "percentage": 35,
+    "type": "agent_owner"
+  },
+  {
+    "agent_id": 5,
+    "amount": 7000000,
+    "percentage": 35,
+    "type": "agent_buyer"
+  },
+  {
+    "office_id": 1,
+    "amount": 6000000,
+    "percentage": 30,
+    "type": "office"
+  }
+]
+</code></pre>
+<hr>
+<h2>4. Flowchart: Public vs Private Property Access</h2>
+
+<div class="mermaid">
+flowchart TD
+    Start([Buyer Visits Website]) --> AccessMethod{Access Method?}
+    
+    AccessMethod -->|Public URL| Public[Access Marketplace<br/>No Auth Required]
+    AccessMethod -->|Private URL| Token[Extract Token from URL]
+    
+    Public --> QueryPublic[Query: is_public=true<br/>AND status=available]
+    QueryPublic --> DisplayList[Display Property Listings]
+    DisplayList --> SelectProp{Select Property?}
+    
+    Token --> Validate{Validate Token<br/>Exists? Not Expired?<br/>Not Used?}
+    
+    Validate -->|Invalid| ShowError[Show Error Message<br/>Link Expired/Invalid]
+    Validate -->|Valid| IncrementAccess[Increment Access Count]
+    
+    ShowError --> EndError([End])
+    
+    SelectProp -->|No| EndNo([End])
+    SelectProp -->|Yes| LoadDetail[Load Property Detail]
+    IncrementAccess --> LoadDetail
+    
+    LoadDetail --> DisplayDetail[Display Property Page<br/>Photos, Description,<br/>Price, Agent Contact]
+    DisplayDetail --> IncrementViews[Increment views_count]
+    IncrementViews --> Contact{Want to<br/>Contact Agent?}
+    
+    Contact -->|No| EndNo2([End])
+    Contact -->|Yes| OpenWA[Open WhatsApp<br/>with Pre-filled Message]
+    OpenWA --> EndSuccess([End])
+    
+    style Public fill:#e6f3ff
+    style Token fill:#fff3e6
+    style ShowError fill:#ffe6e6
+    style OpenWA fill:#e6ffe6
+</div>
+
+<h3>ASCII Version:</h3>
+<pre><code>                        ● Buyer START
+                             │
+                             ▼
+                    {Access Method?}
+                      /            \
+            [Public URL]          [Private URL with Token]
+                  /                        \
+                 ▼                          ▼
+    ┌─────────────────────┐    ┌─────────────────────────┐
+    │ Access Marketplace  │    │ Extract Token from URL  │
+    │ (No Auth Required)  │    │                         │
+    └──────────┬──────────┘    └──────────┬──────────────┘
+               │                           │
+               ▼                           ▼
+    [Query: is_public=true]     ┌──────────────────────┐
+    [AND status=available]      │ Validate Token       │
+               │                 │ • Exists?            │
+               ▼                 │ • Not expired?       │
+    [Display Listings]           │ • Not fully used?    │
+               │                 └──────────┬───────────┘
+               ▼                            │
+    {Select Property?}              {Token Valid?}
+         /      \                      /         \
+    [No]       [Yes]               [No]         [Yes]
+      │          │                  │             │
+      ▼          ▼                  ▼             ▼
+     END   [Click Detail]   [Show Error]  [Increment Access]
+               │             • Link Expired       │
+               │             • Already Used       ▼
+               │                  │        [Load Property]
+               │                  ▼               │
+               │                 END              │
+               │                                  │
+               └──────────────┬───────────────────┘
+                              │
+                              ▼
+                   ┌──────────────────────┐
+                   │ Display Property     │
+                   │ Detail Page          │
+                   │ • Photos Gallery     │
+                   │ • Description        │
+                   │ • Price & Specs      │
+                   │ • Agent Contact      │
+                   └──────────┬───────────┘
+                              │
+                              ▼
+                   [Increment views_count]
+                              │
+                              ▼
+                   {Interested to Contact?}
+                         /         \
+                    [No]           [Yes]
+                      │              │
+                      ▼              ▼
+                     END    ┌───────────────┐
+                            │ Click WA/Phone│
+                            │ Button        │
+                            └───────┬───────┘
+                                    │
+                                    ▼
+                            [Open WhatsApp]
+                            (Pre-filled message)
+                                    │
+                                    ▼
+                            [Contact Agent]
+                            (External to system)
+                                    │
+                                    ▼
+                                   ◉ END
+</code></pre>
+<hr>
+<h2>5. Activity Diagram: Transaction & Commission Flow</h2>
+<pre><code>═══════════════════════════════════════════════════════════════════════════
+SWIMLANE: ADMIN KANTOR  │  SYSTEM               │  AGEN OWNER  │  AGEN BUYER
+═══════════════════════════════════════════════════════════════════════════
+
+    ● START                 │                      │             │
+    │                       │                      │             │
+    ▼                       │                      │             │
+[Login to Admin Panel]     │                      │             │
+    │                       │                      │             │
+    ▼                       │                      │             │
+[Navigate to Transactions] │                      │             │
+    │                       │                      │             │
+    ▼                       │                      │             │
+[Click "New Transaction"]  │                      │             │
+    │                       │                      │             │
+    ▼                       ▼                      │             │
+[Select Property]      [Load Available]           │             │
+                       [Properties List]           │             │
+    │                       │                      │             │
+    ▼                       ▼                      │             │
+[Property Selected]    [Auto-fill Agent Owner]────────────────▶│
+    │                       │                                    │
+    ▼                       │                                    │
+{Need Agent Buyer?}         │                                    │
+   /        \               │                                    │
+[No]       [Yes]            │                                    │
+  │          │               │                                    │
+  │          ▼               │                                    │
+  │   [Select Agent Buyer]──────────────────────────────────────────────▶│
+  │          │               │                                    │       │
+  └──────────┼───────────────┤                                    │       │
+             │               │                                    │       │
+             ▼               │                                    │       │
+[Input Buyer Info]          │                                    │       │
+(Name, phone, email)        │                                    │       │
+             │               │                                    │       │
+             ▼               │                                    │       │
+[Input Transaction Details] │                                    │       │
+• Type (sale/rent)          │                                    │       │
+• Final price               │                                    │       │
+• Commission % (default 2%) │                                    │       │
+• Transaction date          │                                    │       │
+             │               │                                    │       │
+             ▼               ▼                                    │       │
+[Submit]         ┌──────────────────────┐                       │       │
+                 │ Calculate Commission │                       │       │
+                 │ (CommissionService)  │                       │       │
+                 └──────────┬───────────┘                       │       │
+                            │                                    │       │
+                            ▼                                    │       │
+                  {How many agents?}                            │       │
+                      /          \                               │       │
+                  [1 Agent]    [2 Agents]                       │       │
+                    /              \                             │       │
+                   ▼                ▼                            │       │
+        ┌──────────────┐  ┌──────────────────┐                 │       │
+        │ Split 70/30  │  │ Split 35/35/30   │                 │       │
+        └──────┬───────┘  └──────┬───────────┘                 │       │
+               │                 │                              │       │
+               └────────┬────────┘                              │       │
+                        │                                       │       │
+                        ▼                                       │       │
+              [Display Preview]                                 │       │
+              • Agent Owner: Rp X                               │       │
+              • Agent Buyer: Rp Y (if any)                      │       │
+              • Office: Rp Z                                    │       │
+                        │                                       │       │
+◀──[Review Preview]─────┘                                       │       │
+    │                                                            │       │
+    ▼                                                            │       │
+{Confirm?}                                                       │       │
+  /    \                                                         │       │
+[No]  [Yes]                                                      │       │
+ │      │                                                        │       │
+ │      ▼                                                        │       │
+ │  [Save Transaction]                                           │       │
+ │      │                                                        │       │
+ │      ▼                                                        │       │
+ │  [Create Commission Records]                                  │       │
+ │      │  ════════════════════════════                          │       │
+ │      │  ║ Parallel Execution      ║                          │       │
+ │      ▼  ════════════════════════════                          │       │
+ │   ┌──────────┬──────────┬──────────┐                         │       │
+ │   ▼          ▼          ▼          ▼                          │       │
+ │[Comm 1]  [Comm 2]  [Comm 3]  [Update Status]                  │       │
+ │(Agent)   (Agent)  (Office)   (Sold/Rented)                    │       │
+ │   │          │          │          │                           │       │
+ │   └──────────┴──────────┴──────────┘                          │       │
+ │              │                                                  │       │
+ │              ▼                                                  │       │
+ │      [Log to Activity Log]                                     │       │
+ │              │                                                  │       │
+ │              ▼                                                  │       │
+ │      [Send Notifications]                                      │       │
+ │        /           \                                            │       │
+ │       ▼             ▼                                           │       │
+ │ [To Agent Owner] [To Agent Buyer]─────────────────────────────▶│──────▶│
+ │                                                                 ▼       ▼
+ ▼                                                    [Notif Received] [Notif]
+[Success Message]                                               │       │
+ │                                                               ▼       ▼
+ ▼                                                      [View Dashboard]  │
+◉ Admin END                                                     │       │
+                                                                 ▼       ▼
+                                                    [See Pending Commission]
+                                                                 │       │
+                                                                 ▼       ▼
+                                                                ◉ END   ◉ END
+</code></pre>
+<hr>
+<h2>6. Activity Diagram: Mark Commission as Paid</h2>
+<pre><code>═══════════════════════════════════════════════════════════════
+SWIMLANE: ADMIN KANTOR  │  SYSTEM         │  AGEN
+═══════════════════════════════════════════════════════════════
+
+    ● START                 │                │
+    │                       │                │
+    ▼                       │                │
+[Navigate to Commissions]  │                │
+    │                       │                │
+    ▼                       ▼                │
+[Filter: Pending Only] [Query Pending]      │
+                       [Commissions]         │
+    │                       │                │
+    ▼                       ▼                │
+[Display List]         [Show List]          │
+    │                       │                │
+    ▼                       │                │
+[Select Commission]        │                │
+    │                       │                │
+    ▼                       │                │
+[Click "Mark as Paid"]     │                │
+    │                       │                │
+    ▼                       ▼                │
+[Input Payment Details][Validate Input]     │
+• Paid Date                 │                │
+• Payment Method            │                │
+• Notes                     │                │
+    │                       ▼                │
+    │                  {Valid?}              │
+    │                   /    \               │
+    │              [No]      [Yes]           │
+    │               /            \           │
+    ◀─[Error]─────              │           │
+    │                            ▼           │
+    │                    [Update Status]     │
+    │                    • status = 'paid'   │
+    │                    • paid_date = input │
+    │                    • notes = input     │
+    │                            │           │
+    │                            ▼           │
+    │                    [Log Activity]      │
+    │                    (Audit Trail)       │
+    │                            │           │
+    │                            ▼           │
+    │                  [Send Notification]───────────▶│
+    ◀─[Success Msg]────                              │
+    │                                                  ▼
+    ▼                                        [Receive Notif]
+   ◉ END                                              │
+                                                      ▼
+                                            [Check Dashboard]
+                                                      │
+                                                      ▼
+                                            [See Paid Commission]
+                                                      │
+                                                      ▼
+                                                     ◉ END
+</code></pre>
+<hr>
+<h2>7. Swimlane Diagram: Property Approval Workflow</h2>
+<pre><code>═══════════════════════════════════════════════════════════════════════════
+│    AGEN         │  SYSTEM           │  ADMIN KANTOR    │  PUBLIC BUYER
+═══════════════════════════════════════════════════════════════════════════
+
+  ● START           │                  │                  │
+     │              │                  │                  │
+     ▼              │                  │                  │
+[Create Property]   │                  │                  │
+     │              │                  │                  │
+     ▼              ▼                  │                  │
+[Submit]     [Set status='pending']   │                  │
+     │              │                  │                  │
+     │              ▼                  │                  │
+     │       [Log Activity]            │                  │
+     │              │                  │                  │
+     │              ▼                  │                  │
+     │       [Send Notification]───────────▶│            │
+     ◀─[Pending]    │                       │            │
+     │              │                       ▼            │
+     │              │              [Receive Notification]│
+     │              │                       │            │
+     │              │                       ▼            │
+     │              │              [Review Property]     │
+     │              │              • Check photos        │
+     │              │              • Check description   │
+     │              │                       │            │
+     │              │                       ▼            │
+     │              │              {Decision?}           │
+     │              │                /        \          │
+     │              │          [Approve]   [Reject]      │
+     │              │            /              \        │
+     │              │           ▼                ▼       │
+     │              │   [Set Approved]   [Set Reason]   │
+     │              │   [Set is_public]   [Send Reason] │
+     │              │           │                │       │
+     │              ▼           ▼                │       │
+     │       [Log Decision]                      │       │
+     │              │                             │       │
+     │              ▼                             │       │
+     │       [Send Notification]                 │       │
+     │           /                 \              │       │
+     │          ▼                   ▼             │       │
+     ◀─[Approved Notif]       [Rejected]─────────▶       │
+     │                             │                      │
+     ▼                             ◀─[Fix & Resubmit]    │
+{Approved?}                        │                      │
+   /    \                          └──────────────▶[Loop]│
+[No]   [Yes]                                              │
+  │      │                                                │
+  ▼      ▼                                                │
+ END [Now Public]──────────────────────────────────────────────▶│
+          │                                                       ▼
+          │                                              [Property Visible]
+          │                                              [in Marketplace]
+          │                                                       │
+          │                                                       ▼
+          │                                              [Can Browse & View]
+          │                                                       │
+          └───────────────────────────────────────────────────────┘
+                                                                  │
+                                                                  ▼
+                                                                 ◉ END
+</code></pre>
+<hr>
+<h2>8. Decision Tables</h2>
+<h3>8.1 Property Visibility Decision Table</h3>
+<table>
+<thead>
+<tr>
+<th>is_public</th>
+<th>status</th>
+<th>deleted_at</th>
+<th>Show in Marketplace?</th>
+<th>Accessible via Link?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TRUE</td>
+<td>available</td>
+<td>NULL</td>
+<td>✅ YES</td>
+<td>✅ YES</td>
+</tr>
+<tr>
+<td>TRUE</td>
+<td>pending</td>
+<td>NULL</td>
+<td>✅ YES</td>
+<td>✅ YES</td>
+</tr>
+<tr>
+<td>TRUE</td>
+<td>sold</td>
+<td>NULL</td>
+<td>❌ NO</td>
+<td>✅ YES (read-only)</td>
+</tr>
+<tr>
+<td>TRUE</td>
+<td>rented</td>
+<td>NULL</td>
+<td>❌ NO</td>
+<td>✅ YES (read-only)</td>
+</tr>
+<tr>
+<td>FALSE</td>
+<td>available</td>
+<td>NULL</td>
+<td>❌ NO</td>
+<td>✅ YES (if has valid token)</td>
+</tr>
+<tr>
+<td>FALSE</td>
+<td>*</td>
+<td>NULL</td>
+<td>❌ NO</td>
+<td>✅ YES (if has valid token)</td>
+</tr>
+<tr>
+<td>*</td>
+<td>*</td>
+<td>NOT NULL</td>
+<td>❌ NO</td>
+<td>❌ NO</td>
+</tr>
+</tbody>
+</table>
+<p>1. Soft-deleted properties tidak accessible sama sekali</p>
+<p>2. Public properties dengan status sold/rented hanya untuk referensi (no contact agent)</p>
+<p>3. Private properties hanya accessible via valid token link</p>
+<hr>
+<h3>8.2 Commission Split Decision Table</h3>
+<table>
+<thead>
+<tr>
+<th>Agent Owner</th>
+<th>Agent Buyer</th>
+<th>Total Commission</th>
+<th>Agent Owner Gets</th>
+<th>Agent Buyer Gets</th>
+<th>Office Gets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅</td>
+<td>❌</td>
+<td>Rp 20M</td>
+<td>Rp 14M (70%)</td>
+<td>-</td>
+<td>Rp 6M (30%)</td>
+</tr>
+<tr>
+<td>✅</td>
+<td>✅</td>
+<td>Rp 20M</td>
+<td>Rp 7M (35%)</td>
+<td>Rp 7M (35%)</td>
+<td>Rp 6M (30%)</td>
+</tr>
+<tr>
+<td>✅</td>
+<td>❌</td>
+<td>Rp 10M</td>
+<td>Rp 7M (70%)</td>
+<td>-</td>
+<td>Rp 3M (30%)</td>
+</tr>
+<tr>
+<td>✅</td>
+<td>✅</td>
+<td>Rp 10M</td>
+<td>Rp 3.5M (35%)</td>
+<td>Rp 3.5M (35%)</td>
+<td>Rp 3M (30%)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Admin bisa ubah % split manual</li>
+<li>Total percentage harus = 100%</li>
+<li>Office minimum 20% (business rule)</li>
+</ul>
+<hr>
+<h3>8.3 Token Validation Decision Table</h3>
+<table>
+<thead>
+<tr>
+<th>Token Exists</th>
+<th>Expired</th>
+<th>Access Count</th>
+<th>is_used</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>❌</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>❌ Invalid (404)</td>
+</tr>
+<tr>
+<td>✅</td>
+<td>YES</td>
+<td>-</td>
+<td>-</td>
+<td>❌ Expired</td>
+</tr>
+<tr>
+<td>✅</td>
+<td>NO</td>
+<td>0</td>
+<td>TRUE</td>
+<td>✅ Valid (first access)</td>
+</tr>
+<tr>
+<td>✅</td>
+<td>NO</td>
+<td>>0</td>
+<td>TRUE</td>
+<td>❌ Already Used</td>
+</tr>
+<tr>
+<td>✅</td>
+<td>NO</td>
+<td>-</td>
+<td>FALSE</td>
+<td>✅ Valid (reusable)</td>
+</tr>
+</tbody>
+</table>
+<h2>9. Exception Handling Flows</h2>
+<h3>9.1 Upload Photo Failed</h3>
+<pre><code>[Upload Photo] → {Success?}
+                   /      \
+              [Yes]       [No]
+               /            \
+              ▼              ▼
+         [Continue]   {Error Type?}
+                        /    |    \
+                [Size]  [Format] [Network]
+                  /        |         \
+                 ▼         ▼          ▼
+         [Show: Max 5MB] [Show: JPG/PNG only] [Show: Retry]
+                  │         │          │
+                  └─────────┴──────────┘
+                            │
+                            ▼
+                      [User Action]
+                       /         \
+                  [Retry]      [Skip]
+                    /              \
+                   ▼                ▼
+            [Re-upload]        [Continue without]
+</code></pre>
+<h3>9.2 Transaction Conflict</h3>
+<pre><code>[Input Transaction] → {Property Status?}
+                         /        \
+                  [Available]   [Sold/Rented]
+                      /              \
+                     ▼                ▼
+               [Continue]    [Show Error]
+                                "Property sudah terjual"
+                                      │
+                                      ▼
+                                [Refresh List]
+                                      │
+                                      ▼
+                                [Select Another]
+</code></pre>
+<hr>
+<h2>10. Critical Path Analysis</h2>
+<h3>10.1 Minimum Path to First Sale</h3>
+<pre><code>1. [Admin Master Login] → 2 min
+2. [Create Office] → 3 min
+3. [Create Agent] → 5 min
+4. [Agent Login] → 1 min
+5. [Create Property + Upload Photos] → 10 min
+6. [Publish to Marketplace] → 1 min
+7. [Buyer Browse & Search] → 5 min
+8. [Contact Agent via WA] → 1 min
+9. (External: Negotiation) → varies
+10. [Admin Input Transaction] → 5 min
+11. [Commission Auto-Generated] → instant
+12. [Agent View Dashboard] → 2 min
+
+TOTAL: ~35 minutes (excluding negotiation)
+</code></pre>
+<hr>
+<h2>11. Flow Summary per Role</h2>
+<h3>11.1 Agen Daily Workflow</h3>
+<pre><code>Login → View Dashboard → Create/Edit Listings → Upload Photos → 
+Set Public/Private → Monitor Views → Respond to Buyer Contacts → 
+View Commission Status → Logout
+</code></pre>
+<h3>11.2 Admin Kantor Daily Workflow</h3>
+<pre><code>Login → View Office Dashboard → Review New Properties → 
+Approve/Reject → Input Transactions → Mark Commissions Paid → 
+View Activity Log → Generate Reports → Logout
+</code></pre>
+<h3>11.3 Buyer Journey</h3>
+<pre><code>Visit Website → Browse Listings → Search & Filter → 
+View Property Details → Contact Agent (WA) → 
+(External: Visit & Negotiate) → Purchase Decision
+</code></pre>
+<hr>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Date:</strong> 31 Oktober 2025  </p>
+<p><strong>Version:</strong> 1.0.0  </p>
+<p><strong>Status:</strong> Ready for Development Reference</p>
+    </div>

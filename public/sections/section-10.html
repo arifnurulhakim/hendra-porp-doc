@@ -1,0 +1,807 @@
+<div class="content-section page-break" id="section-10">
+<h1>10. Sprint Planning & Project Timeline</h1>
+
+<p><strong>Dokumen Sprint Planning & Timeline</strong>  </p>
+<p>Proyek: Hendra Prop - Sistem Manajemen Properti  </p>
+<p>Tanggal: 31 Oktober 2025  </p>
+<p>Versi: Final  </p>
+<p><strong>Target Launch:</strong> Maret 2026</p>
+<hr>
+<h2>1. Project Timeline Overview</h2>
+
+<div class="mermaid">
+gantt
+    title Hendra Prop Development Timeline
+    dateFormat YYYY-MM-DD
+    section Setup
+    Setup & Planning           :done, setup, 2025-11-04, 7d
+    section Foundation
+    Sprint 1: Auth & Org      :done, sprint1, 2025-11-11, 14d
+    Sprint 2: Property Mgmt   :done, sprint2, 2025-11-25, 14d
+    section Public Web
+    Sprint 3: Public Listing  :active, sprint3, 2025-12-09, 14d
+    section Final
+    Sprint 4: Testing & QA    :sprint4, 2025-12-16, 7d
+    Soft Launch               :milestone, launch, 2025-12-24, 1d
+</div>
+
+<p><strong>Breakdown:</strong></p>
+<ul>
+<li>Week 1: Setup & Planning (4-10 Nov) ✅ DONE</li>
+<li>Week 2-3: Sprint 1 (11-24 Nov) ✅ DONE</li>
+<li>Week 4-5: Sprint 2 (25 Nov - 8 Dec) ✅ DONE</li>
+<li>Week 6-7: Sprint 3 (9-15 Dec) 🔄 IN PROGRESS</li>
+<li>Week 7-8: Sprint 4 Testing & QA (16-22 Dec)</li>
+<li><strong>Launch:</strong> December 24, 2025 🎯</li>
+</ul>
+<hr>
+<h2>2. Sprint 0: Setup & Planning (Week 1)</h2>
+<p><strong>Duration:</strong> 4-10 November 2025  </p>
+<p><strong>Goal:</strong> Project kickoff, setup environment, finalize requirements</p>
+<h3>Tasks</h3>
+<ul>
+<li>[x] ✅ Review & approval dokumen analisis</li>
+<li>[ ] Setup Git repository (GitHub/GitLab)</li>
+<li>[ ] Setup development environment</li>
+<li>[ ] Install Laravel 11 + Filament 3</li>
+<li>[ ] Setup database (MySQL)</li>
+<li>[ ] Configure Caddy web server</li>
+<li>[ ] Setup staging server (VPS)</li>
+<li>[ ] Finalize UI/UX mockup (optional)</li>
+<li>[ ] Team onboarding & training</li>
+</ul>
+<h3>Deliverables</h3>
+<ul>
+<li>✅ Approved documentation</li>
+<li>Git repo dengan initial commit</li>
+<li>Development environment ready</li>
+<li>Staging server ready</li>
+<li>Project board setup (Trello/Jira)</li>
+</ul>
+<hr>
+<h2>3. Sprint 1: Authentication & Organization (Week 2-3) ✅ DONE</h2>
+<p><strong>Duration:</strong> 11-24 November 2025  </p>
+<p><strong>Goal:</strong> Multi-role authentication & CRUD Kantor/Agen  </p>
+<p><strong>Status:</strong> <span style="background: #10b981; color: white; padding: 3px 12px; border-radius: 4px;">✅ COMPLETE</span></p>
+<h3>User Stories</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Assignee</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #e6f3ff;">
+<td>US-AUTH-001</td>
+<td>Login Admin Master</td>
+<td>3</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #e6f3ff;">
+<td>US-AUTH-002</td>
+<td>Login Admin Kantor</td>
+<td>2</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #e6f3ff;">
+<td>US-AUTH-003</td>
+<td>Login Agen</td>
+<td>2</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-OFFICE-001</td>
+<td>Create Kantor</td>
+<td>3</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-OFFICE-002</td>
+<td>Edit & Delete Kantor</td>
+<td>2</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-AGENT-001</td>
+<td>Create Agen</td>
+<td>5</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3>Technical Tasks</h3>
+<ul>
+<li>[x] ✅ Setup Laravel Breeze/Fortify authentication - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Create User, Office, Agent models & migrations - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Implement role-based access control (Gates & Policies) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Create Filament resources for Office & Agent - <strong>🟣 Hakim</strong></li>
+<li>[x] ✅ Setup email (SMTP for password reset) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Write unit tests for auth & CRUD - <strong>🟣 Hakim</strong></li>
+</ul>
+<h3>Daily Standup Topics</h3>
+<ul>
+<li>Authentication flow implementation</li>
+<li>Database migration execution</li>
+<li>Permission testing per role</li>
+<li>Email setup (local & staging)</li>
+</ul>
+<h3>Sprint Review</h3>
+<ul>
+<li><strong>Demo:</strong> Login multi-role & CRUD kantor/agen</li>
+<li><strong>Retrospective:</strong> What went well? What to improve?</li>
+</ul>
+<h3>Definition of Done</h3>
+<ul>
+<li>✅ All user stories completed & tested</li>
+<li>✅ Code reviewed & merged to develop</li>
+<li>✅ Unit tests passing</li>
+<li>✅ Deployed to staging</li>
+<li>✅ Demo approved by stakeholder</li>
+</ul>
+<hr>
+<h2>4. Sprint 2: Property Management (Week 4-5) ✅ DONE</h2>
+<p><strong>Duration:</strong> 25 Nov - 8 Desember 2025  </p>
+<p><strong>Goal:</strong> CRUD Properti dengan upload multiple foto  </p>
+<p><strong>Status:</strong> <span style="background: #10b981; color: white; padding: 3px 12px; border-radius: 4px;">✅ COMPLETE</span></p>
+<h3>User Stories</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Assignee</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #e6f3ff;">
+<td>US-AUTH-004</td>
+<td>Forgot Password</td>
+<td>5</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-AGENT-002</td>
+<td>Edit Profile Agen</td>
+<td>3</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-PROP-001</td>
+<td>Create Listing</td>
+<td>8</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #e6f3ff;">
+<td>US-PROP-002</td>
+<td>Edit Listing</td>
+<td>5</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #e6f3ff;">
+<td>US-PROP-004</td>
+<td>Upload Foto</td>
+<td>5</td>
+<td>🔵 Kang Arif</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3>Technical Tasks</h3>
+<ul>
+<li>[x] ✅ Create Property & PropertyPhoto models - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Implement image upload dengan validation - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Image optimization (resize, compress) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Slug generation untuk SEO - <strong>🟣 Hakim</strong></li>
+<li>[x] ✅ Filament resource untuk Property management - <strong>🟣 Hakim</strong></li>
+<li>[x] ✅ Drag & drop foto reorder - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Form wizard untuk create property (step by step) - <strong>🟣 Hakim</strong></li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li><strong>Challenge 1:</strong> Upload multiple foto sekaligus</li>
+<li><strong>Solution:</strong> Use Livewire file upload atau Filepond.js</li>
+<li><strong>Challenge 2:</strong> Image optimization</li>
+<li><strong>Solution:</strong> Intervention/Image library</li>
+</ul>
+<h3>Testing Focus</h3>
+<ul>
+<li>Upload foto (max 10, max 5MB, JPG/PNG only)</li>
+<li>Image resize & compress quality</li>
+<li>Slug uniqueness</li>
+<li>Permission: Agen hanya edit properti miliknya</li>
+</ul>
+<h3>Definition of Done</h3>
+<ul>
+<li>✅ Create & edit property working</li>
+<li>✅ Upload foto berhasil (max 10)</li>
+<li>✅ Foto ter-resize & compress</li>
+<li>✅ Agen tidak bisa edit properti agen lain</li>
+<li>✅ Unit & feature tests passing</li>
+</ul>
+<hr>
+<h2>5. Sprint 3: Public Listing Website (Week 6-7) 🚀 IN PROGRESS</h2>
+<p><strong>Duration:</strong> 9-22 Desember 2025  </p>
+<p><strong>Goal:</strong> Public website untuk buyer browse & search properti  </p>
+<p><strong>Status:</strong> <span style="background: #3b82f6; color: white; padding: 3px 12px; border-radius: 4px;">🚀 IN PROGRESS</span></p>
+<h3>User Stories</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Assignee</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #f0e6ff;">
+<td>US-PROP-003</td>
+<td>Delete Listing</td>
+<td>3</td>
+<td>🟣 Hakim</td>
+<td>✅ Done</td>
+</tr>
+<tr style="background: #fef3e6;">
+<td>US-PUBLIC-001</td>
+<td>Browse Listing</td>
+<td>5</td>
+<td>🟠 Faris</td>
+<td>🚀 In Progress</td>
+</tr>
+<tr style="background: #fef3e6;">
+<td>US-PUBLIC-002</td>
+<td>Search & Filter</td>
+<td>8</td>
+<td>🟠 Faris + 🔵 Kang Arif (API)</td>
+<td>🚀 In Progress</td>
+</tr>
+<tr style="background: #fef3e6;">
+<td>US-PUBLIC-003</td>
+<td>View Detail</td>
+<td>8</td>
+<td>🟠 Faris</td>
+<td>⏳ Pending</td>
+</tr>
+<tr style="background: #fef3e6;">
+<td>US-PUBLIC-004</td>
+<td>Kontak Agen WA</td>
+<td>3</td>
+<td>🟠 Faris</td>
+<td>⏳ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3>Technical Tasks</h3>
+<ul>
+<li>[x] ✅ Create public-facing layout (Blade + Tailwind) - <strong>🟠 Faris</strong> + <strong>🟡 Sela (Design)</strong></li>
+<li>[ ] ⏳ Property listing page dengan pagination - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Search & filter implementation - <strong>🟠 Faris (FE)</strong> + <strong>🔵 Kang Arif (API)</strong></li>
+<li>[ ] ⏳ Property detail page dengan gallery - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ WhatsApp deep link integration - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Google Maps integration (optional) - <strong>🟠 Faris</strong></li>
+<li>[x] ✅ SEO optimization (meta tags, sitemap) - <strong>🔵 Kang Arif</strong></li>
+<li>[x] ✅ Mobile responsive design - <strong>🟠 Faris</strong> + <strong>🟡 Sela (Design)</strong></li>
+</ul>
+<h3>Design Requirements</h3>
+<ul>
+<li><strong>Homepage:</strong> Hero section + featured listings</li>
+<li><strong>Listing Page:</strong> Grid view, search bar, filter sidebar</li>
+<li><strong>Detail Page:</strong> Photo gallery, info, map, agent contact</li>
+</ul>
+<h3>Performance Targets</h3>
+<ul>
+<li>Page load time < 2 detik</li>
+<li>Mobile responsive (100%)</li>
+<li>SEO score > 80 (PageSpeed Insights)</li>
+</ul>
+<h3>Definition of Done</h3>
+<ul>
+<li>✅ Public listing accessible tanpa login</li>
+<li>✅ Search & filter working</li>
+<li>✅ Mobile responsive</li>
+<li>✅ WhatsApp button buka WA app</li>
+<li>✅ SEO meta tags set</li>
+</ul>
+<hr>
+<h2>6. Sprint 4: Transaction & Commission (Week 8-9) ⏳ UPCOMING</h2>
+<p><strong>Duration:</strong> 23 Des - 5 Januari 2026  </p>
+<p><strong>Goal:</strong> Input transaksi & auto-calculate komisi  </p>
+<p><strong>Status:</strong> <span style="background: #94a3b8; color: white; padding: 3px 12px; border-radius: 4px;">⏳ PLANNED</span></p>
+<h3>User Stories</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Assignee</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #f0e6ff;">
+<td>US-TRANS-001</td>
+<td>Input Transaksi</td>
+<td>8</td>
+<td>🟣 Hakim</td>
+<td>⏳ Planned</td>
+</tr>
+<tr style="background: #e6f3ff;">
+<td>US-TRANS-002</td>
+<td>View List Transaksi</td>
+<td>5</td>
+<td>🔵 Kang Arif</td>
+<td>⏳ Planned</td>
+</tr>
+<tr style="background: #fef3e6;">
+<td>US-TRANS-003</td>
+<td>View Detail Transaksi</td>
+<td>3</td>
+<td>🟠 Faris</td>
+<td>⏳ Planned</td>
+</tr>
+<tr style="background: #e6f3ff;">
+<td>US-COMM-001</td>
+<td>Auto-Calculate Komisi</td>
+<td>8</td>
+<td>🔵 Kang Arif</td>
+<td>⏳ Planned</td>
+</tr>
+</tbody>
+</table>
+<h3>Technical Tasks</h3>
+<ul>
+<li>[ ] ⏳ Create Transaction & Commission models - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Commission calculation service/logic - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Filament resource untuk Transaction - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Auto-update property status saat transaksi - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Transaction detail view dengan komisi breakdown - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Unit tests untuk commission calculation - <strong>🟣 Hakim</strong></li>
+</ul>
+<h3>Commission Logic</h3>
+<pre><code>// Scenario 1: Hanya agen owner
+- Agen owner: 70% dari total komisi
+- Kantor: 30% dari total komisi
+
+// Scenario 2: Agen owner + agen buyer
+- Agen owner: 35% dari total komisi
+- Agen buyer: 35% dari total komisi
+- Kantor: 30% dari total komisi
+</code></pre>
+<h3>Testing Scenarios</h3>
+<p>1. Transaction dengan 1 agen → komisi 70/30</p>
+<p>2. Transaction dengan 2 agen → komisi 35/35/30</p>
+<p>3. Override komisi % manual</p>
+<p>4. Property status auto-change ke sold/rented</p>
+<p>5. Tidak bisa delete transaction yang sudah ada komisi</p>
+<h3>Definition of Done</h3>
+<ul>
+<li>✅ Input transaksi working</li>
+<li>✅ Komisi auto-calculate dengan benar</li>
+<li>✅ Support 1 atau 2 agen</li>
+<li>✅ Property status auto-update</li>
+<li>✅ Unit tests untuk logic komisi passing</li>
+</ul>
+<hr>
+<h2>7. Sprint 5: Commission Management & Dashboard (Week 10-11) ⏳ UPCOMING</h2>
+<p><strong>Duration:</strong> 6-19 Januari 2026  </p>
+<p><strong>Goal:</strong> Mark komisi paid & dashboard personal agen  </p>
+<p><strong>Status:</strong> <span style="background: #94a3b8; color: white; padding: 3px 12px; border-radius: 4px;">⏳ PLANNED</span></p>
+<h3>User Stories</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Assignee</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #e6f3ff;">
+<td>US-COMM-002</td>
+<td>Mark Komisi Paid</td>
+<td>5</td>
+<td>🔵 Kang Arif</td>
+<td>⏳ Planned</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-COMM-003</td>
+<td>View Komisi Pending/Paid</td>
+<td>5</td>
+<td>🟣 Hakim</td>
+<td>⏳ Planned</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-DASH-001</td>
+<td>Dashboard Personal Agen</td>
+<td>8</td>
+<td>🟣 Hakim + 🟠 Faris (UI)</td>
+<td>⏳ Planned</td>
+</tr>
+</tbody>
+</table>
+<h3>Technical Tasks</h3>
+<ul>
+<li>[ ] ⏳ Komisi status management (pending → paid) - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Dashboard widgets untuk agen - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Chart implementation (Chart.js / ApexCharts) - <strong>🟠 Faris</strong></li>
+<li>[ ] ⏳ Commission list dengan filter & export - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Email notification saat komisi paid - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Performance query optimization - <strong>🔵 Kang Arif</strong></li>
+</ul>
+<h3>Dashboard Widgets (Agen)</h3>
+<ul>
+<li>Total Listing Active</li>
+<li>Total Omzet</li>
+<li>Total Komisi</li>
+<li>Komisi Pending</li>
+<li>Komisi Paid</li>
+<li>Chart: Omzet per bulan</li>
+</ul>
+<h3>Performance Optimization</h3>
+<ul>
+<li>Cache dashboard metrics (TTL: 1 jam)</li>
+<li>Eager loading untuk avoid N+1</li>
+<li>Database indexing</li>
+</ul>
+<h3>Definition of Done</h3>
+<ul>
+<li>✅ Mark komisi paid working</li>
+<li>✅ Dashboard show real-time data</li>
+<li>✅ Chart rendering correctly</li>
+<li>✅ Export komisi ke Excel</li>
+<li>✅ Email notification sent</li>
+</ul>
+<hr>
+<h2>8. Sprint 6: Dashboard Kantor & Master + Polish (Week 12-13) ⏳ UPCOMING</h2>
+<p><strong>Duration:</strong> 20 Jan - 2 Februari 2026  </p>
+<p><strong>Goal:</strong> Dashboard agregat & final polish  </p>
+<p><strong>Status:</strong> <span style="background: #94a3b8; color: white; padding: 3px 12px; border-radius: 4px;">⏳ PLANNED</span></p>
+<h3>User Stories</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+<th>Points</th>
+<th>Assignee</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #e6f3ff;">
+<td>US-DASH-002</td>
+<td>Dashboard Kantor</td>
+<td>8</td>
+<td>🔵 Kang Arif + 🟣 Hakim</td>
+<td>⏳ Planned</td>
+</tr>
+<tr style="background: #f0e6ff;">
+<td>US-DASH-003</td>
+<td>Dashboard Master</td>
+<td>8</td>
+<td>🟣 Hakim + 🔵 Kang Arif</td>
+<td>⏳ Planned</td>
+</tr>
+<tr style="background: #fff5e6;">
+<td>-</td>
+<td>Bug Fixing & Polish</td>
+<td>10</td>
+<td>🔵 Arif + 🟣 Hakim + 🟠 Faris + 🟡 Sela</td>
+<td>⏳ Planned</td>
+</tr>
+</tbody>
+</table>
+<h3>Technical Tasks</h3>
+<ul>
+<li>[ ] ⏳ Dashboard kantor (aggregate agen) - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Dashboard master (aggregate kantor) - <strong>🟣 Hakim</strong></li>
+<li>[ ] ⏳ Performance optimization - <strong>🔵 Kang Arif</strong></li>
+<li>[ ] ⏳ Code refactoring - <strong>🔵 Arif + 🟣 Hakim</strong></li>
+<li>[ ] ⏳ UI/UX polish - <strong>🟠 Faris + 🟡 Sela</strong></li>
+<li>[ ] ⏳ Bug fixing dari sprint sebelumnya - <strong>All Team</strong></li>
+</ul>
+<h3>Dashboard Widgets (Admin Kantor)</h3>
+<ul>
+<li>Total Agen Active</li>
+<li>Total Listing</li>
+<li>Total Omzet Kantor</li>
+<li>Komisi Kantor</li>
+<li>Table: Performance per agen</li>
+</ul>
+<h3>Dashboard Widgets (Admin Master)</h3>
+<ul>
+<li>Total Kantor</li>
+<li>Total Agen</li>
+<li>Total Listing</li>
+<li>Total Omzet Global</li>
+<li>Table: Performance per kantor</li>
+</ul>
+<h3>Code Quality Checklist</h3>
+<ul>
+<li>[ ] Laravel Pint (code style)</li>
+<li>[ ] PHPStan level 5</li>
+<li>[ ] No N+1 queries</li>
+<li>[ ] Security audit (SQL injection, XSS, CSRF)</li>
+<li>[ ] Remove debug code</li>
+</ul>
+<h3>Definition of Done</h3>
+<ul>
+<li>✅ Dashboard kantor & master working</li>
+<li>✅ All critical bugs fixed</li>
+<li>✅ Code quality check passed</li>
+<li>✅ Performance optimized</li>
+<li>✅ Ready for testing phase</li>
+</ul>
+<hr>
+<h2>9. Testing & QA Phase (Week 14-15)</h2>
+<p><strong>Duration:</strong> 3-16 Februari 2026  </p>
+<p><strong>Goal:</strong> Comprehensive testing & QA</p>
+<h3>Testing Activities</h3>
+<ul>
+<li>[ ] <strong>Unit Testing:</strong> All critical functions</li>
+<li>[ ] <strong>Feature Testing:</strong> End-to-end user flows</li>
+<li>[ ] <strong>Browser Testing:</strong> Chrome, Firefox, Safari, Edge</li>
+<li>[ ] <strong>Mobile Testing:</strong> iOS Safari, Android Chrome</li>
+<li>[ ] <strong>Performance Testing:</strong> Load testing dengan K6</li>
+<li>[ ] <strong>Security Testing:</strong> OWASP top 10</li>
+<li>[ ] <strong>User Acceptance Testing (UAT):</strong> Stakeholder testing</li>
+</ul>
+<h3>Test Scenarios (UAT)</h3>
+<p>1. <strong>End-to-End Listing Flow</strong></p>
+<ul>
+<li>Agen create listing → Public view → Buyer kontak</li>
+</ul>
+<p>2. <strong>End-to-End Transaction Flow</strong></p>
+<ul>
+<li>Admin input transaksi → Komisi auto-calculate → Mark paid</li>
+</ul>
+<p>3. <strong>Permission Testing</strong></p>
+<ul>
+<li>Agen tidak bisa akses data agen lain</li>
+<li>Admin Kantor tidak bisa akses kantor lain</li>
+</ul>
+<p>4. <strong>Multi-Agen Transaction</strong></p>
+<ul>
+<li>Transaksi dengan 2 agen → Komisi split 35/35/30</li>
+</ul>
+<h3>Bug Severity Classification</h3>
+<ul>
+<li><strong>P0 - Critical:</strong> System crash, data loss, security breach → Fix immediately</li>
+<li><strong>P1 - High:</strong> Major feature broken → Fix within 24 hours</li>
+<li><strong>P2 - Medium:</strong> Minor feature broken → Fix within 1 week</li>
+<li><strong>P3 - Low:</strong> Cosmetic issues → Fix if time allows</li>
+</ul>
+<h3>QA Checklist</h3>
+<ul>
+<li>[ ] All features working as expected</li>
+<li>[ ] No critical or high bugs</li>
+<li>[ ] Performance < 2 sec page load</li>
+<li>[ ] Mobile responsive 100%</li>
+<li>[ ] SEO optimization done</li>
+<li>[ ] Security audit passed</li>
+</ul>
+<hr>
+<h2>10. Bug Fixing & Polish (Week 16)</h2>
+<p><strong>Duration:</strong> 16-22 December 2025  </p>
+<p><strong>Goal:</strong> Fix all bugs from testing phase</p>
+<h3>Activities</h3>
+<ul>
+<li>[ ] Fix all P0 & P1 bugs</li>
+<li>[ ] Fix selected P2 bugs</li>
+<li>[ ] UI/UX refinement</li>
+<li>[ ] Content preparation (copy, images)</li>
+<li>[ ] Documentation update</li>
+</ul>
+<h3>Launch Preparation</h3>
+<ul>
+<li>[ ] Production server setup</li>
+<li>[ ] SSL certificate installation</li>
+<li>[ ] Database migration to production</li>
+<li>[ ] Backup strategy implementation</li>
+<li>[ ] Monitoring setup (UptimeRobot, Sentry)</li>
+</ul>
+<hr>
+<h2>11. Soft Launch Preparation (Week 7-8)</h2>
+<p><strong>Duration:</strong> December 23-24, 2025  </p>
+<p><strong>Goal:</strong> Prepare for production launch</p>
+<h3>Pre-Launch Checklist</h3>
+<ul>
+<li>[ ] Production environment tested</li>
+<li>[ ] Database seeded dengan sample data</li>
+<li>[ ] Admin accounts created</li>
+<li>[ ] User training completed</li>
+<li>[ ] Documentation finalized</li>
+<li>[ ] Backup verified</li>
+<li>[ ] Rollback plan ready</li>
+<li>[ ] Support process defined</li>
+</ul>
+<h3>Launch Day Activities</h3>
+<ul>
+<li>[ ] Final smoke test</li>
+<li>[ ] Deploy to production</li>
+<li>[ ] DNS switch (if needed)</li>
+<li>[ ] Monitor errors & performance</li>
+<li>[ ] Stakeholder notification</li>
+</ul>
+<hr>
+<h2>12. Post-Launch (Week 9+)</h2>
+<p><strong>Duration:</strong> December 25, 2025 onwards  </p>
+<p><strong>Goal:</strong> Monitor, support, and iterate</p>
+<h3>Week 1 Post-Launch</h3>
+<ul>
+<li>[ ] Daily monitoring</li>
+<li>[ ] Collect user feedback</li>
+<li>[ ] Fix critical bugs ASAP</li>
+<li>[ ] Performance tuning</li>
+</ul>
+<h3>Week 2-4 Post-Launch</h3>
+<ul>
+<li>[ ] Analyze usage data</li>
+<li>[ ] Plan Phase 2 features</li>
+<li>[ ] Refine based on feedback</li>
+</ul>
+<h3>Phase 2 Features (Optional)</h3>
+<ul>
+<li>Moderasi properti</li>
+<li>Link sharing terbatas</li>
+<li>Reward system</li>
+<li>Email notification automation</li>
+<li>Advanced analytics</li>
+<li>Mobile app (React Native / Flutter)</li>
+</ul>
+<hr>
+<h2>13. Team & Resources</h2>
+<h3>Actual Team Structure</h3>
+<table>
+<thead>
+<tr>
+<th style="width: 20%;">Name</th>
+<th style="width: 25%;">Role</th>
+<th style="width: 35%;">Primary Focus</th>
+<th style="width: 20%;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #e6f3ff; border-left: 4px solid #3b82f6;">
+<td><strong>🔵 Kang Arif</strong></td>
+<td><span style="background: #3b82f6; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">Backend Developer</span></td>
+<td>Laravel Filament Admin Panel</td>
+<td><span style="background: #10b981; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">✅ DONE</span></td>
+</tr>
+<tr style="background: #f0e6ff; border-left: 4px solid #8b5cf6;">
+<td><strong>🟣 Hakim</strong></td>
+<td><span style="background: #8b5cf6; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">Backend Developer</span></td>
+<td>Laravel Filament Admin Panel</td>
+<td><span style="background: #10b981; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">✅ DONE</span></td>
+</tr>
+<tr style="background: #fff4e6; border-left: 4px solid #f59e0b;">
+<td><strong>🟠 Faris</strong></td>
+<td><span style="background: #f59e0b; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">Frontend Developer</span></td>
+<td>Customer Website (Marketplace)</td>
+<td><span style="background: #f59e0b; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">🔄 IN PROGRESS</span></td>
+</tr>
+<tr style="background: #ffe6f0; border-left: 4px solid #ec4899;">
+<td><strong>🔴 Sela</strong></td>
+<td><span style="background: #ec4899; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.9em;">UI/UX Designer</span></td>
+<td>Customer Website Design</td>
+<td><span style="background: #ec4899; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85em;">🔄 IN PROGRESS</span></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Division of Work:</strong></p>
+<ul>
+<li><strong>🔵 Backend (Kang Arif + Hakim):</strong> 100% Laravel Filament - Admin panel, database, API, business logic - <span style="background: #10b981; color: white; padding: 2px 8px; border-radius: 3px;">✅ COMPLETE</span></li>
+<li><strong>🟠 Frontend (Faris):</strong> Customer-facing website only - Marketplace, property detail, private links (Blade + Alpine.js) - <span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 3px;">🔄 IN PROGRESS</span></li>
+<li><strong>🔴 Design (Sela):</strong> UI/UX for customer website - Figma designs, mockups, assets - <span style="background: #ec4899; color: white; padding: 2px 8px; border-radius: 3px;">🔄 IN PROGRESS</span></li>
+</ul>
+<h3>Tools & Services</h3>
+<ul>
+<li><strong>Version Control:</strong> Git + GitHub/GitLab</li>
+<li><strong>Project Management:</strong> Trello / Jira / Linear</li>
+<li><strong>Communication:</strong> Slack / Discord</li>
+<li><strong>Code Quality:</strong> Laravel Pint, PHPStan</li>
+<li><strong>Testing:</strong> PHPUnit, Pest, Laravel Dusk</li>
+<li><strong>Monitoring:</strong> Sentry, UptimeRobot</li>
+<li><strong>Deployment:</strong> GitHub Actions / GitLab CI</li>
+<li><strong>Hosting:</strong> VPS (DigitalOcean / AWS / Vultr)</li>
+</ul>
+<hr>
+<h2>14. Risk Mitigation</h2>
+<h3>Risk 1: Scope Creep</h3>
+<p><strong>Mitigation:</strong> Strict MVP scope, reject non-essential features</p>
+<h3>Risk 2: Timeline Delay</h3>
+<p><strong>Mitigation:</strong> 2-week buffer built into timeline</p>
+<h3>Risk 3: Technical Challenges</h3>
+<p><strong>Mitigation:</strong> POC (Proof of Concept) untuk fitur complex</p>
+<h3>Risk 4: Team Availability</h3>
+<p><strong>Mitigation:</strong> Cross-training, documentation</p>
+<hr>
+<h2>15. Success Metrics</h2>
+<h3>Launch Success Criteria</h3>
+<ul>
+<li>✅ Zero critical bugs</li>
+<li>✅ All MVP features working</li>
+<li>✅ Performance < 2 sec page load</li>
+<li>✅ Mobile responsive</li>
+<li>✅ User training completed</li>
+</ul>
+<h3>Post-Launch KPIs (1 Month)</h3>
+<ul>
+<li>User adoption > 80%</li>
+<li>System uptime > 99%</li>
+<li>Avg response time < 1 sec</li>
+<li>Zero data loss incidents</li>
+</ul>
+<hr>
+<p><strong>Prepared by:</strong> AI Project Analysis System  </p>
+<p><strong>Date:</strong> 31 Oktober 2025  </p>
+<p><strong>Version:</strong> 1.0.0  </p>
+<p><strong>Next Review:</strong> Weekly sprint reviews</p>
+    </div>
+
+
+
+    <!-- Footer -->
+    <div class="content-section page-break">
+        <h1>📞 Informasi Dokumen</h1>
+        <table>
+            <tbody>
+                <tr><td><strong>Proyek</strong></td><td>Hendra Prop - Sistem Manajemen Properti Multi-Kantor</td></tr>
+                <tr><td><strong>Versi</strong></td><td>Final (Complete)</td></tr>
+                <tr><td><strong>Tanggal</strong></td><td>31 Oktober 2025</td></tr>
+                <tr><td><strong>Target Launch</strong></td><td>December 24, 2025</td></tr>
+                <tr><td><strong>Total Halaman</strong></td><td>~150 halaman</td></tr>
+                <tr><td><strong>Total Sections</strong></td><td>10 dokumen utama</td></tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <div class="alert alert-success">
+            <h2>✅ Dokumentasi Lengkap</h2>
+            <p><strong>Semua yang diperlukan untuk development:</strong></p>
+            <ul>
+                <li>1. Business Requirements Document (BRD)</li>
+                <li>2. Software Requirements Specification (SRS)</li>
+                <li>3. Entity Relationship Diagram (ERD)</li>
+                <li>4. Data Flow Diagram (DFD)</li>
+                <li>5. Use Case Diagram & Specifications</li>
+                <li>6. Activity Diagrams & Business Process Flows</li>
+                <li>7. Technical Specifications & Architecture</li>
+                <li>8. Database Design & Schema</li>
+                <li>9. API Specifications</li>
+                <li>10. Sprint Planning & Project Timeline</li>
+            </ul>
+        </div>
+        
+        <p style="text-align: center; margin-top: 3rem;">
+            <strong style="color: #1a202c; font-size: 1.5rem;">🎉 Ready for Development! 🚀</strong>
+        </p>
+        
+        <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 2rem;">
+            © 2025 Hendra Prop<br>
+            Prepared by: AI Project Analysis System<br>
+            <strong>Target Launch: December 24, 2025</strong>
+        </p>
+    </div>
