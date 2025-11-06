@@ -27,18 +27,29 @@ export class Headings {
      * Setup heading links for all headings
      */
     setupHeadings() {
-        this.headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        
-        this.headings.forEach(heading => {
-            // Generate ID if not exists
-            if (!heading.id) {
-                heading.id = this.generateId(heading.textContent);
-            }
+        // Wait a bit for sections to be fully rendered
+        setTimeout(() => {
+            this.headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            
+            // Filter out headings that already have links
+            this.headings.forEach(heading => {
+                // Skip if already has a heading link
+                if (heading.querySelector('.heading-link')) {
+                    return;
+                }
+                
+                // Generate ID if not exists
+                if (!heading.id) {
+                    heading.id = this.generateId(heading.textContent);
+                }
 
-            // Create link element
-            const link = this.createHeadingLink(heading);
-            heading.appendChild(link);
-        });
+                // Create link element
+                const link = this.createHeadingLink(heading);
+                heading.appendChild(link);
+            });
+            
+            console.log(`✅ Setup ${this.headings.length} heading links`);
+        }, 500); // Wait 500ms for sections to render
     }
 
     /**
@@ -77,14 +88,22 @@ export class Headings {
      * @param {string} headingId - Heading ID
      */
     async copyHeadingLink(headingId) {
+        // Get full URL
         const url = `${window.location.origin}${window.location.pathname}#${headingId}`;
         
         try {
-            await navigator.clipboard.writeText(url);
-            this.toast.show('📋 Link copied to clipboard!');
+            // Try modern clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(url);
+                this.toast.show('📋 Link copied to clipboard!');
+                console.log('✅ Copied to clipboard:', url);
+            } else {
+                // Fallback for older browsers
+                this.fallbackCopy(url);
+            }
         } catch (err) {
             console.error('Failed to copy link:', err);
-            // Fallback for older browsers
+            // Fallback for older browsers or if clipboard API fails
             this.fallbackCopy(url);
         }
     }
@@ -97,19 +116,38 @@ export class Headings {
         const textArea = document.createElement('textarea');
         textArea.value = text;
         textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.padding = '0';
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        textArea.style.background = 'transparent';
         textArea.style.opacity = '0';
+        textArea.style.zIndex = '-1';
+        
         document.body.appendChild(textArea);
+        textArea.focus();
         textArea.select();
         
         try {
-            document.execCommand('copy');
-            this.toast.show('📋 Link copied to clipboard!');
+            const successful = document.execCommand('copy');
+            if (successful) {
+                this.toast.show('📋 Link copied to clipboard!');
+                console.log('✅ Copied to clipboard (fallback):', text);
+            } else {
+                throw new Error('execCommand failed');
+            }
         } catch (err) {
             console.error('Fallback copy failed:', err);
-            this.toast.show('❌ Failed to copy link');
+            this.toast.show('❌ Failed to copy link. Please copy manually.');
+            // Show URL in alert as last resort
+            alert(`Copy this link:\n${text}`);
+        } finally {
+            document.body.removeChild(textArea);
         }
-        
-        document.body.removeChild(textArea);
     }
 
     /**
